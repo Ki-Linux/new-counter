@@ -35,9 +35,9 @@ export default class newAccount extends Vue {
     password_again: string = "";
 
     toNext():void {
-       
-    }
 
+       //console.log("toNext");
+    }
 }
 </script>
 <style lang="scss">
