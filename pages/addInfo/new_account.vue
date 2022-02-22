@@ -29,14 +29,20 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component
 export default class newAccount extends Vue {
-    mail:string = "";
-    username: string = "";
-    password: string = "";
-    password_again: string = "";
+    mail:string = "seima0616@gmail.com";
+    username: string = "ddddddddd";
+    password: string = "ddddddddddddd";
+    password_again: string = "dddddddddddddd";
 
     toNext():void {
 
        //console.log("toNext");
+       this.$axios.post('/logins', {
+           mail: this.mail,
+           username: this.username,
+           password: this.password
+       })
+       
     }
 }
 </script>
