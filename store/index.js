@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
+import * as Cookies from 'js-cookie'
 
 Vue.use(Vuex)
 
@@ -8,7 +10,16 @@ export const state = () => ({
     first_data: 0,
     back_data: ["", 8, 9, 're'],
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
-
+    token: "",
+    /*plugins: [
+        createPersistedState({
+            storage: {
+                getItem: key => Cookies.get(key),
+                setItem: (key, value) => ,
+                removeItem: key => Cookies.remove(key),
+            }
+        })         
+    ]*/
 });
 
 
@@ -58,7 +69,13 @@ export const mutations = {
 
         state.first_data = row[2];//初期化の方の数字
 
+    },
+
+    loginToken(state, res) {
+        state.token = res;
+        Cookies.set("key", state.token, { expires: 7 });
     }
+
 
 };
 
@@ -95,7 +112,13 @@ export const actions = {
     inData(context, row) {
 
         context.commit("dataInto", row);
-    }
+    },
+
+    loginToken(context, res) {
+
+        context.commit("loginToken", res)
+    }, 
+
 }
 
 

@@ -39,6 +39,8 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/auth',
+    'cookie-universal-nuxt',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -59,5 +61,36 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+
+  publicRuntimeConfig: {
+    axios: {
+      baseURL: process.env.BASE_URL,
+    },
+  },
+
+  auth: {
+    /*redirect: {
+      login: '/login',
+      logout: '/',
+      callback: false,
+      home: '/about',
+    },*/
+    strategies: {
+      local: {
+        /*token: {
+          property: "token",
+          global: true,
+        },
+        user: {
+          property: "user",
+        },*/
+        endpoints: {
+          login: { url: "/api/login", method: "post", propertyName: 'token' },
+          logout: { url: "/api/logout", method: "post" },
+          user: { url: "/api/user", method: "get", propertyName: 'user' },
+        },
+      },
+    },
+  },
 }

@@ -37,11 +37,11 @@ export default class newAccount extends Vue {
     toNext():void {
 
        //console.log("toNext");
-       this.$axios.post('/logins', {
-           mail: this.mail,
-           username: this.username,
-           password: this.password
+       this.$axios.get('/user')
+       .then(function(response): void {
+           console.log(JSON.parse(JSON.stringify(response.data)));
        })
+       //this.$store.dispatch("UpDownNumber", selection);
        
     }
 }
