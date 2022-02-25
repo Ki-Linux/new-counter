@@ -10,7 +10,7 @@ export const state = () => ({
     first_data: 0,
     back_data: ["", 8, 9, 're'],
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
-    token: "",
+    token: null,
     /*plugins: [
         createPersistedState({
             storage: {
@@ -98,6 +98,9 @@ export const getters = {
     },
     showImg(state) {
         return state.back_data[3];
+    },
+    isAuthenticated(state) {
+        return state.token != null
     }
 
 }
