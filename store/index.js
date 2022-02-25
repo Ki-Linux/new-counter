@@ -71,9 +71,14 @@ export const mutations = {
 
     },
 
-    loginToken(state, res) {
+    loginToken(state, res) {//トークンをstoreへ
         state.token = res;
-        Cookies.set("key", state.token, { expires: 7 });
+        //this.$cookies.set("key", state.token, { expires: 7 });
+    },
+
+    cookieToken(state, content) {//くっきーからstoreへ
+        state.token = content;
+        console.log(state.token)
     }
 
 
@@ -114,10 +119,15 @@ export const actions = {
         context.commit("dataInto", row);
     },
 
-    loginToken(context, res) {
+    loginToken(context, res) {//setToken to cookie
 
         context.commit("loginToken", res)
     }, 
+
+    nuxtServerInit({ commit }, { req }) {//reload
+        commit("cookieToken", req.headers.cookie)
+        //console.log(req.headers.cookie);
+    }
 
 }
 
