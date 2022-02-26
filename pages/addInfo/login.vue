@@ -18,7 +18,7 @@ export default class login extends Vue {
     password:string = "";
     
 
-    async doLogin() {
+    doLogin() {
         console.log("doLogin!");
 
         //fdsavd@gmail.com

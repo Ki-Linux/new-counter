@@ -51,7 +51,7 @@ export default class newAccount extends Vue {
 
     logout(): void {
         this.$cookies.remove('key');
-        (this as any).$auth.loginWith();
+        //(this as any).$auth.loginWith();
     }
 }
 </script>
