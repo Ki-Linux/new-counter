@@ -18,7 +18,7 @@ export default class login extends Vue {
     password:string = "";
     
 
-    doLogin() {
+    async doLogin() {
         console.log("doLogin!");
 
         //fdsavd@gmail.com
@@ -33,10 +33,10 @@ export default class login extends Vue {
             this.$store.dispatch("loginToken", response.data.token);
             this.$cookies.set('key', response.data.token);
            // console.log(req.headers.cookie)
-        })
+        });
 
         /*try {
-            await (this as any).$auth.loginWith('local', {
+            const response = await ('/api/login', {
                     mail: this.email,
                     password: this.password,
             })

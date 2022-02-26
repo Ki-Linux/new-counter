@@ -22,10 +22,14 @@
             </div>
             <input type="submit">
         </form>
+        <form @submit="logout">
+            <input type="submit" value="ui">
+        </form>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import $cookies from 'cookie-universal-nuxt';
 
 @Component
 export default class newAccount extends Vue {
@@ -43,6 +47,11 @@ export default class newAccount extends Vue {
        })
        //this.$store.dispatch("UpDownNumber", selection);
        
+    }
+
+    logout(): void {
+        this.$cookies.remove('key');
+        (this as any).$auth.loginWith();
     }
 }
 </script>
