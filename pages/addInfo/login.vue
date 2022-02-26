@@ -28,7 +28,7 @@ export default class login extends Vue {
             password: this.password,
         })
         .then((response) => {
-            console.log(response.data.token);
+            console.log(response);
             //console.log(response);
             this.$store.dispatch("loginToken", response.data.token);
             this.$cookies.set('key', response.data.token);
