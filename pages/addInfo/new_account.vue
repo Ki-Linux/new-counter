@@ -25,6 +25,10 @@
         <form @submit="logout">
             <input type="submit" value="ui">
         </form>
+        <form @submit.prevent="checksuru">
+            <input type="text" name="ee" v-model="ee">
+            <input type="submit">
+        </form>
     </div>
 </template>
 <script lang="ts">
@@ -37,6 +41,8 @@ export default class newAccount extends Vue {
     username: string = "ddddddddd";
     password: string = "ddddddddddddd";
     password_again: string = "dddddddddddddd";
+   
+   ee: string = "re";
 
     toNext():void {
 
@@ -53,6 +59,17 @@ export default class newAccount extends Vue {
         this.$cookies.remove('key');
         //(this as any).$auth.loginWith();
     }
+
+    checksuru(): void {
+        this.$axios.post("/api/sendMail", {
+            mail: this.mail,
+        })
+        .then((response)=> {
+            console.log(response)
+        })
+        console.log('uier')
+    }
+
 }
 </script>
 <style lang="scss">

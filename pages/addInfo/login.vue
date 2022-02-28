@@ -6,6 +6,7 @@
             <input type="submit">
         </form>
         <p>{{ $auth.loggedIn }}</p>
+        
     </div>
 </template>
 <script lang="ts">
@@ -48,6 +49,7 @@ export default class login extends Vue {
             
 
     }
+
 
 }
 </script>

@@ -41,6 +41,7 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/auth',
     'cookie-universal-nuxt',
+    '@nuxtjs/proxy'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -48,8 +49,9 @@ export default {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     proxy: true,
     prefix: '/api',
+    //baseURL: 'http://127.0.0.1:8000/api/',
   },
-  proxy: { '/api/': { target: 'http://127.0.0.1:8000' } },
+  proxy: { '/api/':{ target: 'http://127.0.0.1:8000/api/', pathRewrite: {'^/api/': '/'}} },
 
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -69,15 +71,15 @@ export default {
     },
   },
 
-  auth: {
+  //auth: {
     /*redirect: {
       login: '/login',
       logout: '/',
       callback: false,
       home: '/about',
     },*/
-    strategies: {
-      local: {
+    //strategies: {
+      //local: {
         /*token: {
           property: "token",
           global: true,
@@ -85,12 +87,12 @@ export default {
         user: {
           property: "user",
         },*/
-        endpoints: {
-          login: { url: "/api/login", method: "post", propertyName: 'token' },
-          logout: false, //{ url: "/api/logout", method: "post" },
-          user: false//{ url: "/api/user", method: "get", propertyName: 'user' },
-        },
-      },
-    },
-  },
+        //endpoints: {
+          //login: { url: "/api/login", method: "post", propertyName: 'token' },
+          //logout: false, //{ url: "/api/logout", method: "post" },
+          //user: false//{ url: "/api/user", method: "get", propertyName: 'user' },
+        //},
+      //},
+    //},
+  //},
 }
