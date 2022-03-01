@@ -25,7 +25,7 @@ export default class login extends Vue {
 
         //fdsavd@gmail.com
         //sdfsd
-        this.$axios.post("/api/login", {
+        this.$axios.post("login", {
             mail: this.email,
             password: this.password,
         })
