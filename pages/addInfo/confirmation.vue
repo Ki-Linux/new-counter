@@ -1,7 +1,7 @@
 <template>
     <div id="confirmation">
         <form @submit.prevent="Confirm">
-            <input type="text" v-model="pass_confirm">
+            <input type="password" v-model="pass_confirm">
             <input type="submit" >
         </form>
     </div>

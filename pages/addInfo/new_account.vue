@@ -20,13 +20,7 @@
                 <label for="password_again">もう一度パスワード<br/><span>7~14文字</span></label>
                 <input type="password" v-model="password_again" name="password_again" minlength="7" maxlength="14" required>
             </div>
-            <input type="submit">
-        </form>
-        <form @submit="logout">
-            <input type="submit" value="ui">
-        </form>
-        <form @submit.prevent="checksuru">
-            <input type="text" name="ee" v-model="ee">
+            <p>{{ warning }}</p>
             <input type="submit">
         </form>
     </div>
@@ -41,34 +35,44 @@ export default class newAccount extends Vue {
     username: string = "ddddddddd";
     password: string = "ddddddddddddd";
     password_again: string = "dddddddddddddd";
-   
-   ee: string = "re";
+    warning: string = "";
 
     toNext():void {
 
-       //console.log("toNext");
-       this.$axios.get('/user')
-       .then(function(response): void {
-           console.log(JSON.parse(JSON.stringify(response.data)));
-       })
-       //this.$store.dispatch("UpDownNumber", selection);
+       
+        this.$axios.post("saving", {
+            mail: this.mail,
+            username: this. username,
+            password: this.password,
+        })
+        .then((response) => {
+            
+            const next_go = response.data.next_go;
+
+            if(next_go === "not_one") {
+
+                this.warning = "このメールアドレスはすでにあります。";
+
+            } else if(next_go === "not_two"){
+
+                this.warning = "このユーザーネームはすでにあります。";
+
+            } else {
+
+                this.$router.push('/addInfo/login');
+
+            }
+
+
+
+        })
        
     }
 
-    logout(): void {
+    /*logout(): void {
         this.$cookies.remove('key');
         //(this as any).$auth.loginWith();
-    }
-
-    checksuru(): void {
-        this.$axios.post("/api/sendMail", {
-            mail: this.mail,
-        })
-        .then((response)=> {
-            console.log(response)
-        })
-        console.log('uier')
-    }
+    }*/
 
 }
 </script>
