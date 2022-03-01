@@ -36,6 +36,7 @@ export default class newAccount extends Vue {
     password: string = "ddddddddddddd";
     password_again: string = "dddddddddddddd";
     warning: string = "";
+    //loginId: number = 1;
 
     toNext():void {
 
@@ -60,7 +61,7 @@ export default class newAccount extends Vue {
 
             } else {
 
-                this.$router.push('/addInfo/login');
+                this.$router.push('/addInfo/login/1');
 
             }
         })

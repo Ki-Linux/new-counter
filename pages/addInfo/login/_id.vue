@@ -1,5 +1,6 @@
 <template>
     <div id="login">
+        <p v-if="this.$route.params.id === '1'">ご確認メールを送信しました。</p>
         <form @submit.prevent="doLogin">
             <input type="email" v-model="email">
             <input type="password" v-model="password">
