@@ -39,7 +39,8 @@ export default class newAccount extends Vue {
 
     toNext():void {
 
-       
+        const can_save_data = () => {
+
         this.$axios.post("saving", {
             mail: this.mail,
             username: this. username,
@@ -47,7 +48,7 @@ export default class newAccount extends Vue {
         })
         .then((response) => {
             
-            const next_go = response.data.next_go;
+            const next_go: string = response.data.next_go;
 
             if(next_go === "not_one") {
 
@@ -62,10 +63,15 @@ export default class newAccount extends Vue {
                 this.$router.push('/addInfo/login');
 
             }
-
-
-
         })
+       }
+
+       if(this.password === this.password_again) {
+           can_save_data();
+       } else {
+           this.warning = "パスワードが一致していません。";
+       }
+
        
     }
 
