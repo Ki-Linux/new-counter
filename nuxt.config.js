@@ -41,7 +41,8 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/auth',
     'cookie-universal-nuxt',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    //'@nuxt/types'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -49,9 +50,8 @@ export default {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     proxy: true,
     prefix: '/api',
-    //baseURL: 'http://127.0.0.1:8000/api/',
   },
-  proxy: { '/api/':{ target: 'http://127.0.0.1:8000/api/', pathRewrite: {'^/api/': '/'}} },
+  proxy: { '/api/':{ target: process.env.BASE_URL, pathRewrite: {'^/api/': '/'}} },
 
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -95,4 +95,7 @@ export default {
       //},
     //},
   //},
+  /*router: {
+    middleware: 'routing'
+  }*/
 }

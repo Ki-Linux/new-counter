@@ -15,14 +15,13 @@ export default class confirmation extends Vue {
 
     Confirm() {
 
-        this.$axios.post("/api/mail", {
-
-            pass_confirm: this.pass_confirm,
-
+        this.$axios.post("mail", {
+            mail: this.pass_confirm
         })
-        .then(function(response) {
+        .then((response) => {
             console.log(response);
-        })
+            
+        });
     }
 
 }
