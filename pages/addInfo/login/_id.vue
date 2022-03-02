@@ -4,10 +4,9 @@
         <form @submit.prevent="doLogin">
             <input type="email" v-model="email">
             <input type="password" v-model="password">
+            <p>{{ no_content }}</p>
             <input type="submit">
-        </form>
-        <p>{{ $auth.loggedIn }}</p>
-        
+        </form>  
     </div>
 </template>
 <script lang="ts">
@@ -18,6 +17,7 @@ import $cookies from 'cookie-universal-nuxt';
 export default class login extends Vue {
     email:string =  "";
     password:string = "";
+    no_content: string = "";
     
 
     doLogin() {
@@ -32,8 +32,17 @@ export default class login extends Vue {
         .then((response) => {
             console.log(response);
             //console.log(response);
-            this.$store.dispatch("loginToken", response.data.token);
-            this.$cookies.set('key', response.data.token);
+            if(response.data.token === 'nothing') {
+
+                this.no_content="メールアドレスまたはパスワードが違います。";
+
+            } else {
+
+                this.$store.dispatch("loginToken", response.data.token);
+                this.$cookies.set('key', response.data.token);
+
+            }
+            
            // console.log(req.headers.cookie)
         });
 
