@@ -1,11 +1,16 @@
 <template>
     <div id="profile">
-        <img src="" alt="">
+        <img src="../../static/mypage/bell2.png" alt="">
         <p>name</p>
     </div>
 </template>
-<script>
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
 
+@Component
+export default class profile extends Vue {
+    it: string = "";
+}
 </script>
 <style lang="scss">
     #profile {

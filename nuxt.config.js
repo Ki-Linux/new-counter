@@ -33,6 +33,7 @@ export default {
     '@nuxt/typescript-build',
   ],
 
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
@@ -42,6 +43,7 @@ export default {
     '@nuxtjs/auth',
     'cookie-universal-nuxt',
     '@nuxtjs/proxy',
+    '@nuxtjs/dotenv',
     //'@nuxt/types'
   ],
 

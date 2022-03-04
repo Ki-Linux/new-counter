@@ -1,7 +1,7 @@
 <template>
     <div id="myname">
         <div class="right_position">
-            <div class="alerm"><span>11</span><img src="../../../static/mypage/bell2.png" alt="alerm"></div>
+            <div class="alerm"><span>9</span><img src="../../../static/mypage/bell2.png" alt="reminder"></div>
             <button>みんなの投稿</button>
         </div>
         <profile_name/>
