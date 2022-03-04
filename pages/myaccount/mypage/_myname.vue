@@ -1,9 +1,6 @@
 <template>
     <div id="myname">
-        <div class="right_position">
-            <div class="alerm"><span>9</span><img src="../../../static/mypage/bell2.png" alt="reminder"></div>
-            <button>みんなの投稿</button>
-        </div>
+        <reminder_name/>
         <profile_name/>
         <div class="up_down_button">
             <button>アップ</button>
@@ -24,10 +21,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import profileName from '../../../components/mypage/profile.vue';
+import reminderName from '../../../components/mypage/reminder.vue';
 
 @Component({
     components: {
         'profile_name': profileName,
+        'reminder_name': reminderName,
     }
 })
 export default class myname extends Vue {
@@ -38,27 +37,7 @@ export default class myname extends Vue {
 li {
     list-style: none;
 }
-.right_position {
-    float: right;
-    
-    .alerm {
-        position: relative;
-        float: right;
-        span {
-            position: absolute;
-            color: white;
-            background-color: red;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-           // padding: 10px;
-        }
-        
-    }
 
-}
 
 
 .up_down_button {
