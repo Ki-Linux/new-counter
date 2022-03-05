@@ -29,10 +29,10 @@ export default class edit extends Vue {
                             'この投稿の閲覧数を投稿する', 
                             'このサイトのトップページに表示する(チェックすることでこの投稿をより多くの人に見てもらえます。)'
                         ];
-    button_name: string = "post";
+    button_name: string = "";
 
     mounted() {
-        if(this.$route.params.editNum === '1') {
+        if(this.$route.params.editNum === 'new_post') {
 
             this.button_name = "投稿";
 
