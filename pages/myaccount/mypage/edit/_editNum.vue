@@ -16,6 +16,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { AxiosRequestConfig } from 'axios';
 
 @Component
 export default class edit extends Vue {
@@ -78,18 +79,37 @@ export default class edit extends Vue {
     }
 
     dataSend() {//databaseへ
-        
-        //console.log(this.array_check);
+        const editNum = this.$route.params.editNum;
 
-        this.$axios.post("edit", {
-            username: 'hou',
+        const set_data = {
+            username: 'h',
             image: this.url,
             comment: this.my_comment,
             show_good: this.array_check[0],
             others_comment: this.array_check[1],
             can_see: this.array_check[2],
             to_top: this.array_check[3],
-        })
+        }
+        
+        //console.log(this.array_check);
+        let method_url: AxiosRequestConfig = { //編集
+            method: 'put',
+            url: 'edit_update/' + editNum,
+            params: set_data
+        }
+
+        if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
+
+            method_url = {
+                method: 'post',
+                url: 'edit',
+                params: set_data
+            }
+            
+
+        } 
+
+        this.$axios(method_url)
         .then((response) => {
             console.log(response);
         })
