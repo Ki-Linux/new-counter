@@ -33,7 +33,10 @@ export default class edit extends Vue {
     button_name: string = "";
 
     mounted() {
-        if(this.$route.params.editNum === 'new_post') {
+
+        const editNum = this.$route.params.editNum;
+
+        if(editNum === 'new_post') {
 
             this.button_name = "投稿";
 
@@ -42,6 +45,14 @@ export default class edit extends Vue {
             this.button_name = "編集";
 
         }
+
+        this.$axios.post("edit_show", {
+            id: editNum,
+        })
+        .then((response) => {
+            console.log(response);
+        })
+
     }
     
     editPicture(e: Event) {
