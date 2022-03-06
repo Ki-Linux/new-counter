@@ -44,14 +44,18 @@ export default class edit extends Vue {
 
             this.button_name = "編集";
 
+            this.$axios.post("edit_show", {
+                id: editNum,
+            })
+            .then((response) => {
+                console.log(response);
+                this.url = response.data[0].picture;
+                this.my_comment = response.data[0].my_comment;
+            })
+
+
         }
 
-        this.$axios.post("edit_show", {
-            id: editNum,
-        })
-        .then((response) => {
-            console.log(response);
-        })
 
     }
     
