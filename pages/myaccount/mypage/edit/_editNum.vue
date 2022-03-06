@@ -34,7 +34,7 @@ import { AxiosRequestConfig } from 'axios';
 export default class edit extends Vue {
     url = "";
     my_comment = "";
-    array_check: number[] = [1, 1, 1, 1];
+    array_check: number[] = [2, 2, 2, 2];
     //check: boolean = false;
     contentData: string[] = [
                             '他の人がいいねできるようにする', 
@@ -67,7 +67,7 @@ export default class edit extends Vue {
 
                 this.url = res.picture;
                 this.my_comment = res.my_comment;
-                this.array_check = [res.can_good, res.can_comment, res.can_see, res.can_top];
+                this.array_check.splice(0, 4, res.can_good, res.can_comment, res.can_see, res.can_top);
                 this.show_checked = true;
             })
 
@@ -107,11 +107,21 @@ export default class edit extends Vue {
         }
 
         //return array_check;
-        console.log(this.array_check)
+        console.log(this.array_check) 
 
     }
 
     dataSend() {//databaseへ
+
+        if(this.array_check.includes(2)) {
+
+            alert('選択していない場所があります。');
+
+            return;
+        }
+
+
+
         const editNum = this.$route.params.editNum;
 
         const set_data = {
