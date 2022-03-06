@@ -6,9 +6,21 @@
                 <input type="file" name="picture" ref="preview" @change="editPicture" multiple>
                 <textarea name="comment" id="" cols="30" rows="10" maxlength="200" v-model="my_comment"></textarea>
             </div>
+            <div class="desc">
+                <p>※選択しないところはデフォルトで【はい】として扱われます。</p>
+            </div>
             <div class="content_data"  v-for="(content_data, index) in contentData" :key="content_data">
-                <input type="checkbox" id="check" name="selector" value="check" @change="checkOn(index)">
-                <label for="check">{{ content_data }}</label>
+                <p>{{ content_data }}</p>
+                <label>
+                    <input type="radio" :name="index" value="はい" @click="checkOn(index, 1)" :checked="array_check[index] === 1 && show_checked">はい
+                </label>
+                <label>
+                    <input type="radio" :name="index" value="いいえ" @click="checkOn(index, 0)" :checked="array_check[index] === 0 && show_checked">いいえ
+                </label>
+                <!--<input type="checkbox" id="check" name="selector" value="check" @change="checkOn(index)">-->
+                <!--<label for="check">{{ content_data }}</label>-->
+                
+                
             </div>
             <button type="submit">{{ button_name }}</button>
         </form>
@@ -22,7 +34,7 @@ import { AxiosRequestConfig } from 'axios';
 export default class edit extends Vue {
     url = "";
     my_comment = "";
-    array_check: number[] = [0, 0, 0, 0];
+    array_check: number[] = [1, 1, 1, 1];
     //check: boolean = false;
     contentData: string[] = [
                             '他の人がいいねできるようにする', 
@@ -31,6 +43,7 @@ export default class edit extends Vue {
                             'このサイトのトップページに表示する(チェックすることでこの投稿をより多くの人に見てもらえます。)'
                         ];
     button_name: string = "";
+    show_checked: boolean = false;//印をつけるかつけないか
 
     mounted() {
 
@@ -49,8 +62,13 @@ export default class edit extends Vue {
             })
             .then((response) => {
                 console.log(response);
-                this.url = response.data[0].picture;
-                this.my_comment = response.data[0].my_comment;
+
+                const res = response.data[0];
+
+                this.url = res.picture;
+                this.my_comment = res.my_comment;
+                this.array_check = [res.can_good, res.can_comment, res.can_see, res.can_top];
+                this.show_checked = true;
             })
 
 
@@ -66,7 +84,8 @@ export default class edit extends Vue {
 
     }
 
-    checkOn(index: number) {
+    checkOn(index: number, select_num: number) {
+
 
        
             for(let i: number=0; i < 4; i++) {//ボックス一覧の表示
@@ -74,22 +93,21 @@ export default class edit extends Vue {
                 switch(index) {//チェックしている番号の列
 
                 case i:
-                    if(this.array_check[i] === 1) {//チェックしていないとき
+                    //if(this.array_check[i] === 1) {//チェックしていないとき
 
-                        this.array_check[i] = 0;
+                    this.array_check[i] = select_num;
 
-                    } else {
-
-                        this.array_check[i] = 1;
-
-                    }
+             
                 break;
 
             }
+
+            //console.log(this.array_check)
             
         }
 
         //return array_check;
+        console.log(this.array_check)
 
     }
 
