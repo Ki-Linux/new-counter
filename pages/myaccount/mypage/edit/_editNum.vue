@@ -34,9 +34,10 @@ import { AxiosRequestConfig } from 'axios';
 export default class edit extends Vue {
     url = "";
     my_comment = "";
-    array_check: number[] = [2, 2, 2, 2];
+    array_check: number[] = [2, 2, 2, 2, 2];
     //check: boolean = false;
     contentData: string[] = [
+                            'みんなの閲覧リストに表示する',
                             '他の人がいいねできるようにする', 
                             'ほかのひとがコメントできるようにする', 
                             'この投稿の閲覧数を投稿する', 
@@ -64,10 +65,9 @@ export default class edit extends Vue {
                 console.log(response);
 
                 const res = response.data[0];
-
                 this.url = res.picture;
                 this.my_comment = res.my_comment;
-                this.array_check.splice(0, 4, res.can_good, res.can_comment, res.can_see, res.can_top);
+                this.array_check.splice(0, 5, res.can_list , res.can_good, res.can_comment, res.can_see, res.can_top);
                 this.show_checked = true;
             })
 
@@ -88,7 +88,7 @@ export default class edit extends Vue {
 
 
        
-            for(let i: number=0; i < 4; i++) {//ボックス一覧の表示
+            for(let i: number=0; i < 5; i++) {//ボックス一覧の表示
 
                 switch(index) {//チェックしている番号の列
 
@@ -128,10 +128,11 @@ export default class edit extends Vue {
             username: 'h',
             image: this.url,
             comment: this.my_comment,
-            show_good: this.array_check[0],
-            others_comment: this.array_check[1],
-            can_see: this.array_check[2],
-            to_top: this.array_check[3],
+            can_list: this.array_check[0],
+            show_good: this.array_check[1],
+            others_comment: this.array_check[2],
+            can_see: this.array_check[3],
+            to_top: this.array_check[4],
         }
         
         //console.log(this.array_check);
