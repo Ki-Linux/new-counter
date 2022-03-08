@@ -3,7 +3,7 @@
         <form @submit.prevent="dataSend">
             <div class="post_data">
                 <img :src="url" alt="">
-                <input type="file" name="picture" ref="preview" @change="editPicture" multiple>
+                <input type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
                 <textarea name="comment" id="" cols="30" rows="10" maxlength="200" v-model="my_comment"></textarea>
             </div>
             <div class="desc">

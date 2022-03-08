@@ -22,11 +22,11 @@ export default class contents extends Vue {
 
     created() {//データを表示する
         this.$axios.post("edit_show", {
-            username: 'hou',
+            username: 'h',
         })
         .then((response) => {
             console.log(response.data);
-            this.pictureData = response.data
+            this.pictureData = response.data;
         })
     
     }

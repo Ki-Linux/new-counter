@@ -16,7 +16,7 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component
 export default class everyone_list extends Vue {
     contents_array: { picture:string, my_comment: string, username: string }[]
-                     = [{ picture: '写真', my_comment: 'コメント', username: 'ユーザー名' }];
+                     = [{ picture: '', my_comment: '', username: '' }];
 
     created() {
 
@@ -32,6 +32,8 @@ export default class everyone_list extends Vue {
                 this.contents_array.push(push_item);
 
             }
+
+            this.contents_array.splice(0, 1);
 
             
         })
