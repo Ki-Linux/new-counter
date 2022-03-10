@@ -13,6 +13,23 @@
             </div> 
         </transition-group>
       </header>
+      <main>
+        <div class="top_container">
+          <h1><span>プラ</span><span>マイ</span>カウンター</h1>
+          <div class="description">
+            <h2>プラマイカウンターとは</h2>
+            <p>
+              どんなときでもどんなものでも数える(カウント)したいときに楽しく使える魔法のようなカウンターなのだ。
+            </p>
+            <ul>
+              <li>こんなときに使える</li>
+              <li>何かを集めている</li>
+              <li>残り何個か数えたい</li>
+              <li>「数える」ことであればどんなものでもこのプラマイカウンターがおすすめ!!</li>
+            </ul>
+          </div>
+        </div>
+      </main>
     </div>
   </div>
 </template>
@@ -43,10 +60,12 @@ export default class Home extends Vue{
 }
 </script>    
 <style lang="scss">
+
   .first {/*最初の画面にでてくるところの全体*/
     padding-top: 0;
     background-color: rgb(197, 197, 214);
-    height: 800px;
+    
+    //height: 800px;
   }
   nav {
    z-index: 10;
@@ -88,6 +107,8 @@ export default class Home extends Vue{
     opacity: 0;
   } 
   header {
+      position: fixed;
+      right: 0;
     .show_login {
       background-color: rgba(6, 66, 77, 0.514);
       width: 200px;
@@ -106,6 +127,70 @@ export default class Home extends Vue{
       }
     }
   }
+
+  main {
+    text-align: center;
+
+    .top_container {
+
+      //background: url("../static/Home/background_number3.jpg") no-repeat;
+      //width: 100%;
+      margin-top: 100px;
+
+      h1 {
+        font-size: 60px;
+        color: rgba(48, 48, 48, 0.7);
+
+        span:first-of-type {
+          color: rgba(226, 9, 9, 0.6);
+        }
+
+        span:last-of-type {
+          color: rgba(19, 19, 223, 0.6);
+        }
+      }
+
+      .description {
+        margin: 110px;
+        border: 3px double #ddd;
+        padding: 20px;
+
+        h2 {
+          font-size: 30px;
+
+        }
+
+        p {
+          margin-top: 20px;
+          font-size: 25px;
+          color: rgba(114, 0, 0, 0.568);
+        }
+
+        ul {
+
+          list-style: none;
+          font-size: 20px;
+          padding-right: 1rem;
+
+          li {
+            padding: 10px 0;
+
+            &:first-of-type {
+              font-size: 30px;
+            }
+          }
+
+        }
+      
+      }
+
+    }
+
+  }
+
+
+
+
 /* Box sizing rules */
 *,
 *::before,
