@@ -29,7 +29,7 @@
                     to_url("/");
                     break;
                 case 1:
-                    to_url("/");
+                    to_url("/option");
                     break; 
             }
         }
