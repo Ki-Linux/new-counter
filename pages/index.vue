@@ -29,6 +29,19 @@
             </ul>
           </div>
         </div>
+        <div class="center_container">
+          <div class="title" v-for="img_title_show in imgTitleShow" :key="img_title_show">
+            <p>{{ img_title_show }}</p>
+          </div>
+          <div class="up">
+            <img src="../static/Home/up_img_before.png" alt="up_before">
+            <img src="../static/Home/up_img_after.png" alt="up_after">
+          </div>
+          <div class="down">
+            <img src="../static/Home/up_img_before.png" alt="up_before">
+            <img src="../static/Home/up_img_after.png" alt="up_after">
+          </div>
+        </div>
       </main>
     </div>
   </div>
@@ -43,6 +56,7 @@ export default class Home extends Vue{
   url_change: string = require("../static/Home/selector_box.png");
   change_box: boolean = true;//urlの変更
   show_section: boolean = false; //ログイン欄の表示(true==表示,false==非表示)
+  imgTitleShow: string[] = ["何かを集めたい(アップ)のとき", "残り何個かを数えたい(ダウン)のとき"];
     changeBox() {//2つの画像の変更の繰り返し
       if(this.change_box == true) {
         //開くに変更
@@ -184,6 +198,26 @@ export default class Home extends Vue{
       
       }
 
+    }
+
+    .center_container {
+      text-align: center;
+      background-color: red;
+      margin: 0 auto;
+      //width: 100%;
+      //height: 900px;
+      .title {
+        //float: left;
+        display: inline-block;
+        p {
+
+          text-align: center;
+          
+          padding:0 12em;
+          
+        }
+      }
+      
     }
 
   }

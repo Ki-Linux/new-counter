@@ -5,9 +5,9 @@
         <div class="target_present">
             <h1>目標 : {{ backTargetData }}</h1>
             <h1>現在 : {{ backPresentData }}</h1>
-            <p>{{ $store.state.back_data }}</p>
+            <!--<p>{{ $store.state.back_data }}</p>
             <p>{{ backPresentData }}</p>
-            <p>{{ backTargetData }}</p>
+            <p>{{ backTargetData }}</p>-->
         </div>
     </div> 
 </template>
