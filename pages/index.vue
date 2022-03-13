@@ -51,22 +51,12 @@
         <div class="footer_container">
           <table>
             <caption>みんなの投稿一覧</caption>
-            <tr>
-              <th><img src="../static/Home/after_up.png" alt=""></th>
-              <td>helccddddttttrrvvvvvvvvvvrrrrttddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtttttttttttttttttttttttttttttodddddd</td>
+            <tbody>
+            <tr v-for="show_every_data in showEveryData" :key="show_every_data.picture">
+              <th><img :src="show_every_data.picture" alt="picture"></th>
+              <td>{{ show_every_data.my_comment }}</td>
             </tr>
-            <tr>
-              <th><img src="../static/mypage/bell2.png" alt=""></th>
-              <td>helloeveryone</td>
-            </tr>
-            <tr>
-              <th><img src="../static/mypage/bell2.png" alt=""></th>
-              <td>helloeveryone</td>
-            </tr>
-            <tr>
-              <th><img src="../static/mypage/bell2.png" alt=""></th>
-              <td>helloeveryone</td>
-            </tr>
+            </tbody>
           </table>
         </div>
         <p>I</p>
@@ -84,7 +74,25 @@ export default class Home extends Vue{
   url_change: string = require("../static/Home/selector_box.png");
   change_box: boolean = true;//urlの変更
   show_section: boolean = false; //ログイン欄の表示(true==表示,false==非表示)
-  //imgTitleShow: string[] = ["何かを集めたい(アップ)のとき", "残り何個かを数えたい(ダウン)のとき"];
+  showEveryData: { picture: string; my_comment: string; }[]
+                = [{
+                  picture: "",
+                  my_comment: ""
+                }]
+    
+    created() {
+      this.$axios.get('only_top')
+      .then((response) => {
+        console.log(response.data.topData);
+        this.showEveryData = response.data.topData;
+        
+
+      })
+      .catch((response) => {
+        console.log(response);
+      })
+    }
+    
     changeBox() {//2つの画像の変更の繰り返し
       if(this.change_box == true) {
         //開くに変更
@@ -98,6 +106,8 @@ export default class Home extends Vue{
         this.show_section = false;
       }
     }
+
+
   
 }
 </script>    
