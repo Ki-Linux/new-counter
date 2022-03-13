@@ -119,11 +119,10 @@ export default class Home extends Vue{
 
   #home {/*最初の画面にでてくるところの全体*/
     padding-top: 0;
-    background-color:rgba(255, 250, 240, 0.6);//rgb(197, 197, 214);
-    
-    //height: 800px;
+    background-color:rgba(255, 250, 240, 0.6);
   }
-  nav {
+
+  nav {//トップ画面
    z-index: 10;
    width: 100%;
    height: 100px;
@@ -153,6 +152,7 @@ export default class Home extends Vue{
     padding: 15px 25px 0 0;
   }
   }
+  
   //animation
   .slide-fade-enter-active, .slide-fade-leave-active {
     transition: all .4s ease;
@@ -307,10 +307,14 @@ export default class Home extends Vue{
        //width: 50px;
      // height: 60px;
      //background-color: blue;
-     table caption {
-       font-size: 25px;
-       color: black;
+     table {
+       width: 100%;
+       caption {
+        font-size: 25px;
+        color: black;
+      }
      }
+
      table, th, td {
        border: 3px solid white;
      }
@@ -321,6 +325,7 @@ export default class Home extends Vue{
      td {
      
        word-break: break-all;
+       width: 60%;
        //text-overflow: ellipsis;
      }
      
