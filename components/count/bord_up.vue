@@ -76,8 +76,15 @@
         p {
             font-size: 25px;
         }
-        .contents_item p {
-            padding: 5px;
+        .contents_item {
+            img {
+                width: 110px;
+            }
+
+
+            p {
+                padding: 5px;
+            }
         }
         .leftover p {
             color:rgb(255, 115, 0);

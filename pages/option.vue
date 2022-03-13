@@ -64,7 +64,7 @@ export default class Option extends Vue {
     sign: string = "＞";
     target_number: string = "";
     attention: string = "";//不等号に逆らった時
-    save_storage: [string, number, number, string] = ["＞", 0, 0, "なし"];//保存[不等号,目標値,現在値,写真]
+    save_storage: [string, number, number, string] = ["＞", 0, 0, ""];//保存[不等号,目標値,現在値,写真]
     doSplice = (num1: number, num2: number, changed: (number|string)) => {//splice function
         this.save_storage.splice(num1, num2, changed);
     };
@@ -132,7 +132,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
     toNext(row: [string, number, number, string]): void {
     //console.log(this.save_storage);//保存[不等号,目標値,現在値,写真]
         if(this.save_storage[0] === "＞") {
-            if(this.save_storage[1] >= this.save_storage[2]) {
+            if(this.save_storage[1] > this.save_storage[2]) {
                 this.$store.dispatch("inData", row);
                 this.$router.push('/free_login_bothupdown');
             } else {
@@ -141,7 +141,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
         }
         
         if(this.save_storage[0] === "＜") {
-            if(this.save_storage[1] <= this.save_storage[2]) {
+            if(this.save_storage[1] < this.save_storage[2]) {
                 this.$store.dispatch("inData", row);
                 this.$router.push('/free_login_bothupdown');
             } else {
@@ -155,7 +155,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
             //データをVuexへ
             this.$store.dispatch("inData", row);
             //次のページへ
-            this.$router.push('/free_login_bothupdown');
+            //this.$router.push('/free_login_bothupdown');
         /*} else {
             this.attention = "目標値・現在値が正しくありません";
         }*/

@@ -30,18 +30,46 @@
           </div>
         </div>
         <div class="center_container">
-          <div class="title" v-for="img_title_show in imgTitleShow" :key="img_title_show">
-            <p>{{ img_title_show }}</p>
+          <div class="title_change">
+            <p>何かを集めたい(アップ)のとき</p>
+            <p>残り何個かを数えたい(ダウン)のとき</p>
           </div>
-          <div class="up">
-            <img src="../static/Home/up_img_before.png" alt="up_before">
-            <img src="../static/Home/up_img_after.png" alt="up_after">
+          <div class="img_show">
+            <p><img src="../static/Home/before_up.png" alt=""></p>
+            <p><img src="../static/Home/before_down.png" alt=""></p>
           </div>
-          <div class="down">
-            <img src="../static/Home/up_img_before.png" alt="up_before">
-            <img src="../static/Home/up_img_after.png" alt="up_after">
+          <div class="title_change">
+            <h2>ボタンをクリックすると</h2>
+            <p>↓</p>
+            <p>↓</p>
+          </div>
+          <div class="img_show">
+            <p><img src="../static/Home/after_up.png" alt=""></p>
+            <p><img src="../static/Home/after_down.png" alt=""></p>
           </div>
         </div>
+        <div class="footer_container">
+          <table>
+            <caption>みんなの投稿一覧</caption>
+            <tr>
+              <th><img src="../static/Home/after_up.png" alt=""></th>
+              <td>helccddddttttrrvvvvvvvvvvrrrrttddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtttttttttttttttttttttttttttttodddddd</td>
+            </tr>
+            <tr>
+              <th><img src="../static/mypage/bell2.png" alt=""></th>
+              <td>helloeveryone</td>
+            </tr>
+            <tr>
+              <th><img src="../static/mypage/bell2.png" alt=""></th>
+              <td>helloeveryone</td>
+            </tr>
+            <tr>
+              <th><img src="../static/mypage/bell2.png" alt=""></th>
+              <td>helloeveryone</td>
+            </tr>
+          </table>
+        </div>
+        <p>I</p>
       </main>
     </div>
   </div>
@@ -56,7 +84,7 @@ export default class Home extends Vue{
   url_change: string = require("../static/Home/selector_box.png");
   change_box: boolean = true;//urlの変更
   show_section: boolean = false; //ログイン欄の表示(true==表示,false==非表示)
-  imgTitleShow: string[] = ["何かを集めたい(アップ)のとき", "残り何個かを数えたい(ダウン)のとき"];
+  //imgTitleShow: string[] = ["何かを集めたい(アップ)のとき", "残り何個かを数えたい(ダウン)のとき"];
     changeBox() {//2つの画像の変更の繰り返し
       if(this.change_box == true) {
         //開くに変更
@@ -201,27 +229,83 @@ export default class Home extends Vue{
     }
 
     .center_container {
-      text-align: center;
-      background-color: red;
-      margin: 0 auto;
-      //width: 100%;
-      //height: 900px;
-      .title {
-        //float: left;
+      background: linear-gradient(to right, rgba(109, 0, 15, 0.5) 0%, rgba(109, 0, 15, 0.5) 50%, rgba(0, 132, 255, 0.3) 50%, rgba(0, 132, 255, 0.3) 100%);
+      padding-bottom: 50px;
+      
+      .title_change {  
         display: inline-block;
+        width: 100%;
+        
         p {
-
-          text-align: center;
-          
-          padding:0 12em;
-          
+          padding: 30px 0;
+          float: left;
+          width: 50%;
         }
+        
       }
       
+      .img_show {
+        display: flex;
+        justify-content: space-around;
+        
+        p {
+          flex-basis: 40%;
+        }
+      }
+
+      .title_change {
+        display: inline-block;
+        width: 100%;
+
+        h2 {
+          margin-top: 50px;
+          z-index: 5;
+        } 
+
+        p {
+          float: left;
+          width: 50%;
+          padding-bottom: 30px;
+          font-size: 30px;
+        }
+      }
+    }
+
+    .footer_container {
+      background-color: yellow;
+      margin: 60px auto;
+       width: 40%;
+       height: 40vh;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      //margin-bottom: 40px;
+     //table {
+       //width: 50px;
+     // height: 60px;
+     //background-color: blue;
+     table, th, td {
+       border: 3px solid red;
+     }
+     th {
+       width: 40%;
+       
+     }
+     td {
+     
+       word-break: break-all;
+       //text-overflow: ellipsis;
+     }
+     
     }
 
   }
 
+  li {
+    list-style: none;
+  }
+
+
+  
 
 
 
