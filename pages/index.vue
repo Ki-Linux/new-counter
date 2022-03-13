@@ -1,6 +1,5 @@
 <template>
   <div id="home"> 
-    <div class="first">
       <nav>
         <nuxt-link class="to_count" to="/login_select">プラマイカウントを使う</nuxt-link>
         <img class="selector_img" @click="changeBox" :src="url_change" alt="open">
@@ -59,10 +58,15 @@
             </tbody>
           </table>
         </div>
-        <p>I</p>
       </main>
+      <footer>
+        <ul>
+          <li><nuxt-link class="next" to="">利用規約</nuxt-link></li>
+          <li><nuxt-link class="next" to="">プライバシーポリシー</nuxt-link></li>
+          <li><nuxt-link class="next" to="">お問い合わせ</nuxt-link></li>
+        </ul>
+      </footer>
     </div>
-  </div>
 </template>
 <script lang="ts">
 //import Vue from 'vue';
@@ -113,9 +117,9 @@ export default class Home extends Vue{
 </script>    
 <style lang="scss">
 
-  .first {/*最初の画面にでてくるところの全体*/
+  #home {/*最初の画面にでてくるところの全体*/
     padding-top: 0;
-    background-color: rgb(197, 197, 214);
+    background-color:rgba(255, 250, 240, 0.6);//rgb(197, 197, 214);
     
     //height: 800px;
   }
@@ -191,14 +195,14 @@ export default class Home extends Vue{
 
       h1 {
         font-size: 60px;
-        color: rgba(48, 48, 48, 0.7);
+        color: rgba(48, 48, 48, 0.9);
 
         span:first-of-type {
-          color: rgba(226, 9, 9, 0.6);
+          color: rgba(255, 41, 41, 0.8);
         }
 
         span:last-of-type {
-          color: rgba(19, 19, 223, 0.6);
+          color: rgba(19, 19, 223, 0.7);
         }
       }
 
@@ -215,7 +219,7 @@ export default class Home extends Vue{
         p {
           margin-top: 20px;
           font-size: 25px;
-          color: rgba(114, 0, 0, 0.568);
+          color: rgba(172, 0, 0, 0.8);
         }
 
         ul {
@@ -226,7 +230,16 @@ export default class Home extends Vue{
 
           li {
             padding: 10px 0;
-
+            //color: red;
+            &:nth-of-type(2) {
+              text-decoration: underline;
+              text-decoration-color: rgba(255, 60, 60, 0.9);
+            }
+             &:nth-of-type(3) {
+              text-decoration: underline;
+              text-decoration-color: rgba(0, 132, 255, 0.3);
+            }
+ 
             &:first-of-type {
               font-size: 30px;
             }
@@ -239,7 +252,7 @@ export default class Home extends Vue{
     }
 
     .center_container {
-      background: linear-gradient(to right, rgba(109, 0, 15, 0.5) 0%, rgba(109, 0, 15, 0.5) 50%, rgba(0, 132, 255, 0.3) 50%, rgba(0, 132, 255, 0.3) 100%);
+      background: linear-gradient(to right, rgba(255, 12, 12, 0.6) 0%, rgba(255, 60, 60, 0.6) 50%, rgba(0, 132, 255, 0.3) 50%, rgba(0, 132, 255, 0.3) 100%);
       padding-bottom: 50px;
       
       .title_change {  
@@ -270,6 +283,7 @@ export default class Home extends Vue{
         h2 {
           margin-top: 50px;
           z-index: 5;
+          background-color: white;
         } 
 
         p {
@@ -282,7 +296,7 @@ export default class Home extends Vue{
     }
 
     .footer_container {
-      background-color: yellow;
+      background-color: rgba(60, 133, 94, 0.7);
       margin: 60px auto;
        width: 40%;
        height: 40vh;
@@ -293,8 +307,12 @@ export default class Home extends Vue{
        //width: 50px;
      // height: 60px;
      //background-color: blue;
+     table caption {
+       font-size: 25px;
+       color: black;
+     }
      table, th, td {
-       border: 3px solid red;
+       border: 3px solid white;
      }
      th {
        width: 40%;
@@ -310,8 +328,31 @@ export default class Home extends Vue{
 
   }
 
+  footer {
+    height: 250px;
+    background-color: rgba(0, 9, 90, 0.7);
+
+    ul {
+        cursor: default;
+        padding: 30px;
+        float: right;
+        font-size: 20px;
+      li {
+
+        padding: 10px 0;
+
+        .next {
+          color: white;
+          text-decoration: none;
+        }
+      }
+     
+    }
+  }
+
   li {
     list-style: none;
+    
   }
 
 
