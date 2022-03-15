@@ -59,7 +59,7 @@
 
     #free_login .pop_up {
 
-        padding-top: 20px;
+        padding-top: 5px;
 
     }
 

@@ -1,14 +1,17 @@
 <template>
-    <div id="pop_up_one">
+    <div id="pop_up_one" v-if="!$store.state.canClick">
         <div class="label_close">
             <div class="title_desc">
                 <h1>完成しました!!</h1>
-                <p>
-                    完成した記録をこのサイトで手頃なシェアをすることができます。
-                <br>
-                <br>
-                    このサイトでシェアすると
-                </p>
+                <p>ログインで完成した記録を</p>
+                <div class="canDesc">
+                    <p>
+                        <span>専用のアルバムに保存</span>    
+                        <br><span>手頃なシェア</span>
+                        <br>することができます!
+                    </p>
+                </div>
+                <p>このサイトでシェアすると</p>
             </div>
             <ul class="merit">
                 <li>いいね、コメントなど様々な機能を選択したうえで投稿できる!!</li>
@@ -22,12 +25,12 @@
                 <li>そんな方には、周りを気にしなくていいこのサイトでのシェアがおすすめ!!</li>
             </ul>
             <div class="selector">
-                <button>このサイトで投稿してみる</button>
+                <button @click="toLogin">ログインする</button>
                 <label class="twitter" @click="twitterGo">
                     <p><img src="../../static/twitter/twitter_logo.png" alt="twitter"></p>
                     Twitterでシェア
                 </label>
-                <nuxt-link class="back_home" to="">投稿しないでホームに戻る</nuxt-link>
+                <nuxt-link class="back_home" to="/">ログインしないでホームに戻る</nuxt-link>
             </div>
         </div>
     </div>
@@ -37,6 +40,10 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component
 export default class popUp extends Vue {
+
+    toLogin() {
+        this.$router.push('/addInfo/login');
+    }
 
 
 
@@ -59,8 +66,9 @@ export default class popUp extends Vue {
 .label_close {
     position: fixed;
     background-color: rgb(255, 195, 223);
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     padding: 30px;
 
     
@@ -70,6 +78,20 @@ export default class popUp extends Vue {
 
         h1 {
             font-size: 50px;
+        }
+
+        .canDesc {
+            padding: 25px 0;
+
+            span:first-of-type {
+                text-decoration: underline;
+                text-decoration-color: rgba(122, 255, 60, 0.9);
+            }
+
+            span:nth-of-type(2) {
+                text-decoration: underline;
+                text-decoration-color: rgba(226, 255, 60, 0.9);
+            }
         }
 
         p {

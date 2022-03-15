@@ -21,9 +21,14 @@ export default class completeOption extends Vue {
         };
     };
     complete() {
-        if(this.$store.state.back_data[1] == this.$store.state.back_data[2]) {
-            console.log('complete!');
-        }
+        const vuexData = this.$store.state
+
+            if(vuexData.back_data[1] == vuexData.back_data[2]) {
+
+                console.log('complete!');
+                this.$store.dispatch("changeClick", false);
+            }
+
     }
 }
 </script>

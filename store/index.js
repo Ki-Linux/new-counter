@@ -11,6 +11,7 @@ export const state = () => ({
     back_data: ["", 8, 9, 're'],
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
     token: null,
+    canClick: true,
     /*plugins: [
         createPersistedState({
             storage: {
@@ -79,6 +80,11 @@ export const mutations = {
     cookieToken(state, content) {//くっきーからstoreへ
         state.token = content;
         console.log(state.token)
+    },
+
+    changeClick(state, content) {
+        state.canClick = content;
+        console.log(state.canClick)
     }
 
 
@@ -124,12 +130,16 @@ export const actions = {
 
     loginToken(context, res) {//setToken to cookie
 
-        context.commit("loginToken", res)
+        context.commit("loginToken", res);
     }, 
 
     nuxtServerInit({ commit }, { req }) {//reload
-        commit("cookieToken", req.headers.cookie)
+        commit("cookieToken", req.headers.cookie);
         //console.log(req.headers.cookie);
+    },
+
+    changeClick(context, judge) {
+        context.commit("changeClick", judge);
     }
 
 }

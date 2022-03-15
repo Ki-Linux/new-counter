@@ -10,11 +10,18 @@
 import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class TopLabel extends Vue {
+  //canClick: boolean = true;
+
     toHome(): void {
         const conf: string = 'フリーカウントでホームに戻るとデータが保存されませんがよろしいですか？';
-        if(this.$store.state.plan == "free" && confirm(conf)) {
+        const vuexData = this.$store.state;
+
+        if(vuexData.canClick) {//clickできるか(popup)
+          if(vuexData.plan == "free" && confirm(conf)) {
             this.$router.push('/');
+          }
         }
+        
     }
 }
 </script>

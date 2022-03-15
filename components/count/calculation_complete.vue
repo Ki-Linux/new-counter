@@ -21,6 +21,7 @@
         }
     })
     export default class calculationComplete extends Vue {
+
         up_down(selection: string) {//increase number
             if(this.$store.state.back_data[0] ==  "＞" && this.$store.state.back_data[1] > this.$store.state.back_data[2]) {//UP
                     this.$store.dispatch("UpDownNumber", selection);
@@ -34,7 +35,7 @@
             //console.log('t');
         }
         addCount(selection: string) {//data reset with vuex
-            if(confirm("数字をリセットしますか？")) {
+            if(this.$store.state.canClick && confirm("数字をリセットしますか？")) {
                 this.$store.dispatch("UpDownNumber", selection);
                 
             }
