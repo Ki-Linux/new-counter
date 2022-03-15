@@ -4,24 +4,26 @@
             <h1>新規登録</h1>
         </div>
         <form class="write_in" @submit.prevent="toNext">
-            <div>
+            <div class="label_height">
                 <label for="mail">メールアドレス</label>
-                <input type="email" v-model="mail" name="mail" required>
+                <p><input type="email" v-model="mail" name="mail" required></p>   
             </div>
-            <div>
+            <div class="label_height">
                 <label for="name">ユーザーネーム</label>
-                <input type="text" v-model="username" name="username" maxlength="15" required>
+                 <p><input type="text" v-model="username" name="username" maxlength="15" required></p> 
             </div>
-            <div>
+            <div class="label_height">
                 <label for="password">パスワード<br/><span>7~14文字</span></label>
-                <input type="password" v-model="password" name="password" minlength="7" maxlength="14" required>
+                 <p><input type="password" v-model="password" name="password" minlength="7" maxlength="14" required></p> 
             </div>
-            <div>
+            <div class="label_height">
                 <label for="password_again">もう一度パスワード<br/><span>7~14文字</span></label>
-                <input type="password" v-model="password_again" name="password_again" minlength="7" maxlength="14" required>
+                 <p><input type="password" v-model="password_again" name="password_again" minlength="7" maxlength="14" required></p> 
             </div>
-            <p>{{ warning }}</p>
-            <input type="submit">
+            <div class="label_height">
+                <p>{{ warning }}</p>
+                <input type="submit">
+            </div>
         </form>
     </div>
 </template>
@@ -87,7 +89,32 @@ export default class newAccount extends Vue {
 #new_account {
     margin-top: 30px;
     font-size: 30px;
-    text-align: center;
+
+    //.write_in p {
+        text-align: center;
+
+        .title {
+            margin-top: 30px;
+        }
+    //}
+    .label_height {
+
+        margin: 30px;
+        
+        p input {
+            width: 30vw;
+            padding: 5px;
+        }
+
+        input[type="submit"] {
+
+            color: rgb(36, 36, 36);
+            background-color: rgba(204, 204, 204, 0.6);
+            margin-bottom: 20px;
+
+        }
+    }
+
 }
 
 </style>

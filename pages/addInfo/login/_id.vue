@@ -1,9 +1,21 @@
 <template>
     <div id="login">
-        <p v-if="this.$route.params.id === '1'">ご確認メールを送信しました。</p>
+            <p class="canSend" v-if="this.$route.params.id === '1'">
+                ご確認メールを送信しました。
+            </p>
+        <div class="title">
+            <h1>ログイン</h1>
+        </div>
         <form @submit.prevent="doLogin">
-            <input type="email" v-model="email">
-            <input type="password" v-model="password">
+            <div class="name_space">
+                <label for="mail">メールアドレス</label>
+                <p><input type="mail" v-model="email" name="mail" required></p>   
+            </div>
+            <div class="name_space">
+                <label for="password">パスワード</label>
+                 <p><input type="password" v-model="password" name="password" required></p> 
+                 <nuxt-link class="forget_password" to="/addInfo/confirmation">パスワードを忘れたとき</nuxt-link>
+            </div>
             <p>{{ no_content }}</p>
             <input type="submit">
         </form>  
@@ -63,6 +75,52 @@ export default class login extends Vue {
 
 }
 </script>
-<style scoped>
+<style lang="scss">
+
+#login {
+    text-align: center;
+    padding-top: 30px;
+    font-size: 30px;
+
+    .canSend {
+        float: left;
+        font-size: 15px;
+        padding-left: 10px;
+        animation: name 1s ease 1s 3 normal;
+    }
+
+    @keyframes name {
+        from {
+            color: black;
+        }
+        to {
+            color: rgb(0, 51, 192);
+        }
+    }
+
+    .title h1 {
+        padding-top: 30px;
+    }
+    .name_space {
+        margin: 30px 0;
+        p input {
+            padding: 6px;
+            width: 30vw;
+        }
+
+        .forget_password {
+            font-size: 15px;
+        }
+    }
+
+    input[type="submit"] {
+        color: rgb(36, 36, 36);
+        background-color: rgba(204, 204, 204, 0.6);
+    }
+
+
+
+    
+}
 
 </style>

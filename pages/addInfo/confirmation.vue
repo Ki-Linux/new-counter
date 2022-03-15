@@ -1,7 +1,8 @@
 <template>
     <div id="confirmation">
         <form @submit.prevent="Confirm">
-            <input type="mail" v-model="mail_confirm">
+            <label for="mail">メールアドレスを入力してください。</label>
+            <p><input type="mail" v-model="mail_confirm" name="mail" required></p>
             <p>{{ warning }}</p>
             <input type="submit">
         </form>
@@ -37,3 +38,26 @@ export default class confirmation extends Vue {
 
 }
 </script>
+<style lang="scss">
+#confirmation {
+
+    text-align: center;
+    padding-top: 30px;
+
+    form {
+        font-size: 20px;
+        p input[type="mail"] {
+            padding: 5px;
+            width: 20vw;
+        }
+
+        p:nth-of-type(2) {
+            color: red;
+            padding: 20px;
+            font-size: 20px;
+        }
+
+    }
+
+}
+</style>

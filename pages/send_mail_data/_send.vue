@@ -11,8 +11,21 @@ import { Vue,Component } from 'vue-property-decorator';
 export default class send extends Vue {
 
     back() {
-        console.log('modoru');
+       // console.log('modoru');
+       this.$router.push('/addInfo/login');
+
     }
 
 }
 </script>
+<style lang="scss">
+#send {
+    text-align: center;
+    font-size: 20px;
+    padding-top: 40px;
+
+    button {
+        margin-top: 20px;
+    }
+}
+</style>
