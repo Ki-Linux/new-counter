@@ -2,11 +2,11 @@
 <template>
     <div id="complete_button">
         <button :class="{ Light_up: backPresentData }" @click="complete">完成</button>
-        <p>it</p>
     </div> 
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class completeOption extends Vue {
     it: string = "r";
