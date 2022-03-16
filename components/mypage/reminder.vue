@@ -17,9 +17,14 @@
                 <div class="detail_content">
                     <label for="">✕</label>
                     <h1>{{ selected_title }}</h1>
-                     <p>{{ detail }}</p>
-                     <p>プラマイカウンター運営より</p>
-                     <p>{{ selected_date }}</p>
+                    <ul>
+                        <li>{{ detail }}</li>
+                        <li>{{ selected_date }}</li>
+                        <li>プラマイカウンター運営より</li>
+                    </ul>
+                     <!--<p>}</p>
+                     <p></p>
+                     <p></p>-->
                 </div>
             </div>
         </div>
@@ -61,11 +66,27 @@ export default class reminder extends Vue {
 
         const list = this.title_lists[index];
 
-        console.log(list.updated_at)
+        console.log(list.updated_at);
 
         this.selected_title = list.title;
         this.detail = list.content;
-        this.selected_date = list.updated_at;
+
+        const date_list = list.updated_at;
+
+        if(date_list !== null) {
+
+            
+            const new_date = date_list.split('T').splice(0, 1);
+
+            this.selected_date = new_date[0];
+
+        } else {
+
+            this.selected_date = date_list
+
+        }
+
+        
     }
 
 }
@@ -178,7 +199,7 @@ export default class reminder extends Vue {
         position: fixed;
         width: 40%;
         height: 80%;
-        background-color: rgba(206, 206, 255, 0.1);
+        background-color: rgb(206, 206, 255);
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -196,18 +217,23 @@ export default class reminder extends Vue {
         h1 {
             font-size: 20px;
             float: left;
-            padding: 30px;
+            padding: 40px;
         }
          
-        p {
+        ul li {
+            margin-right: 3rem;
             &:first-of-type {
-            
                 border-bottom: 3px solid black;
-                padding: 90px 30px;
+                padding: 100px 0px;
             }
 
             &:nth-of-type(2) {
+
                 float: right;
+            }
+
+            &:last-of-type {
+                float: right; 
             }
         }
         
