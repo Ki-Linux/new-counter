@@ -19,6 +19,7 @@
                     <h1>{{ selected_title }}</h1>
                      <p>{{ detail }}</p>
                      <p>プラマイカウンター運営より</p>
+                     <p>{{ selected_date }}</p>
                 </div>
             </div>
         </div>
@@ -30,8 +31,9 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class reminder extends Vue {
     title_length: number = 0;
     detail: string = "";
-    title_lists: {title: string; content: string; }[] = [{ title: '', content: '' }];
+    title_lists: {title: string; content: string; updated_at: string | null; }[] = [{ title: '', content: '', updated_at: '' }];
     selected_title: string = "";
+    selected_date: string | null = '';
 
     created() {//リマインダーの表示　データベースから
         
@@ -47,7 +49,10 @@ export default class reminder extends Vue {
 
             this.title_length = name.length;// 数
             this.title_lists = name;//タイトルをリスト化する
-            //console.log(name.title);
+
+            //console.log(this.title_lists[0]);
+             
+            
         })
 
     }
@@ -56,9 +61,11 @@ export default class reminder extends Vue {
 
         const list = this.title_lists[index];
 
+        console.log(list.updated_at)
+
         this.selected_title = list.title;
         this.detail = list.content;
-
+        this.selected_date = list.updated_at;
     }
 
 }
@@ -171,7 +178,7 @@ export default class reminder extends Vue {
         position: fixed;
         width: 40%;
         height: 80%;
-        background-color: rgb(206, 206, 255);
+        background-color: rgba(206, 206, 255, 0.1);
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
