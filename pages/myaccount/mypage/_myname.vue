@@ -3,11 +3,10 @@
         <reminder_name/>
         <profile_name/>
         <div class="up_down_button">
-            <button>アップ</button>
-            <button>ダウン</button>
+            <button @click="toCountPage">カウントする</button>        
             <ul>
-                <li>アップ…目標値に向かってプラスのカウントを行う</li>
-                <li>ダウン…現在値から0に向かってマイナスのカウントを行う</li>
+                <li><span>アップ</span>…目標値に向かってプラスのカウントを行う</li>
+                <li><span>ダウン</span>…現在値から0に向かってマイナスのカウントを行う</li>
             </ul>
         </div>
         <div class="option">
@@ -31,6 +30,10 @@ import reminderName from '../../../components/mypage/reminder.vue';
 })
 export default class myname extends Vue {
 
+  toCountPage() {
+    this.$router.push('/addInfo');
+  }
+
 }
 </script>
 <style lang="scss">
@@ -44,6 +47,35 @@ li {
 .up_down_button {
         //float: left;
     text-align: center;
+    font-size: 50px;
+
+    button {
+      padding: 10px 30px;
+      margin: 0 10px;
+      background-color: rgb(236, 236, 236);
+      color: rgb(29, 104, 0);
+    
+    }
+
+
+    ul li {
+      font-size: 30px;
+      
+
+      &:first-of-type span {
+
+        color: rgb(104, 0, 0);
+        font-weight:bold;
+
+      }
+
+      &:last-of-type span {
+        color: rgb(0, 0, 104);
+        font-weight:bold;
+      }
+    }
+
+   
     
 }
 
