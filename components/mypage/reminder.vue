@@ -8,23 +8,22 @@
                 </div>
                 <div class="reminder_list">
                     <ul v-for="(title_list, index) in title_lists" :key="title_list.title">
-                        <li @click="goDetails(index)">
-                            {{ title_list.title }}
-                            <img src="../../static/mypage/dust_box.png" alt="">
+                        <li @click="goDetails(index)" :class="{ light_word: title_list.watched === 1 }">
+                            {{ title_list.title }}   
                         </li> 
+                        <li>
+                            <img @click="deleteReminder(index)" src="../../static/mypage/dust_box.png" alt="">
+                        </li>
                     </ul>
                 </div>
-                <div class="detail_content">
-                    <label for="">✕</label>
+                <div class="detail_content" v-if="show_detail">
+                    <label @click="doClosed" for="">✕</label>
                     <h1>{{ selected_title }}</h1>
                     <ul>
                         <li>{{ detail }}</li>
                         <li>{{ selected_date }}</li>
                         <li>プラマイカウンター運営より</li>
                     </ul>
-                     <!--<p>}</p>
-                     <p></p>
-                     <p></p>-->
                 </div>
             </div>
         </div>
@@ -36,9 +35,10 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class reminder extends Vue {
     title_length: number = 0;
     detail: string = "";
-    title_lists: {title: string; content: string; updated_at: string | null; }[] = [{ title: '', content: '', updated_at: '' }];
+    title_lists: {id: number; title: string; content: string; watched: number; updated_at: string | null; }[] = [{ id: 0, title: '', content: '', watched: 0, updated_at: '' }];
     selected_title: string = "";
     selected_date: string | null = '';
+    show_detail: boolean = false;
 
     created() {//リマインダーの表示　データベースから
         
@@ -55,38 +55,87 @@ export default class reminder extends Vue {
             this.title_length = name.length;// 数
             this.title_lists = name;//タイトルをリスト化する
 
-            //console.log(this.title_lists[0]);
+            //console.log(this.title_lists[1].watched);
              
             
         })
 
     }
 
+    deleteReminder(delete_num: number) {
+        
+        const delete_data = this.title_lists[delete_num].id;
+
+        const can_delete_data = () => {//ゴミ箱をクリックしたときに削除する
+
+            this.$axios.delete('delete_reminder/' + delete_data)
+            .then((response) => {
+                console.log(response);
+            })
+
+        }
+
+        if(confirm('削除しますか?')) {
+            can_delete_data();
+        }
+
+        
+
+    }
+
     goDetails(index: number) {
 
-        const list = this.title_lists[index];
+        const can_showed = () => {
 
-        console.log(list.updated_at);
+            const list = this.title_lists[index];
+            const update_id = list.id;
 
-        this.selected_title = list.title;
-        this.detail = list.content;
+            console.log(list.updated_at);
 
-        const date_list = list.updated_at;
+            this.selected_title = list.title;
+            this.detail = list.content;
 
-        if(date_list !== null) {
+            const date_list = list.updated_at;
 
-            
-            const new_date = date_list.split('T').splice(0, 1);
+            if(date_list !== null) {
 
-            this.selected_date = new_date[0];
+                //日にちだけの表示
+                const new_date = date_list.split('T').splice(0, 1);
 
-        } else {
+                this.selected_date = new_date[0];
 
-            this.selected_date = date_list
+            } else {
+
+                this.selected_date = date_list
+
+            }
+
+            //detailを表示
+            this.show_detail = true;
+
+
+            //既読にする
+            this.$axios.put('update_reminder/' + update_id, {change_watched: 1})
+            .then((response) => {
+                console.log(response);
+            })
+
+
+        }
+
+        if(!this.show_detail) {//詳細を開いていないときに実行できるようにする
+
+            can_showed();
 
         }
 
         
+
+        
+    }
+
+    doClosed() {
+        this.show_detail = false;
     }
 
 }
@@ -159,6 +208,7 @@ export default class reminder extends Vue {
             padding-right: 40px;
             background-color: yellow;
             text-align: center;
+            //border-bottom: 3px solid rgba(82, 82, 82, 0.5);
 
         &::before {
             content: '';
@@ -176,16 +226,33 @@ export default class reminder extends Vue {
 
         ul {
 
-             li {
+            li {
 
-                padding-bottom: 15px;
-                border-bottom: 3px solid black;
+                float: left;
+                //border-bottom: 3px solid rgba(82, 82, 82, 0.5);
+
+                &:first-of-type {
+
+                    padding-bottom: 15px;
+                    border-bottom: 3px solid rgba(82, 82, 82, 0.5);
+                    //background-color: red;
+
+                }
 
                 img {
                     background-color: white;
                     width: 25px;
                     float: right;
+                    margin-left: 10px;
                 }
+            }
+            
+
+
+            .light_word {
+
+                color: rgba(32, 32, 32, 0.5);
+
             }
 
             
