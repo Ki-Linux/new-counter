@@ -1,19 +1,19 @@
 <template>
     <div class="right_position"> 
             <div class="alerm"> 
-                <!--<span v-if="this.title_length !== 0">{{ title_length }}</span>-->
                 <div class="alerm_button">   
-                    <p><img src="../../static/mypage/bell2.png" alt="reminder"></p>      
+                    <p @click="showYellowList"><img src="../../static/mypage/bell2.png" alt="reminder"></p>  
+                    <p v-if="this.title_length !== 0">{{ title_length }}</p>    
                     <button>みんなの投稿</button>        
                 </div>
-                <div class="reminder_list">
-                    <ul v-for="(title_list, index) in title_lists" :key="title_list.title">
-                        <li @click="goDetails(index)" :class="{ light_word: title_list.watched === 1 }">
-                            {{ title_list.title }}   
-                        </li> 
-                        <li>
-                            <img @click="deleteReminder(index)" src="../../static/mypage/dust_box.png" alt="">
-                        </li>
+                <div class="reminder_list" v-if="show_yellow">
+                    <ul v-for="(title_list, index) in title_lists" :key="index">
+                        <li :class="{ light_word: title_list.watched === 1 }">
+                            <span @click="goDetails(index)">{{ title_list.title }}</span>  
+                            <form @submit.prevent="deleteReminder(index)">
+                                <button type="submit"><img src="../../static/mypage/dust_box.png" alt=""></button>
+                            </form>    
+                        </li>    
                     </ul>
                 </div>
                 <div class="detail_content" v-if="show_detail">
@@ -22,7 +22,6 @@
                     <ul>
                         <li>{{ detail }}</li>
                         <li>{{ selected_date }}</li>
-                        <li>プラマイカウンター運営より</li>
                     </ul>
                 </div>
             </div>
@@ -38,6 +37,7 @@ export default class reminder extends Vue {
     title_lists: {id: number; title: string; content: string; watched: number; updated_at: string | null; }[] = [{ id: 0, title: '', content: '', watched: 0, updated_at: '' }];
     selected_title: string = "";
     selected_date: string | null = '';
+    show_yellow: boolean = false;
     show_detail: boolean = false;
 
     created() {//リマインダーの表示　データベースから
@@ -52,7 +52,20 @@ export default class reminder extends Vue {
 
             const name = response.data.name
 
-            this.title_length = name.length;// 数
+            if(name.length === 0) {
+                this.title_lists = [{ id: 0, title: 'お知らせはありません。', content: '', watched: 0, updated_at:''}];
+                return;
+            }
+
+            for(let i=0; i < name.length; i++) {
+
+                if(name[i].watched === 0) {
+
+                    this.title_length++;// 数
+
+                }
+            }
+
             this.title_lists = name;//タイトルをリスト化する
 
             //console.log(this.title_lists[1].watched);
@@ -60,6 +73,19 @@ export default class reminder extends Vue {
             
         })
 
+    }
+
+    showYellowList() {
+
+        if(this.show_yellow === false) {
+
+            this.show_yellow = true;
+            return;
+
+        }
+
+         this.show_yellow = false;
+        
     }
 
     deleteReminder(delete_num: number) {
@@ -72,6 +98,10 @@ export default class reminder extends Vue {
             .then((response) => {
                 console.log(response);
             })
+
+            location.reload();
+
+
 
         }
 
@@ -167,9 +197,27 @@ export default class reminder extends Vue {
         
             
              //display: inline;
-             p img {
-                width: 50px;
-             }
+             p {
+
+                &:nth-of-type(2) {
+                    
+                    position: absolute;
+                    color: white;
+                    background-color: red;
+                    border-radius: 50%;
+                    width: 30px;
+                    height: 30px;
+                    line-height: 30px;
+                    text-align: center;
+                    right: 50px;
+                    margin-top: -5px;
+
+                }
+
+                img {
+                    width: 50px;
+                }
+             } 
 
              button {
                 font-size: 30px;
@@ -225,26 +273,49 @@ export default class reminder extends Vue {
         }
 
         ul {
+            //padding: 15px 0;
+            //padding: 30px;
+           // margin-top: 30px;
+           // border-bottom: 3px solid rgba(82, 82, 82, 0.5);
+            //width: 100%;
+                //border-bottom: 3px solid rgba(82, 82, 82, 0.5);
 
             li {
 
                 float: left;
+                padding: 15px 5px;
+                width: 100%;
+                border-top: 3px solid rgba(77, 77, 77, 0.8);
+                border-bottom: 3px solid rgba(77, 77, 77, 0.8);
+                margin-bottom: 20px;
+                background-color: rgba(255, 208, 0, 0.7);
+               
+                //background-color: red;
+                
+                
                 //border-bottom: 3px solid rgba(82, 82, 82, 0.5);
 
-                &:first-of-type {
+                //&:first-of-type {
 
-                    padding-bottom: 15px;
-                    border-bottom: 3px solid rgba(82, 82, 82, 0.5);
+                    //padding: 15px 0;
+                    //border-bottom: 3px solid rgba(82, 82, 82, 0.5);
                     //background-color: red;
 
-                }
-
-                img {
-                    background-color: white;
-                    width: 25px;
+                //}
+                form {
                     float: right;
-                    margin-left: 10px;
+                    button{
+                        margin:0 10px;
+                        background-color: white;
+
+                    img {
+                        //background-color: white;
+                        width: 25px;
+                    
+                    } 
+                    }
                 }
+                
             }
             
 
@@ -297,10 +368,6 @@ export default class reminder extends Vue {
             &:nth-of-type(2) {
 
                 float: right;
-            }
-
-            &:last-of-type {
-                float: right; 
             }
         }
         
