@@ -11,8 +11,8 @@
         </div>
         <div class="option">
             <ul>
-                <li><nuxt-link to="">プロフィール編集</nuxt-link></li>
-                <li><nuxt-link to="">設定</nuxt-link></li>
+                <li><nuxt-link class="editor" to="">プロフィール編集</nuxt-link></li>
+                <li><nuxt-link class="editor" to="">設定</nuxt-link></li>
             </ul>
         </div>
     </div>
@@ -40,6 +40,21 @@ export default class myname extends Vue {
 
 li {
     list-style: none;
+}
+
+.option {
+  font-size: 25px;
+  
+
+  ul li {
+    
+    padding: 10px 0;
+
+    .editor {
+      color: rgb(0, 62, 73);
+      text-decoration: none;
+    }
+  }
 }
 
 
@@ -78,6 +93,7 @@ li {
    
     
 }
+
 
 
 /* Box sizing rules */

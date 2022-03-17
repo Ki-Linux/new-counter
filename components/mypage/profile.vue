@@ -14,13 +14,27 @@ export default class profile extends Vue {
 </script>
 <style lang="scss">
     #profile {
+
+        margin-left: 40px;
+        width: 130px;
+        
+   
         img {
-            background-color: red;
+            background-color: rgb(219, 219, 219);
             border-radius: 50%;
-            width: 130px;
+            width: 100%;
             height: 130px;
             line-height: 30px;
+            
+            //text-align: center;
+        }
+
+        p {
+            font-size: 30px;
             text-align: center;
+            
+            
+
         }
     }
 </style>
