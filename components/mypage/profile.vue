@@ -1,15 +1,39 @@
 <template>
     <div id="profile">
-        <img src="../../static/mypage/bell2.png" alt="">
-        <p>name</p>
+        <div class="profile_name_img">
+            <p @click="editImgName(img_data)"><img src="../../static/profile/default_img.png" alt=""></p>
+            <p @click="editImgName('name')">name</p>
+        </div>   
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class profile extends Vue {
-    it: string = "";
+    img_data: string = "";
+
+    
+
+    @Prop()
+    public can_click!: boolean;
+
+    editImgName(which_click: string) {
+
+        const send_img_or_name = (which_send: string) => {
+
+            this.$emit('send_data', which_send);
+
+        }
+
+        if(this.can_click) {
+
+            send_img_or_name(which_click);
+
+        }
+
+
+    }
 }
 </script>
 <style lang="scss">
@@ -17,24 +41,36 @@ export default class profile extends Vue {
 
         margin-left: 40px;
         width: 130px;
-        
-   
-        img {
-            background-color: rgb(219, 219, 219);
-            border-radius: 50%;
-            width: 100%;
-            height: 130px;
-            line-height: 30px;
+
+
+
+        .profile_name_img {
+
+            img {
+                background-color: rgb(219, 219, 219);
+                border-radius: 50%;
+                width: 100%;
+                height: 130px;
+                line-height: 30px;
             
             //text-align: center;
-        }
+            }
 
-        p {
-            font-size: 30px;
-            text-align: center;
-            
-            
+            p:first-of-type {
+
+                background-color: green;
+
+            }
+
+            p:nth-of-type(2) {
+                font-size: 40px;
+                text-align: center;
+                background-color: red;
+            }
 
         }
+        
+   
+        
     }
 </style>
