@@ -1,8 +1,8 @@
 <template>
     <div id="change_profile">
-        <form class="edit_profile" v-if="!edit_contents">
+        <form class="edit_profile" v-if="edit_contents">
             <div class="edit_image center">
-                <img src="" alt="">
+                <img src="edit_img" alt="">
                 <input type="file">
             </div>
             <div v-if="!show_text" class="center">
@@ -32,12 +32,17 @@ import profileData from '../../../../components/mypage/profile.vue';
 })
 export default class change_profile extends Vue {
     clickCan: boolean = true;
-    edit_contents: boolean = true;
+    edit_contents: boolean = false;
     show_text: boolean = true;
     show_textarea: boolean = true;
+   // edit_img: string = require("");
 
     sendData(value: string) {
         console.log(value);
+
+        //this.edit_img = value;
+
+        this.edit_contents = true;
     }
 
     changeComment() {

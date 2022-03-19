@@ -1,7 +1,7 @@
 <template>
     <div id="profile">
         <div class="profile_name_img">
-            <p @click="editImgName(img_data)"><img src="../../static/profile/default_img.png" alt=""></p>
+            <p @click="editImgName(img_data)"><img :src="img_data" alt=""></p>
             <p @click="editImgName('name')">name</p>
         </div>   
     </div>
@@ -11,7 +11,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class profile extends Vue {
-    img_data: string = "";
+    img_data: string = require("../../static/profile/default_img.png");
 
     
 
