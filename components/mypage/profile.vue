@@ -1,7 +1,7 @@
 <template>
     <div id="profile">
         <div class="profile_name_img">
-            <p @click="editImgName(img_data)"><img :src="img_data" alt=""></p>
+            <p @click="editImgName('img')"><img :src="img_data" alt=""></p>
             <p @click="editImgName('name')">name</p>
         </div>   
     </div>
