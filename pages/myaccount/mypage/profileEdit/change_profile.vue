@@ -16,7 +16,7 @@
         <div class="my_data">
             <profile_data :can_click="clickCan" @send_data="sendData" @emit_id="emitId"/>
             <div class="comment" @click="changeComment">
-                <p>roppcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccp</p>
+                <p>{{ change_data[2].img_name_comment }}</p>
             </div>
         </div>
     </div>
@@ -74,9 +74,17 @@ export default class change_profile extends Vue {
         
     }
 
-    emitId(value: number) {
-        console.log(value);
-        this.send_userId = value;
+    emitId(value:{ id: number, icon: string, comment: string }) {
+        console.log(value.id);
+        this.send_userId = value.id;
+
+        if(value.icon !== "not") {
+
+            this.change_data[0].img_name_comment = value.icon;
+
+        }
+        
+        this.change_data[2].img_name_comment = value.comment;
     }
 
     changeIcon(e: Event) {

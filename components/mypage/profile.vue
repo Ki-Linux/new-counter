@@ -1,7 +1,7 @@
 <template>
     <div id="profile">
         <div class="profile_name_img">
-            <p @click="editImgName('img')"><img :src="img_data" alt=""></p>
+            <p @click="editImgName('img')"><img :src="img_data" alt="nothing img"></p>
             <p @click="editImgName('name')">name</p>
         </div>   
     </div>
@@ -11,7 +11,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class profile extends Vue {
-    img_data: string = require("../../static/profile/default_img.png");
+    img_data = require("../../static/profile/default_img.png");
 
     
 
@@ -27,8 +27,16 @@ export default class profile extends Vue {
             console.log(response.data.img_data);
 
             const pull_img = response.data.img_data;
+
+
+            if(pull_img[0].icon !== "not") {
+
+                this.img_data = pull_img[0].icon;
+
+            }
+            //this.img_data = pull_img[0].icon;
             
-            this.$emit('emit_id', pull_img[0].id);
+            this.$emit('emit_id', pull_img[0]);
 
            // if(pull_img[0].icon !== "not") {
 
