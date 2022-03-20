@@ -18,6 +18,31 @@ export default class profile extends Vue {
     @Prop()
     public can_click!: boolean;
 
+    created() {
+
+        this.$axios.post("account", {
+            accountName: 'seima'
+        })
+        .then((response) => {
+            console.log(response.data.img_data);
+
+            const pull_img = response.data.img_data;
+            
+            this.$emit('emit_id', pull_img[0].id);
+
+           // if(pull_img[0].icon !== "not") {
+
+
+
+            //}
+
+
+
+            
+        })
+
+    }
+
     editImgName(which_click: string) {
 
         const send_img_or_name = (which_send: string) => {

@@ -1,20 +1,20 @@
 <template>
     <div id="change_profile">
         <form class="edit_profile" v-if="edit_contents" @submit.prevent="goChange">
-            <div class="edit_image center" v-if="show_image">
-                <img :src="edit_img" alt="change_img">
+            <div class="edit_image center" v-if="change_data[0].show_data">
+                <img :src="change_data[0].img_name_comment" alt="change_img">
                 <input type="file" name="change_image" ref="preview" @change="changeIcon">
             </div>
-            <div v-if="show_text" class="center">
-                <input type="text">
+            <div v-if="change_data[1].show_data" class="center">
+                <input type="text" v-model="change_data[1].img_name_comment">
             </div>
-            <div class="center" v-if="show_textarea">
-                <textarea name="message" id="message_add"></textarea>
+            <div class="center" v-if="change_data[2].show_data">
+                <textarea name="message" id="message_add" v-model="change_data[2].img_name_comment"></textarea>
             </div>
             <input class="send_change" type="submit" value="変更">
         </form>
         <div class="my_data">
-            <profile_data :can_click="clickCan" @send_data="sendData" />
+            <profile_data :can_click="clickCan" @send_data="sendData" @emit_id="emitId"/>
             <div class="comment" @click="changeComment">
                 <p>roppcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccp</p>
             </div>
@@ -33,51 +33,126 @@ import profileData from '../../../../components/mypage/profile.vue';
 export default class change_profile extends Vue {
     clickCan: boolean = true;
     edit_contents: boolean = false;
-    show_image: boolean = false;
-    show_text: boolean = false;
-    show_textarea: boolean = false;
-    edit_img: string = require("../../../../static/profile/default_img.png");
+    //show_image: boolean = false;
+    //show_text: boolean = false;
+    //show_textarea: boolean = false;
+    //edit_img: string = require("../../../../static/profile/default_img.png");
+    send_userId: number = 0;
+    change_data = [
+        { 
+            show_data: false,//img
+            img_name_comment: require("../../../../static/profile/default_img.png"),  
+            judge_number: 1
+        },
+        {
+            show_data: false,//name
+            img_name_comment: "",  
+            judge_number: 2
+        },
+        {
+            show_data: false,//comment
+            img_name_comment: "",  
+            judge_number: 3
+        },
+    ];
+    //change_url = require("");
+
+    /*mounted() {
+
+        const url = this.change_data[0].img_name_comment;
+
+        this.change_url = require(url);
+
+    }*/
 
     sendData(value: string) {
         console.log(value);
         this.edit_contents = true;
-        this.show_textarea = false;
+        this.change_data[2].show_data = false;
 
        // this.edit_img = require(value);
        if(value === "img") {
 
-            this.show_image = true;
-            this.show_text = false;
+            this.change_data[0].show_data = true;
+            this.change_data[1].show_data = false;
             
             return;
        }
 
-        this.show_text = true;
-        this.show_image = false;
+        this.change_data[1].show_data = true;
+        this.change_data[0].show_data = false;
 
 
 
         
     }
 
+    emitId(value: number) {
+        console.log(value);
+        this.send_userId = value;
+    }
+
     changeIcon(e: Event) {
         const  file = (<HTMLInputElement>e.target).files![0];
         const file_url = URL.createObjectURL(file);
-        this.edit_img = file_url;
+        this.change_data[0].img_name_comment = file_url;
 
     }
 
     changeComment() {
 
         this.edit_contents = true;
-        this.show_textarea = true;
-        this.show_image = false;
-        this.show_text = false;
+        //this.change_data[1].show_textarea = true;
+       // this.show_image = false;
+        //this.show_text = false;
+
+        for(let i=0; i < 3; i++) {
+
+            if(i === 2) {
+
+                this.change_data[i].show_data = true;
+                return;
+
+            }
+
+            this.change_data[i].show_data = false;
+
+        }
         
     }
 
     goChange() {
+        console.log('iu')
 
+
+        let change_content: string = "";
+        let judge_number: number = 0;
+
+        /*if(this.show_image) {
+            change_content = this.change_name;
+            judge_number = 1
+
+        } else if(this.show_text) {
+
+        }*/
+
+        for(let i=0; i < 3; i++) {
+            if(this.change_data[i].show_data) {
+                change_content = this.change_data[i].img_name_comment
+                judge_number = this.change_data[i].judge_number
+            }
+            //return;
+        }
+
+        console.log(change_content)
+
+        this.$axios.put('account_update/' + this.send_userId, {
+            changeContent: change_content, 
+            judgeNumber: judge_number,
+        })
+        .then((response) => {
+            console.log(response);
+        })
 
 
     }
