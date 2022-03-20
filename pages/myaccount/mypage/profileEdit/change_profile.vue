@@ -33,10 +33,6 @@ import profileData from '../../../../components/mypage/profile.vue';
 export default class change_profile extends Vue {
     clickCan: boolean = true;
     edit_contents: boolean = false;
-    //show_image: boolean = false;
-    //show_text: boolean = false;
-    //show_textarea: boolean = false;
-    //edit_img: string = require("../../../../static/profile/default_img.png");
     send_userId: number = 0;
     change_data = [
         { 
@@ -55,22 +51,13 @@ export default class change_profile extends Vue {
             judge_number: 3
         },
     ];
-    //change_url = require("");
-
-    /*mounted() {
-
-        const url = this.change_data[0].img_name_comment;
-
-        this.change_url = require(url);
-
-    }*/
+ 
 
     sendData(value: string) {
         console.log(value);
         this.edit_contents = true;
         this.change_data[2].show_data = false;
 
-       // this.edit_img = require(value);
        if(value === "img") {
 
             this.change_data[0].show_data = true;
@@ -102,9 +89,6 @@ export default class change_profile extends Vue {
     changeComment() {
 
         this.edit_contents = true;
-        //this.change_data[1].show_textarea = true;
-       // this.show_image = false;
-        //this.show_text = false;
 
         for(let i=0; i < 3; i++) {
 
@@ -122,26 +106,20 @@ export default class change_profile extends Vue {
     }
 
     goChange() {
-        console.log('iu')
 
 
-        let change_content: string = "";
-        let judge_number: number = 0;
-
-        /*if(this.show_image) {
-            change_content = this.change_name;
-            judge_number = 1
-
-        } else if(this.show_text) {
-
-        }*/
+        let change_content: string = "";//送るデータ
+        let judge_number: number = 3;//送る番号
 
         for(let i=0; i < 3; i++) {
-            if(this.change_data[i].show_data) {
+
+            if(this.change_data[i].show_data) {//送るデータを決める
+
                 change_content = this.change_data[i].img_name_comment
-                judge_number = this.change_data[i].judge_number
+                judge_number = i
+
             }
-            //return;
+
         }
 
         console.log(change_content)
