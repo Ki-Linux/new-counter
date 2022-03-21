@@ -11,6 +11,7 @@ export const state = () => ({
     back_data: ["", 8, 9, 're'],
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
     token: null,
+    username: "",
     canClick: true,
     /*plugins: [
         createPersistedState({
@@ -72,8 +73,9 @@ export const mutations = {
 
     },
 
-    loginToken(state, res) {//トークンをstoreへ
-        state.token = res;
+    loginTokenName(state, res) {//トークンとユーザーネームをstoreへ
+        state.token = res[0];
+        state.username = res[1];
         //this.$cookies.set("key", state.token, { expires: 7 });
     },
 
@@ -128,9 +130,9 @@ export const actions = {
         context.commit("dataInto", row);
     },
 
-    loginToken(context, res) {//setToken to cookie
+    loginTokenName(context, res) {//setToken to cookie
 
-        context.commit("loginToken", res);
+        context.commit("loginTokenName", res);
     }, 
 
     nuxtServerInit({ commit }, { req }) {//reload

@@ -43,30 +43,32 @@ export default class login extends Vue {
         })
         .then((response) => {
             console.log(response);
+
+            const res = response.data;
+
+            const token = res.token;
+            const username = res.username;
             //console.log(response);
-            if(response.data.token === 'nothing') {
+            if(token === 'nothing') {
 
                 this.no_content="メールアドレスまたはパスワードが違います。";
 
             } else {
 
-                this.$store.dispatch("loginToken", response.data.token);
-                this.$cookies.set('key', response.data.token);
+                this.$store.dispatch("loginTokenName", [token, username]);
+                this.$cookies.set('key', token);
+
+                if(this.$store.state.username !== "") {
+
+                    this.$router.push('/myaccount/mypage/' + username);
+
+                }
+                //this.$router.push('/myaccount/mypage/' + username);
 
             }
             
-           // console.log(req.headers.cookie)
-        });
 
-        /*try {
-            const response = await ('/api/login', {
-                    mail: this.email,
-                    password: this.password,
-            })
-        }
-        catch (e) {
-            console.log(e);
-        }*/
+        });
        
             
 

@@ -1,8 +1,9 @@
 <template>
     <div id="profile">
         <div class="profile_name_img">
+            <!--<p @click="editImgName('img')"><img :src="img_data" alt="nothing img"></p>-->
             <p @click="editImgName('img')"><img :src="img_data" alt="nothing img"></p>
-            <p @click="editImgName('name')">name</p>
+            <p @click="editImgName('name')">{{ send_username }}</p>
         </div>   
     </div>
 </template>
@@ -12,16 +13,29 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class profile extends Vue {
     img_data = require("../../static/profile/default_img.png");
+    send_username: string = "";
 
-    
+    //@Prop()
+    //public img_data!: string;
 
     @Prop()
     public can_click!: boolean;
 
+   
+
     created() {
+        console.log(this.$store.state.username);
+
+        //const 
+        this.send_username = this.$store.state.username;
+    
+    
+        
+        //setTimeout(() => {
+
 
         this.$axios.post("account", {
-            accountName: 'seima'
+            accountName: this.send_username,
         })
         .then((response) => {
             console.log(response.data.img_data);
@@ -38,16 +52,16 @@ export default class profile extends Vue {
             
             this.$emit('emit_id', pull_img[0]);
 
+        });
+
+        //},500);
+        
+
            // if(pull_img[0].icon !== "not") {
 
 
 
             //}
-
-
-
-            
-        })
 
     }
 

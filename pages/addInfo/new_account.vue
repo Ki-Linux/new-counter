@@ -33,10 +33,10 @@ import $cookies from 'cookie-universal-nuxt';
 
 @Component
 export default class newAccount extends Vue {
-    mail:string = "seima0616@gmail.com";
-    username: string = "ddddddddd";
-    password: string = "ddddddddddddd";
-    password_again: string = "dddddddddddddd";
+    mail:string = "";
+    username: string = "";
+    password: string = "";
+    password_again: string = "";
     warning: string = "";
     //loginId: number = 1;
 

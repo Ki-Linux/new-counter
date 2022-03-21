@@ -11,7 +11,7 @@
         </div>
         <div class="option">
             <ul>
-                <li><nuxt-link class="editor" to="">プロフィール編集</nuxt-link></li>
+                <li><nuxt-link class="editor" to="/myaccount/mypage/profileEdit/change_profile">プロフィール編集</nuxt-link></li>
                 <li><nuxt-link class="editor" to="">設定</nuxt-link></li>
             </ul>
         </div>
@@ -29,6 +29,7 @@ import reminderName from '../../../components/mypage/reminder.vue';
     }
 })
 export default class myname extends Vue {
+
 
   toCountPage() {
     this.$router.push('/addInfo');
