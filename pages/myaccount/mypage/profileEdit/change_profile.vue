@@ -7,6 +7,7 @@
             </div>
             <div v-if="change_data[1].show_data" class="center">
                 <input type="text" v-model="change_data[1].img_name_comment">
+                <p>{{ cannot_name }}</p>
             </div>
             <div class="center" v-if="change_data[2].show_data">
                 <textarea name="message" id="message_add" v-model="change_data[2].img_name_comment"></textarea>
@@ -34,6 +35,7 @@ export default class change_profile extends Vue {
     clickCan: boolean = true;
     edit_contents: boolean = false;
     send_userId: number = 0;
+    cannot_name: string = "";
     change_data = [
         { 
             show_data: false,//img
@@ -42,7 +44,7 @@ export default class change_profile extends Vue {
         },
         {
             show_data: false,//name
-            img_name_comment: "",  
+            img_name_comment: this.$store.state.username,  
             judge_number: 2
         },
         {
@@ -119,6 +121,7 @@ export default class change_profile extends Vue {
         let change_content: string = "";//送るデータ
         let judge_number: number = 3;//送る番号
 
+
         for(let i=0; i < 3; i++) {
 
             if(this.change_data[i].show_data) {//送るデータを決める
@@ -128,17 +131,46 @@ export default class change_profile extends Vue {
 
             }
 
+
+            if(judge_number === 1) {
+                
+                if(change_content === "") {//名前が空欄のとき
+                    this.cannot_name = "名前が空欄です。";
+                    return;
+                } else {//vuex
+                    this.$store.dispatch("loginName", change_content);
+                }
+
+            } else if (judge_number === 2) {
+
+                if(change_content === "") {//コメントが空欄のとき
+
+                    change_content = "コメントはありません。";
+
+                }
+
+            }
+            
+
         }
+
 
         console.log(change_content)
 
-        this.$axios.put('account_update/' + this.send_userId, {
+
+            this.$axios.put('account_update/' + this.send_userId, {
             changeContent: change_content, 
             judgeNumber: judge_number,
         })
         .then((response) => {
             console.log(response);
+
+            
+
         })
+
+        
+
 
 
     }
