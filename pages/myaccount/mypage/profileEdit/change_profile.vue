@@ -78,6 +78,7 @@ export default class change_profile extends Vue {
 
     emitId(value:{ id: number, icon: string, comment: string }) {
         console.log(value.id);
+        console.log(value.icon)
         this.send_userId = value.id;
 
         if(value.icon !== "not") {
@@ -132,24 +133,21 @@ export default class change_profile extends Vue {
             }
 
 
-            if(judge_number === 1) {
-                
-                if(change_content === "") {//名前が空欄のとき
+            if(change_content === "") {//空欄のとき
+
+                if(judge_number === 1) {
+
                     this.cannot_name = "名前が空欄です。";
                     return;
-                } else {//vuex
-                    this.$store.dispatch("loginName", change_content);
                 }
-
-            } else if (judge_number === 2) {
-
-                if(change_content === "") {//コメントが空欄のとき
+                if (judge_number === 2) {
 
                     change_content = "コメントはありません。";
 
                 }
 
             }
+            
             
 
         }
@@ -163,8 +161,23 @@ export default class change_profile extends Vue {
             judgeNumber: judge_number,
         })
         .then((response) => {
-            console.log(response);
+            console.log(response.data.judge_success);
 
+            const judge_data = response.data.judge_success;
+
+            if(judge_data) {
+
+                if(judge_number === 1) {
+
+                    this.$store.dispatch("loginName", change_content);//ユーザーネームはvuex
+                    
+
+                }
+                return;
+
+            } 
+
+            this.cannot_name = "この名前はすでにあります。";
             
 
         })
@@ -188,7 +201,7 @@ export default class change_profile extends Vue {
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 5;
-        background-color: rgba(66, 66, 66, 0.281);
+        background-color: rgba(66, 66, 66, 0.8);
         width: 40vw;
         height: 40vh;
         text-align: center;
@@ -215,7 +228,7 @@ export default class change_profile extends Vue {
                 #message_add {
                     padding: 5px;
                     height: 7rem;
-                    font-size: 25px;
+                    font-size: 20px;
                 }
 
 
@@ -249,7 +262,7 @@ export default class change_profile extends Vue {
         position: fixed;
         left: 50%;
         transform: translateX(-50%);
-        background-color: blue;
+        background-color: rgb(255, 244, 206);
         padding: 20px;
         display: inline-block;
 
@@ -266,14 +279,14 @@ export default class change_profile extends Vue {
             margin: 60px auto;
             width: 300px;
             height: 20vh;
-            background-color: red;
+            background-color: white;
             overflow-Y: scroll;
             
             
 
             p {
                 word-break: break-all;
-                font-size: 30px;
+                font-size: 20px;
                 float: left;
                 padding: 10px;
                 

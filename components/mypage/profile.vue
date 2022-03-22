@@ -13,7 +13,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class profile extends Vue {
     img_data = require("../../static/profile/default_img.png");
-    send_username: string = "";
+    send_username: string = this.$store.state.username;
 
     //@Prop()
     //public img_data!: string;
@@ -23,11 +23,11 @@ export default class profile extends Vue {
 
    
 
-    created() {
-        console.log(this.$store.state.username);
+    mounted() {
+        console.log(this.send_username);
 
         //const 
-        this.send_username = this.$store.state.username;
+        //this.send_username = this.$store.state.username;
     
     
         
@@ -38,9 +38,9 @@ export default class profile extends Vue {
             accountName: this.send_username,
         })
         .then((response) => {
-            console.log(response.data.img_data);
+            console.log(response.data.img_icon_data);
 
-            const pull_img = response.data.img_data;
+            const pull_img = response.data.img_icon_data;
 
 
             if(pull_img[0].icon !== "not") {
@@ -49,8 +49,11 @@ export default class profile extends Vue {
 
             }
             //this.img_data = pull_img[0].icon;
+
+                this.$emit('emit_id', pull_img[0]);
+
             
-            this.$emit('emit_id', pull_img[0]);
+            
 
         });
 
@@ -105,14 +108,14 @@ export default class profile extends Vue {
 
             p:first-of-type {
 
-                background-color: green;
+                background-color: rgb(199, 199, 199);
 
             }
 
             p:nth-of-type(2) {
                 font-size: 40px;
                 text-align: center;
-                background-color: red;
+                background-color: white;
             }
 
         }
