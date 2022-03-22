@@ -11,7 +11,7 @@
                         <li :class="{ light_word: title_list.watched === 1 }">
                             <span @click="goDetails(index)">{{ title_list.title }}</span>  
                             <form @submit.prevent="deleteReminder(index)">
-                                <button type="submit"><img src="../../static/mypage/dust_box.png" alt=""></button>
+                                <button type="submit" v-if="show_dust_box"><img src="../../static/mypage/dust_box.png" alt=""></button>
                             </form>    
                         </li>    
                     </ul>
@@ -39,12 +39,15 @@ export default class reminder extends Vue {
     selected_date: string | null = '';
     show_yellow: boolean = false;
     show_detail: boolean = false;
+    show_dust_box: boolean = true;
 
-    created() {//リマインダーの表示　データベースから
+    mounted() {//リマインダーの表示　データベースから
+
+        const decide_name = this.$store.state.username;
         
         this.$axios.post("reminder", {
 
-            username: 'hou',
+            username: decide_name,
            
         })
         .then((response) => {
@@ -54,6 +57,7 @@ export default class reminder extends Vue {
 
             if(name.length === 0) {
                 this.title_lists = [{ id: 0, title: 'お知らせはありません。', content: '', watched: 0, updated_at:''}];
+                this.show_dust_box = false;
                 return;
             }
 

@@ -1,6 +1,9 @@
 <template>
     <div id="change_profile">
-        <form class="edit_profile" v-if="edit_contents" @submit.prevent="goChange">
+        <div class="title">
+            <h1>プロフィール編集</h1>
+        </div>
+        <form class="edit_profile" v-if="edit_contents" @submit="goChange">
             <div class="edit_image center" v-if="change_data[0].show_data">
                 <img :src="change_data[0].img_name_comment" alt="change_img">
                 <input type="file" name="change_image" ref="preview" @change="changeIcon">
@@ -20,15 +23,20 @@
                 <p>{{ change_data[2].img_name_comment }}</p>
             </div>
         </div>
+        <div class="back_button">
+            <back_button/>
+        </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import profileData from '../../../../components/mypage/profile.vue';
+import backButton from '../../../../components/back_button/back.vue';
 
 @Component({
     components: {
-        'profile_data': profileData
+        'profile_data': profileData,
+        'back_button': backButton,
     }
 })
 export default class change_profile extends Vue {
@@ -192,6 +200,11 @@ export default class change_profile extends Vue {
 <style lang="scss">
 #change_profile {
 
+    .title {
+        text-align: center;
+        padding: 30px 0;
+    }
+
     .edit_profile {
 
 
@@ -307,6 +320,11 @@ export default class change_profile extends Vue {
         
 
 
+    }
+
+    .back_button {
+        padding-top: 600px;
+        text-align: center;
     }
 
     
