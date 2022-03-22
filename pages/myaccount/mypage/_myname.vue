@@ -9,23 +9,29 @@
                 <li><span>ダウン</span>…現在値から0に向かってマイナスのカウントを行う</li>
             </ul>
         </div>
+        <div class="back_home">
+          <back_home where_go="home"/>
+        </div>
         <div class="option">
             <ul>
                 <li><nuxt-link class="editor" to="/myaccount/mypage/profileEdit/change_profile">プロフィール編集</nuxt-link></li>
                 <li><nuxt-link class="editor" to="">設定</nuxt-link></li>
             </ul>
         </div>
+        
     </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import profileName from '../../../components/mypage/profile.vue';
 import reminderName from '../../../components/mypage/reminder.vue';
+import backHome from '../../../components/back_button/back.vue';
 
 @Component({
     components: {
         'profile_name': profileName,
         'reminder_name': reminderName,
+        'back_home': backHome,
     }
 })
 export default class myname extends Vue {
@@ -93,6 +99,11 @@ li {
 
    
     
+}
+
+.back_home {
+  float: right;
+  padding: 30px;
 }
 
 

@@ -1,18 +1,45 @@
 <template>
     <div id="back">
-        <button @click="goBack">←戻る</button>
+        <button @click="goBack">{{ word_button }}</button>
     </div>
 </template>
 <script lang="ts">
-import { Vue,Component } from 'vue-property-decorator';
+import { Vue,Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class backButton extends Vue {
+    word_button: string = "←トップ画面に戻る"
+
+    @Prop()
+    public where_go!: string;
+
+    created() {
+
+        if(this.where_go === "account") { //ホーム画面に戻る
+
+            this.word_button = "←戻る";
+
+        }
+        
+
+    }
 
     goBack() {
 
-        const name = this.$store.state.username;
-        this.$router.push('/myaccount/mypage/' + name);
+        
+        let send_url = '/';
+
+
+        if(this.where_go === "account") {
+            
+            //アカウント画面に戻る
+            const name = this.$store.state.username;
+            send_url = '/myaccount/mypage/' + name;
+            
+
+        }
+
+        this.$router.push(send_url);
 
     }
 }
@@ -23,7 +50,7 @@ export default class backButton extends Vue {
 
     button {
         padding: 3px 10px;
-        background-color: rgb(230, 230, 230);
+        background-color: rgb(241, 241, 241);
     }
 
 }

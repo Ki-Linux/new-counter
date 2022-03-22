@@ -1,8 +1,5 @@
 <template>
-    <div id="change_profile">
-        <div class="title">
-            <h1>プロフィール編集</h1>
-        </div>
+    <div id="change_profile"> 
         <form class="edit_profile" v-if="edit_contents" @submit="goChange">
             <div class="edit_image center" v-if="change_data[0].show_data">
                 <img :src="change_data[0].img_name_comment" alt="change_img">
@@ -17,14 +14,19 @@
             </div>
             <input class="send_change" type="submit" value="変更">
         </form>
-        <div class="my_data">
-            <profile_data :can_click="clickCan" @send_data="sendData" @emit_id="emitId"/>
-            <div class="comment" @click="changeComment">
-                <p>{{ change_data[2].img_name_comment }}</p>
+        <div class="my_data_edit">
+            <div class="title">
+                <h1>プロフィール編集</h1>
             </div>
-        </div>
-        <div class="back_button">
-            <back_button/>
+            <div class="my_data">
+                <profile_data :can_click="clickCan" @send_data="sendData" @emit_id="emitId"/>
+                <div class="comment" @click="changeComment">
+                    <p>{{ change_data[2].img_name_comment }}</p>
+                </div>
+            </div>
+            <div class="back_button">
+                <back_button where_go="account"/>
+            </div>
         </div>
     </div>
 </template>
@@ -266,8 +268,9 @@ export default class change_profile extends Vue {
 
     }
 
+    .my_data_edit {
 
-    .my_data {
+        .my_data {
 
        
        // &:last-of-type {
@@ -308,7 +311,19 @@ export default class change_profile extends Vue {
 
 
         } 
+
+        
     }
+
+    .back_button {
+        margin-top: 60vh;
+        text-align: center;
+    }
+
+    }
+
+
+    
     
 
     #profile {
@@ -322,10 +337,7 @@ export default class change_profile extends Vue {
 
     }
 
-    .back_button {
-        padding-top: 600px;
-        text-align: center;
-    }
+    
 
     
     
