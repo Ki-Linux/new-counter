@@ -6,23 +6,21 @@
                 <input type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
                 <textarea name="comment" id="" cols="30" rows="10" maxlength="200" v-model="my_comment"></textarea>
             </div>
-            <div class="desc">
-                <p>※選択しないところはデフォルトで【はい】として扱われます。</p>
+            <div class="right_position">
+                <div class="desc">
+                    <p>※選択しないところはデフォルトで【はい】として扱われます。</p>
+                </div>
+                <div class="content_data"  v-for="(content_data, index) in contentData" :key="content_data">
+                    <p :class="{content: index === 4}">{{ content_data }}</p>
+                    <label>
+                        <input type="radio" :name="index" value="はい" @click="checkOn(index, 1)" :checked="array_check[index] === 1 && show_checked">はい
+                    </label>
+                    <label>
+                        <input type="radio" :name="index" value="いいえ" @click="checkOn(index, 0)" :checked="array_check[index] === 0 && show_checked">いいえ
+                    </label> 
+                </div>
+                <button type="submit">{{ button_name }}</button>
             </div>
-            <div class="content_data"  v-for="(content_data, index) in contentData" :key="content_data">
-                <p>{{ content_data }}</p>
-                <label>
-                    <input type="radio" :name="index" value="はい" @click="checkOn(index, 1)" :checked="array_check[index] === 1 && show_checked">はい
-                </label>
-                <label>
-                    <input type="radio" :name="index" value="いいえ" @click="checkOn(index, 0)" :checked="array_check[index] === 0 && show_checked">いいえ
-                </label>
-                <!--<input type="checkbox" id="check" name="selector" value="check" @change="checkOn(index)">-->
-                <!--<label for="check">{{ content_data }}</label>-->
-                
-                
-            </div>
-            <button type="submit">{{ button_name }}</button>
         </form>
     </div>
 </template>
@@ -32,7 +30,7 @@ import { AxiosRequestConfig } from 'axios';
 
 @Component
 export default class edit extends Vue {
-    url = "";
+    url = require("../../../../static/Home/close_selection.png");
     my_comment = "";
     array_check: number[] = [2, 2, 2, 2, 2];
     //check: boolean = false;
@@ -162,7 +160,60 @@ export default class edit extends Vue {
 }
 </script>
 <style lang="scss">
-input {
-    display: block;
+#edit {
+
+    form {
+
+        .post_data {
+
+           padding: 50px;
+           
+        
+
+            img {
+                width: 30vw;
+                height: 20vh;
+            }
+
+            input[type="file"] {
+                padding: 20px 0 40px;
+            }  
+
+            textarea {
+             //   margin-top: 40px;
+             display: block;
+             padding: 5px;
+             width: 30vw;
+             font-size: 20px;
+            }
+
+        }
+
+        .right_position {
+            float: right;
+            font-size: 20px;
+            padding: 0 30px;
+
+
+            .content_data {
+                .content {
+                //p:nth-of-type(2) {
+                    font-size: 15px;
+                    
+                //}
+                }
+
+                 padding: 20px 0;
+
+            }
+            
+        }
+
+    } 
+
 }
+
+/*input {
+    display: block;
+}*/
 </style>
