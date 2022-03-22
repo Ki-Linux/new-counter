@@ -1,6 +1,6 @@
 <template>
     <div id="login_select">
-        <div class="select_button" :class="{ styleClass: index === 0, styleClassBottom: index == 1 }" v-for="(selector, index) in selectors" :key="selector">
+        <div class="select_button" :class="{ styleClass: index === 0, styleClassBottom: index == 1 }" v-for="(selector, index) in selectors" :key="selector.description">
             <p>{{ selector.description }}</p>
             <button @click="toPage(index)">{{ selector.url_button }}</button>
         </div>
@@ -26,10 +26,10 @@
             }
             switch(index) {
                 case 0:
-                    to_url("/");
+                    to_url("/addInfo/login/thisLogin");
                     break;
                 case 1:
-                    to_url("/option");
+                    to_url("/counterDo/optionData/free");
                     break; 
             }
         }

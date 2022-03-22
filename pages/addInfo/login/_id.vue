@@ -18,6 +18,9 @@
             </div>
             <p>{{ no_content }}</p>
             <input type="submit">
+            <div class="toNew">
+                <nuxt-link class="new_add" to="/addInfo/new_account">新しくアカウントを作る</nuxt-link>
+            </div> 
         </form>  
     </div>
 </template>
@@ -118,6 +121,17 @@ export default class login extends Vue {
     input[type="submit"] {
         color: rgb(36, 36, 36);
         background-color: rgba(204, 204, 204, 0.6);
+    }
+
+    .toNew {
+        font-size: 15px;
+        padding: 20px;
+        
+
+        .new_add {
+            
+            color: blue;
+        }
     }
 
 

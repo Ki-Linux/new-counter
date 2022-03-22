@@ -134,7 +134,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
         if(this.save_storage[0] === "＞") {
             if(this.save_storage[1] > this.save_storage[2]) {
                 this.$store.dispatch("inData", row);
-                this.$router.push('/free_login_bothupdown');
+                this.$router.push('/counterDo/counter_this/free');
             } else {
                 this.attention = "目標値・現在値が正しくありません";
             }
@@ -143,7 +143,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
         if(this.save_storage[0] === "＜") {
             if(this.save_storage[1] < this.save_storage[2]) {
                 this.$store.dispatch("inData", row);
-                this.$router.push('/free_login_bothupdown');
+                this.$router.push('/counterDo/counter_this/free');
             } else {
                 this.attention = "目標値・現在値が正しくありません";
             }

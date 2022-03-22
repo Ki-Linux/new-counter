@@ -24,7 +24,7 @@
     import targetNumber from '@/components/count/target_number.vue';
     import BordUp from '@/components/count/bord_up.vue';
     import calculations from '@/components/count/calculation_complete.vue';
-    import popUp from '../components/pop_up/pop_up_one.vue';
+    import popUp from '../../../components/pop_up/pop_up_one.vue';
 
     @Component({
         components: {
@@ -39,6 +39,12 @@
         up_home: string[] = ["free"];//to prop "free"はフリープランかログインプランかの判定
         setting: [string, number, number, string] = ["", 0, 0, ""];
         only_number: number[] = [0, 0];
+
+        created() {
+            const plan = this.$route.params.countNum
+            //console.log(plan)
+            this.$store.dispatch("planSelect", plan);
+        }
         /*mounted(): void {
             this.setting = JSON.parse(localStorage.getItem('set_JSON') || '');
   

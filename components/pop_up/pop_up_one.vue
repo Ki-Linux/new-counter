@@ -42,7 +42,7 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class popUp extends Vue {
 
     toLogin() {
-        this.$router.push('/addInfo/login');
+        this.$router.push('/addInfo/login/thisLogin');
     }
 
 

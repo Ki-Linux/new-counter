@@ -26,7 +26,13 @@ export default class completeOption extends Vue {
             if(vuexData.back_data[1] == vuexData.back_data[2]) {
 
                 console.log('complete!');
-                this.$store.dispatch("changeClick", false);
+
+                if(this.$store.state.select_plan === "free") {
+
+                    this.$store.dispatch("changeClick", false);
+
+                }
+                
             }
 
     }

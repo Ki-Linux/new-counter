@@ -13,6 +13,7 @@ export const state = () => ({
     token: null,
     username: "",
     canClick: true,
+    select_plan: "",
     /*plugins: [
         createPersistedState({
             storage: {
@@ -92,7 +93,11 @@ export const mutations = {
     changeClick(state, content) {
         state.canClick = content;
         console.log(state.canClick)
-    }
+    },
+
+    planSelect(state, content) {
+        state.select_plan = content;
+    },
 
 
 };
@@ -152,7 +157,11 @@ export const actions = {
 
     changeClick(context, judge) {
         context.commit("changeClick", judge);
-    }
+    },
+
+    planSelect(context, plan) {
+        context.commit("planSelect", plan);
+    },
 
 }
 
