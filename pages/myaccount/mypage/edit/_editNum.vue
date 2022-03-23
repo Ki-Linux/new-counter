@@ -1,17 +1,26 @@
 <template>
     <div id="edit">
         <form @submit.prevent="dataSend">
-            <div class="img_selector" v-for="select_name in select_names" :key="select_name">
+            <div class="img_selector" v-for="(select_name, index) in select_names" :key="select_name">
                 <label>
-                    <input type="radio" :name="index" value="画像選択" @click="checkOn(index, 1)" :checked="array_check[index] === 1 && show_checked">{{ select_name }}
+                    <input type="radio" name="index" :value="index" @click="imgSelect(index)" :checked="index === 0">{{ select_name }}
                 </label>
             </div>
             <div class="post_data">
-                <div class="img_box">
-                    <img :src="url" alt="img none">
-                </div>    
-                <input type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
-                <textarea name="comment" id="" cols="30" rows="10" maxlength="200" v-model="my_comment"></textarea>
+                <div class="img_file">
+                    <div class="default_img">
+                        <img v-if="img_style_chosen === 1" :src="url[0]" alt="img none">
+                    </div>
+                    <div class="img_box">
+                        <img v-if="img_style_chosen === 0" :src="url[1]" alt="img none">
+                        <p v-if="img_style_chosen === 2">画像はありません</p>
+                    </div>    
+                    <input v-if="img_style_chosen === 0" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
+                </div>  
+                <div class="comment">
+                    <textarea name="comment" id="" cols="30" rows="10" maxlength="200" v-model="my_comment"></textarea>
+                </div>         
+                
             </div>
             <div class="right_position">
                 <div class="desc">
@@ -37,7 +46,7 @@ import { AxiosRequestConfig } from 'axios';
 
 @Component
 export default class edit extends Vue {
-    url = require("../../../../static/Home/close_selection.png");
+    url = [require("../../../../static/Home/after_up.png"), require("../../../../static/Home/after_up.png")];//[default_img, select_img]
     my_comment = "";
     array_check: number[] = [2, 2, 2, 2, 2];
     //check: boolean = false;
@@ -55,6 +64,7 @@ export default class edit extends Vue {
                             'カウンターで使った画像',
                             'なし'
                         ];
+    img_style_chosen: number  = 0;
 
     mounted() {
 
@@ -84,11 +94,35 @@ export default class edit extends Vue {
 
 
     }
+
+    imgSelect(num: number) {
+        console.log(num);
+
+        for(let i=0; i < 3; i++) {
+
+            switch(num) {
+                case i:
+                    this.img_style_chosen = num;
+
+                    if(i === 0) {
+                        this.url[i] = this.$store.state.back_data[3];
+                        console.log(this.url[i]);
+                    }
+                
+                break;
+            }
+
+        }
+
+        
+        
+
+    }
     
     editPicture(e: Event) {
 
         const  file = (<HTMLInputElement>e.target).files![0];
-        this.url = URL.createObjectURL(file);
+        this.url[1] = URL.createObjectURL(file);
 
     }
 
@@ -104,6 +138,7 @@ export default class edit extends Vue {
                     //if(this.array_check[i] === 1) {//チェックしていないとき
 
                     this.array_check[i] = select_num;
+                    
 
              
                 break;
@@ -179,30 +214,37 @@ export default class edit extends Vue {
             padding: 50px;
             float: left;
            
-           
-           
-            .img_box {
+           .img_file {
+
+               .img_box {
 
                 width: 90%;
                 background-color: rgba(187, 187, 187, 0.4);
 
                 
 
-            } 
+                } 
 
            
 
-            input[type="file"] {
-                padding: 20px 0 40px;
-            }  
+                input[type="file"] {
+                    padding: 20px 0 40px;
+                }
 
-            textarea {
-             //   margin-top: 40px;
-             display: block;
-             padding: 5px;
-             width: 30vw;
-             font-size: 20px;
+           }
+           
+              
+            .comment {
+                textarea {
+
+                    display: block;
+                    padding: 5px;
+                    width: 30vw;
+                    font-size: 20px;
+                }
+
             }
+            
 
         }
 

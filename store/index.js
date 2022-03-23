@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export const state = () => ({
     plan: 'free',
     first_data: 0,
-    back_data: ["", 8, 9, 're'],
+    back_data: ["", 8, 9, ""],
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
     token: null,
     username: "",
