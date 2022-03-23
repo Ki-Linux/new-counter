@@ -1,8 +1,15 @@
 <template>
     <div id="edit">
         <form @submit.prevent="dataSend">
+            <div class="img_selector" v-for="select_name in select_names" :key="select_name">
+                <label>
+                    <input type="radio" :name="index" value="画像選択" @click="checkOn(index, 1)" :checked="array_check[index] === 1 && show_checked">{{ select_name }}
+                </label>
+            </div>
             <div class="post_data">
-                <img :src="url" alt="">
+                <div class="img_box">
+                    <img :src="url" alt="img none">
+                </div>    
                 <input type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
                 <textarea name="comment" id="" cols="30" rows="10" maxlength="200" v-model="my_comment"></textarea>
             </div>
@@ -11,7 +18,7 @@
                     <p>※選択しないところはデフォルトで【はい】として扱われます。</p>
                 </div>
                 <div class="content_data"  v-for="(content_data, index) in contentData" :key="content_data">
-                    <p :class="{content: index === 4}">{{ content_data }}</p>
+                    <p>{{ content_data }}</p>
                     <label>
                         <input type="radio" :name="index" value="はい" @click="checkOn(index, 1)" :checked="array_check[index] === 1 && show_checked">はい
                     </label>
@@ -43,6 +50,11 @@ export default class edit extends Vue {
                         ];
     button_name: string = "";
     show_checked: boolean = false;//印をつけるかつけないか
+    select_names: string[] = [
+                            '画像を選択',
+                            'カウンターで使った画像',
+                            'なし'
+                        ];
 
     mounted() {
 
@@ -60,8 +72,6 @@ export default class edit extends Vue {
                 id: editNum,
             })
             .then((response) => {
-                console.log(response);
-
                 const res = response.data[0];
                 this.url = res.picture;
                 this.my_comment = res.my_comment;
@@ -165,15 +175,22 @@ export default class edit extends Vue {
     form {
 
         .post_data {
-
-           padding: 50px;
+            width: 40%;
+            padding: 50px;
+            float: left;
            
-        
+           
+           
+            .img_box {
 
-            img {
-                width: 30vw;
-                height: 20vh;
-            }
+                width: 90%;
+                background-color: rgba(187, 187, 187, 0.4);
+
+                
+
+            } 
+
+           
 
             input[type="file"] {
                 padding: 20px 0 40px;
@@ -189,22 +206,34 @@ export default class edit extends Vue {
 
         }
 
+        .desc {
+            padding-bottom: 40px;
+            font-size: 20px;
+        }
+
         .right_position {
+            text-align: center;
             float: right;
             font-size: 20px;
-            padding: 0 30px;
+            padding: 80px;
+            width: 60%;
 
 
             .content_data {
-                .content {
-                //p:nth-of-type(2) {
-                    font-size: 15px;
-                    
-                //}
-                }
+                
 
                  padding: 20px 0;
 
+            }
+
+            button[type="submit"] {
+                font-size: 30px;
+                margin-top: 30px;
+                padding: 3px 20px;
+                background-color: rgb(219, 219, 219);
+                float: left;
+                transform: translateX(-50%);
+                
             }
             
         }
