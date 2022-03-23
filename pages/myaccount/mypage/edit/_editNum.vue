@@ -1,26 +1,25 @@
 <template>
     <div id="edit">
         <form @submit.prevent="dataSend">
-            <div class="img_selector" v-for="(select_name, index) in select_names" :key="select_name">
-                <label>
+            <div class="sub_button">
+                <button type="submit">{{ button_name }}</button>
+            </div>
+            <div class="img_selector">
+                <label v-for="(select_name, index) in select_names" :key="select_name">
                     <input type="radio" name="index" :value="index" @click="imgSelect(index)" :checked="index === 0">{{ select_name }}
                 </label>
             </div>
             <div class="post_data">
                 <div class="img_file">
-                    <div class="default_img">
-                        <img v-if="img_style_chosen === 1" :src="url[0]" alt="img none">
-                    </div>
                     <div class="img_box">
-                        <img v-if="img_style_chosen === 0" :src="url[1]" alt="img none">
-                        <p v-if="img_style_chosen === 2">画像はありません</p>
+                        <p v-if="select_img_chosen"><img :src="url" alt="img none"></p>
+                        <p v-else>画像はありません</p>
                     </div>    
-                    <input v-if="img_style_chosen === 0" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
+                    <input v-if="select_img_chosen" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
                 </div>  
                 <div class="comment">
                     <textarea name="comment" id="" cols="30" rows="10" maxlength="200" v-model="my_comment"></textarea>
                 </div>         
-                
             </div>
             <div class="right_position">
                 <div class="desc">
@@ -35,8 +34,8 @@
                         <input type="radio" :name="index" value="いいえ" @click="checkOn(index, 0)" :checked="array_check[index] === 0 && show_checked">いいえ
                     </label> 
                 </div>
-                <button type="submit">{{ button_name }}</button>
             </div>
+            
         </form>
     </div>
 </template>
@@ -46,7 +45,7 @@ import { AxiosRequestConfig } from 'axios';
 
 @Component
 export default class edit extends Vue {
-    url = [require("../../../../static/Home/after_up.png"), require("../../../../static/Home/after_up.png")];//[default_img, select_img]
+    url = ("../../../../static/edit/hatena.png");//[default_img, select_img]
     my_comment = "";
     array_check: number[] = [2, 2, 2, 2, 2];
     //check: boolean = false;
@@ -61,12 +60,13 @@ export default class edit extends Vue {
     show_checked: boolean = false;//印をつけるかつけないか
     select_names: string[] = [
                             '画像を選択',
-                            'カウンターで使った画像',
                             'なし'
                         ];
-    img_style_chosen: number  = 0;
+    select_img_chosen: boolean  = true;
 
     mounted() {
+
+        this.url = this.$store.state.back_data[3];
 
         const editNum = this.$route.params.editNum;
 
@@ -98,23 +98,18 @@ export default class edit extends Vue {
     imgSelect(num: number) {
         console.log(num);
 
-        for(let i=0; i < 3; i++) {
 
             switch(num) {
-                case i:
-                    this.img_style_chosen = num;
 
-                    if(i === 0) {
-                        this.url[i] = this.$store.state.back_data[3];
-                        console.log(this.url[i]);
-                    }
+                case 0:
+                    this.select_img_chosen = true;
                 
                 break;
+                case 1:
+                    this.select_img_chosen = false;
+                break;
+
             }
-
-        }
-
-        
         
 
     }
@@ -122,7 +117,7 @@ export default class edit extends Vue {
     editPicture(e: Event) {
 
         const  file = (<HTMLInputElement>e.target).files![0];
-        this.url[1] = URL.createObjectURL(file);
+        this.url = URL.createObjectURL(file);
 
     }
 
@@ -205,23 +200,35 @@ export default class edit extends Vue {
 }
 </script>
 <style lang="scss">
+html {
+    background-color: rgba(255, 225, 225, 0.7);
+}
 #edit {
 
+    
+
     form {
+
+        .img_selector {
+            padding: 50px 50px 0;
+            font-size: 20px;
+            
+        }
+
+        
 
         .post_data {
             width: 40%;
             padding: 50px;
             float: left;
-           
+            background-color: rgb(227, 255, 255);
+
            .img_file {
 
                .img_box {
 
-                width: 90%;
-                background-color: rgba(187, 187, 187, 0.4);
-
-                
+                    width: 90%;
+                    background-color: rgba(187, 187, 187, 0.4);
 
                 } 
 
@@ -241,6 +248,7 @@ export default class edit extends Vue {
                     padding: 5px;
                     width: 30vw;
                     font-size: 20px;
+                    margin-top: 30px;
                 }
 
             }
@@ -259,26 +267,40 @@ export default class edit extends Vue {
             font-size: 20px;
             padding: 80px;
             width: 60%;
+            background-color: rgb(255, 249, 218);
+            
 
 
             .content_data {
                 
 
-                 padding: 20px 0;
+                padding: 20px 0;
+                 
 
             }
+
+           
+            
+        }
+
+        .sub_button {
+            
+            float: right;
+            padding: 10px 20px 10px;
 
             button[type="submit"] {
                 font-size: 30px;
-                margin-top: 30px;
                 padding: 3px 20px;
-                background-color: rgb(219, 219, 219);
-                float: left;
-                transform: translateX(-50%);
+                background-color: white;
+                
+                //float: left;
+                //transform: translateX(-50%);
                 
             }
-            
+
         }
+
+         
 
     } 
 
