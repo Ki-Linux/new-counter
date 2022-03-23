@@ -12,7 +12,7 @@
             <div class="post_data">
                 <div class="img_file">
                     <div class="img_box">
-                        <p v-if="select_img_chosen"><img :src="url" alt="img none"></p>
+                        <p v-if="select_img_chosen && url.match('http')"><img :src="url" alt="img none"></p>
                         <p v-else>画像はありません</p>
                     </div>    
                     <input v-if="select_img_chosen" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
@@ -45,7 +45,7 @@ import { AxiosRequestConfig } from 'axios';
 
 @Component
 export default class edit extends Vue {
-    url = ("../../../../static/edit/hatena.png");//[default_img, select_img]
+    url = require("../../../../static/edit/hatena.png");//[default_img, select_img]
     my_comment = "";
     array_check: number[] = [2, 2, 2, 2, 2];
     //check: boolean = false;
@@ -66,7 +66,15 @@ export default class edit extends Vue {
 
     mounted() {
 
-        this.url = this.$store.state.back_data[3];
+        const img_data = this.$store.state.back_data[3];
+
+        //if(img_data.includes('http')) {//画像のときのみ代入
+
+            this.url = img_data;
+
+        //} 
+
+        
 
         const editNum = this.$route.params.editNum;
 
@@ -151,12 +159,24 @@ export default class edit extends Vue {
 
     dataSend() {//databaseへ
 
+        if(this.my_comment === "") {
+
+            this.my_comment = 'コメントがありません。';
+
+        }
+
         if(this.array_check.includes(2)) {
 
             alert('選択していない場所があります。');
 
             return;
         }
+
+        if(!this.url.includes('http')) {//画像でないときのみ代入
+
+            this.url = "notImg";
+
+        } 
 
 
 
