@@ -161,9 +161,10 @@ export default class edit extends Vue {
 
 
         const editNum = this.$route.params.editNum;
+        const name = this.$store.state.username;
 
         const set_data = {
-            username: 'h',
+            username: name,
             image: this.url,
             comment: this.my_comment,
             can_list: this.array_check[0],
@@ -194,6 +195,14 @@ export default class edit extends Vue {
         this.$axios(method_url)
         .then((response) => {
             console.log(response);
+
+            const res = response.data;
+
+            if(res.success === "store_true") {
+                console.log("success");
+
+                this.$router.push('/myaccount/mypage/' + name);
+            }
         })
     }
 

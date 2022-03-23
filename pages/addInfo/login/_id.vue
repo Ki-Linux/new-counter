@@ -63,7 +63,17 @@ export default class login extends Vue {
 
                 if(this.$store.state.username !== "") {
 
-                    this.$router.push('/myaccount/mypage/' + username);
+                    let param_url: string = '/myaccount/mypage/' + username;
+
+                    if(this.$route.params.id === "toNextEdit") {
+
+                        param_url = '/myaccount/mypage/edit/new_post';
+
+                    }
+
+                    this.$router.push(param_url);
+
+                    
 
                 }
                 //this.$router.push('/myaccount/mypage/' + username);
