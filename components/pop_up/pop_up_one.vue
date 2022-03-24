@@ -1,15 +1,18 @@
 <template>
     <div id="pop_up_one" v-if="!$store.state.canClick">
         <pop_up_free v-if="$store.state.select_plan === 'free'"/>
+        <pop_up_name v-if="$store.state.select_plan === 'towa'"/>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import popUpFree from '../pop_up/complete_pop/pop_up_free.vue';
+import popUpName from '../pop_up/complete_pop/pop_up_name.vue';
 
 @Component({
     components: {
         'pop_up_free': popUpFree,
+        'pop_up_name': popUpName,
     }
 })
 export default class popUp extends Vue {

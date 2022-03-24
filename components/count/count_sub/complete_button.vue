@@ -27,11 +27,11 @@ export default class completeOption extends Vue {
 
                 console.log('complete!');
 
-                if(this.$store.state.select_plan === "free") {
+                //if(this.$store.state.select_plan === "free") {
 
                     this.$store.dispatch("changeClick", false);
 
-                } 
+                //} 
                 
             }
 

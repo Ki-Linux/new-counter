@@ -131,10 +131,21 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 }  
     toNext(row: [string, number, number, string]): void {
     //console.log(this.save_storage);//保存[不等号,目標値,現在値,写真]
+
+        const send_data_go = () => {
+
+            this.$store.dispatch("inData", row);
+
+            const url_name =  this.$route.params.optionNum;
+
+            this.$router.push('/counterDo/counter_this/' + url_name);
+
+        }
         if(this.save_storage[0] === "＞") {
             if(this.save_storage[1] > this.save_storage[2]) {
-                this.$store.dispatch("inData", row);
-                this.$router.push('/counterDo/counter_this/free');
+
+                send_data_go();
+                
             } else {
                 this.attention = "目標値・現在値が正しくありません";
             }
@@ -142,8 +153,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
         
         if(this.save_storage[0] === "＜") {
             if(this.save_storage[1] < this.save_storage[2]) {
-                this.$store.dispatch("inData", row);
-                this.$router.push('/counterDo/counter_this/free');
+                send_data_go();
             } else {
                 this.attention = "目標値・現在値が正しくありません";
             }
