@@ -31,7 +31,7 @@ export default class completeOption extends Vue {
 
                     this.$store.dispatch("changeClick", false);
 
-                }
+                } 
                 
             }
 
