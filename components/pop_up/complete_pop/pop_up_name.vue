@@ -15,16 +15,16 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component
 export default class popUpName extends Vue {
-    name: string = this.$store.state.username;
 
     yesClick() {
         
-        this.$router.push('/myaccount/mypage/edit/' + this.name);
+        this.$router.push('/myaccount/mypage/edit/new_post');
     }
 
     noClick() {
         
-        this.$router.push('/myaccount/mypage/' + this.name);
+        const name: string = this.$store.state.username;
+        this.$router.push('/myaccount/mypage/' + name);
     }
 
 }

@@ -41,6 +41,7 @@
             </ul>
             <div class="show_word">
                 <p>{{ written }}</p>
+                <p v-if="show_select_picture"><img :src="img_data" alt="選択した画像"></p>
                 <input v-if="show_select_picture" name="picture" type="file" ref="preview" @change="selectPicture">
                 <input v-if="show_select_word" type="text" @change="decidedWord" v-model="written" placeholder="文字を入力して下さい" value="">
             </div>
@@ -61,6 +62,7 @@ export default class Option extends Vue {
     show_select_picture: boolean = false;//写真選択の表示
     show_select_word: boolean = false;//文字の記入
     written: string = "";//画面に表示する文字
+    img_data: string = require("../../../static/edit/hatena.png");
     sign: string = "＞";
     target_number: string = "";
     attention: string = "";//不等号に逆らった時
@@ -103,6 +105,7 @@ doTargetPresent(event: Event, divide: number): void {
 selectPicture(e: Event): void{//写真
         const  file = (<HTMLInputElement>e.target).files![0];
         const file_url = URL.createObjectURL(file);
+        this.img_data = file_url;
         //console.log(this.img_picture)
         this.doSplice(3, 1, file_url);
 }
@@ -219,6 +222,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
         }
         .show_word {/* 写真or文字orなし */
             font-size: 25px;
+            
             input {
                 font-size: 20px;
                 &:nth-of-type(2) {
@@ -226,6 +230,12 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                     padding: 3px 5px;
                 }
             }
+
+            p img {
+                width: 110px;
+                margin: 10px auto;
+                background-color: rgb(235, 235, 235);
+            } 
         } 
         .end_button {
             p {
