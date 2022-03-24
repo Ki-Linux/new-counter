@@ -41,8 +41,11 @@
             </ul>
             <div class="show_word">
                 <p>{{ written }}</p>
-                <p v-if="show_select_picture"><img :src="img_data" alt="選択した画像"></p>
-                <input v-if="show_select_picture" name="picture" type="file" ref="preview" @change="selectPicture">
+                <div class="only_picture" v-if="show_select_picture"><!--free-->
+                    <p><img :src="img_data[0]" alt="選択した画像"></p>
+                    <input name="picture" type="file" ref="preview" @change="selectPicture">
+                </div>
+                
                 <input v-if="show_select_word" type="text" @change="decidedWord" v-model="written" placeholder="文字を入力して下さい" value="">
             </div>
         </div>
@@ -62,7 +65,7 @@ export default class Option extends Vue {
     show_select_picture: boolean = false;//写真選択の表示
     show_select_word: boolean = false;//文字の記入
     written: string = "";//画面に表示する文字
-    img_data: string = require("../../../static/edit/hatena.png");
+    img_data: string[] = [];
     sign: string = "＞";
     target_number: string = "";
     attention: string = "";//不等号に逆らった時
@@ -78,6 +81,15 @@ export default class Option extends Vue {
     };
 created(): void{//選択の数字
     this.doArray(200); 
+
+    let i = 0;
+    while(i < 10) {
+        this.img_data.splice(i, 0, require("../../../static/edit/hatena.png"));
+
+        i++;
+    }
+
+    console.log(this.img_data)
 }
 downUp(which_is: number): void {
     if(which_is == 1) {
@@ -105,7 +117,8 @@ doTargetPresent(event: Event, divide: number): void {
 selectPicture(e: Event): void{//写真
         const  file = (<HTMLInputElement>e.target).files![0];
         const file_url = URL.createObjectURL(file);
-        this.img_data = file_url;
+
+        this.img_data[0] = require(file_url);
         //console.log(this.img_picture)
         this.doSplice(3, 1, file_url);
 }
@@ -231,11 +244,15 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 }
             }
 
-            p img {
-                width: 110px;
-                margin: 10px auto;
-                background-color: rgb(235, 235, 235);
-            } 
+            .only_picture {
+                p img {
+                    width: 110px;
+                    margin: 10px auto;
+                    background-color: rgb(235, 235, 235);
+                } 
+
+            }
+    
         } 
         .end_button {
             p {
