@@ -51,10 +51,10 @@
                         <li><img :src="img_data" alt="選択した画像"></li>
                     </ul>
                 </div>
-                <div class="text_write_in" v-if="show_select_word">
+                <div class="text_write_in button_select" v-if="show_select_word">
                     <input type="text" @change="decidedWord" v-model="written" placeholder="文字を入力して下さい" value="" maxlength="10">
                 </div>
-                <div class="file_button" v-if="show_select_picture">
+                <div class="file_button button_select" v-if="show_select_picture">
                     <input name="picture" type="file" ref="preview" @change="selectPicture">
                 </div> 
             </div>
@@ -309,6 +309,8 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
             font-size: 25px;
             margin-left: 1rem;
 
+            
+
             .written {
 
                 display: flex;
@@ -363,6 +365,10 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 
                     } 
 
+                }
+
+                .button_select {
+                    margin-top: 20px;
                 }
 
 
