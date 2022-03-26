@@ -209,9 +209,11 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 }  
     toNext(row: [string, number, number, string]): void {
     //console.log(this.save_storage);//保存[不等号,目標値,現在値,写真]
+        
 
         const send_data_go = () => {
 
+            //データをVuexへ
             this.$store.dispatch("inData", row);
 
             const url_name =  this.$route.params.optionNum;
@@ -221,6 +223,8 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
         }
         if(this.save_storage[0] === "＞") {
             if(this.save_storage[1] > this.save_storage[2]) {
+
+            
 
                 send_data_go();
                 
@@ -241,7 +245,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
         //if(!not_send && !not_send_two) {
                         
             //データをVuexへ
-            this.$store.dispatch("inData", row);
+            //this.$store.dispatch("inData", row);
             //次のページへ
             //this.$router.push('/free_login_bothupdown');
         /*} else {
