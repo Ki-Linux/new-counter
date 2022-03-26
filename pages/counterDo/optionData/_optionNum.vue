@@ -260,9 +260,9 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
             //データをVuexへ
             this.$store.dispatch("inData", row);
 
-            //const url_name =  this.$route.params.optionNum;
+            const url_name =  this.$route.params.optionNum;
 
-            //this.$router.push('/counterDo/counter_this/' + url_name);
+            this.$router.push('/counterDo/counter_this/' + url_name);
 
         }
         if(this.save_storage[0] === "＞") {

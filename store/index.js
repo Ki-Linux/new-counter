@@ -69,7 +69,7 @@ export const mutations = {
            
             //Vue.set(state.back_data, i, row[i]);
 
-            state.back_data.splice(i, 0, row[i]);
+            state.back_data.splice(i, 1, row[i]);//文字や画像を入れる(!!基本となるデータ)
         }
 
         state.first_data = row[2];//初期化の方の数字
