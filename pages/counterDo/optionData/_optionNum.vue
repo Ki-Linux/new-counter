@@ -213,12 +213,56 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 
         const send_data_go = () => {
 
+            if(this.$route.params.optionNum !== "free") {//パラメータがfree以外のとき
+
+                let img_word_num = 3;
+
+                row.splice(3, 1);//default
+
+                if(this.show_select_picture) {
+
+                    
+
+                    
+
+                    this.imgs_data.forEach((image) => {
+
+                        if(image.match('image/png')) {//デフォルトの値を除外
+
+                            return;
+                        }
+
+                        row.splice(img_word_num, 0, image);//複数の画像を追加
+
+                        img_word_num++;
+                    });
+
+                    console.log(row);
+                
+
+                } else if(this.show_select_word) {//文字を選択したとき
+
+
+                    this.words_data.forEach((word) => {
+
+                        row.splice(img_word_num, 0, word);//複数個の文字を追加
+
+                        img_word_num++;
+                    });
+
+                    console.log(row);
+
+                }
+
+                
+            }
+
             //データをVuexへ
             this.$store.dispatch("inData", row);
 
-            const url_name =  this.$route.params.optionNum;
+            //const url_name =  this.$route.params.optionNum;
 
-            this.$router.push('/counterDo/counter_this/' + url_name);
+            //this.$router.push('/counterDo/counter_this/' + url_name);
 
         }
         if(this.save_storage[0] === "＞") {

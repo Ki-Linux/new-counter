@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export const state = () => ({
     plan: 'free',
     first_data: 0,
-    back_data: ["", 8, 9, "", "", "", "", "", "", "", "", "", ""],
+    back_data: [],//["", 8, 9, ""],
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
     token: null,
     username: "",
@@ -65,9 +65,11 @@ export const mutations = {
 
         row.splice(1, 2, Number(row[1]), Number(row[2]));//change from string to Number
 
-        for(let i=0; i < 4; i ++) {
+        for(let i=0; i < row.length; i++) {
            
-            Vue.set(state.back_data, i, row[i]);
+            //Vue.set(state.back_data, i, row[i]);
+
+            state.back_data.splice(i, 0, row[i]);
         }
 
         state.first_data = row[2];//初期化の方の数字
