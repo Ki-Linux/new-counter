@@ -8,9 +8,12 @@
             <p v-if="$store.state.back_data[0] == '＞'">残り: {{ backTargetData - backPresentData }}</p>
             <p v-else>残り: {{ backPresentData - backTargetData }}</p>
         </div>
-        <div class="select_bord">
+        <div class="select_bord" v-if="showBord">
             <ul v-for="(choose_img, index) in choose_imgs" :key="choose_img">
-               <li @click="chooseData(index)">{{ choose_img }}</li> 
+                <li v-if="choose_img.match('http')" @click="chooseData(index)">
+                    <img :src="choose_img" alt="choose_img">
+                </li>
+                <li v-else @click="chooseData(index)">{{ choose_img }}</li> 
             </ul>
         </div>
     </div>
@@ -28,6 +31,9 @@
             
             return this.$store.getters.whichButtonData;
         };
+        get showBord() {
+            return this.$store.getters.show_bord;
+        };
         get backPresentData() {//現在のデータ　vuexから
             return this.$store.getters.backPresentData;
         };
@@ -36,11 +42,24 @@
         };
         get showImg() {//img data　vuexから
 
+                const back_data = this.$store.state.back_data;
+
+                for(let i=3; i < back_data.length; i++) {//Vuexの配列から値を表示
+
+                    this.array_imgs.splice(i - 3, 1, back_data[i]);
+
+                }
+
+                return this.array_imgs;
+
+                //this.array_imgs.splice(this.$store.getters.backTargetData
+           
+            
                 
 
             //if(this.$store.state.select_plan === "free") {//free
 
-                if(this.only_first === true) {//saisho
+               /* if(this.only_first === true) {//saisho
 
                     let count = 1;
                     while(count <= this.backPresentData) {
@@ -130,6 +149,8 @@
 
 
         chooseData(choose_num: number) {
+
+            this.$store.dispatch("show_bord", false);
 
             this.$store.dispatch("chooseData", this.choose_imgs[choose_num]);
 
