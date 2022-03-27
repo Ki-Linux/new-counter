@@ -36,14 +36,28 @@ export const mutations = {
 
         if(selection === "up") {
 
-            state.back_data.splice(2, 1, state.back_data[2]+=1);
             state.which_button[0] = selection; 
+
+                if(state.select_plan === "free") {
+
+                    state.back_data.splice(2, 1, state.back_data[2]+=1);
+
+                }
+
+                state.back_data.splice(2, 1, state.back_data[2]);
+                
+            
             
             //Vue.set(state., 2, state.back_data[2]++); 
         } else if(selection === "down"){
 
-            state.back_data.splice(2, 1, state.back_data[2]-=1);
             state.which_button[0] = selection;
+
+            state.back_data.splice(2, 1, state.back_data[2]-=1);
+            
+
+                
+            
 
         } else {//初期化
 
@@ -101,6 +115,11 @@ export const mutations = {
         state.select_plan = content;
     },
 
+    chooseData(state, content) {
+
+        state.back_data.splice(3, 1, content);
+    },
+
 
 };
 
@@ -116,7 +135,7 @@ export const getters = {
     backTargetData(state) {
         return state.back_data[1];
     },
-    showImg(state) {
+    showImg(state) {//free
         return state.back_data[3];
     },
     isAuthenticated(state) {
@@ -164,6 +183,12 @@ export const actions = {
     planSelect(context, plan) {
         context.commit("planSelect", plan);
     },
+
+    chooseData(context, data) {
+
+        context.commit("chooseData", data);
+
+    }
 
 }
 
