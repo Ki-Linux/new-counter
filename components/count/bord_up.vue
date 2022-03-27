@@ -62,13 +62,21 @@
                         //選択肢を表示
                         if(this.first_set_word_or_img) {//初めの１回
 
-                            const choose_img = this.$store.state.back_data;
+                            if(this.$store.state.select_plan !== "free") {
 
-                            for(let i=3; i < choose_img.length; i++) {//Vuexの配列から値を表示
-                                this.choose_imgs.splice(i - 3, 1, choose_img[i]);
+                                const choose_img = this.$store.state.back_data;
+
+                                for(let i=3; i < choose_img.length; i++) {//Vuexの配列から値を表示
+                                    this.choose_imgs.splice(i - 3, 1, choose_img[i]);
+                                }
+
+                                
+
                             }
 
                             this.first_set_word_or_img = false;
+
+                            
 
                             
 

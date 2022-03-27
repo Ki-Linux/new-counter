@@ -41,10 +41,15 @@ export const mutations = {
                 if(state.select_plan === "free") {
 
                     state.back_data.splice(2, 1, state.back_data[2]+=1);
+                    
+
+                } else {
+
+                    state.back_data.splice(2, 1, state.back_data[2]);
 
                 }
 
-                state.back_data.splice(2, 1, state.back_data[2]);
+                
                 
             
             
