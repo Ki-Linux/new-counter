@@ -79,7 +79,9 @@ export const mutations = {
 
         row.splice(1, 2, Number(row[1]), Number(row[2]));//change from string to Number
 
-        for(let i=0; i < row.length; i++) {
+        const into_array = row.length;
+
+        for(let i=0; i < into_array; i++) {
            
             //Vue.set(state.back_data, i, row[i]);
 
