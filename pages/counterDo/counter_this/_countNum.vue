@@ -40,11 +40,7 @@
         setting: [string, number, number, string] = ["", 0, 0, ""];
         only_number: number[] = [0, 0];
 
-        created() {
-            const plan = this.$route.params.countNum
-            //console.log(plan)
-            this.$store.dispatch("planSelect", plan);
-        }
+        
         /*mounted(): void {
             this.setting = JSON.parse(localStorage.getItem('set_JSON') || '');
   

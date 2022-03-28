@@ -9,6 +9,7 @@ export const state = () => ({
     plan: 'free',
     first_data: 0,
     back_data: [],//["", 8, 9, ""],
+    back_select_data: [],
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
     token: null,
     username: "",
@@ -81,11 +82,25 @@ export const mutations = {
 
         const into_array = row.length;
 
+        //freeのときに入れる配列
+        let which_array = state.back_data;
+
+        if(state.select_plan !== "free") {//free以外のときに入れる配列
+
+            which_array = state.back_select_data;
+
+        } 
+
+        
+
         for(let i=0; i < into_array; i++) {
            
             //Vue.set(state.back_data, i, row[i]);
+            
 
-            state.back_data.splice(i, 1, row[i]);//文字や画像を入れる(!!基本となるデータ)
+            which_array.splice(i, 1, row[i]);//文字や画像を入れる(!!基本となるデータ)
+
+
         }
 
         state.first_data = row[2];//初期化の方の数字

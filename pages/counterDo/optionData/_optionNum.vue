@@ -83,6 +83,7 @@ export default class Option extends Vue {
     target_number: string = "";
     attention: string = "";//不等号に逆らった時
     save_storage: [string, number, number, string] = ["＞", 0, 0, ""];//保存[不等号,目標値,現在値,写真]
+    
     doSplice = (num1: number, num2: number, changed: (number|string)) => {//splice function
         this.save_storage.splice(num1, num2, changed);
     };
@@ -94,6 +95,10 @@ export default class Option extends Vue {
     };
 created(): void{//選択の数字
     this.doArray(200); 
+
+    //planをvuexに入れる
+    const plan = this.$route.params.optionNum
+    this.$store.dispatch("planSelect", plan);
 
     console.log(this.imgs_data)
 }
@@ -108,16 +113,29 @@ downUp(which_is: number): void {
     
 }
 doTargetPresent(event: Event, divide: number): void {
+
+    if(this.words_data !== []) {//写真や文字入力中のときの目標値・現在値の変更 写真や文字をリセット
+        this.written = "";
+        this.words_data.splice(0, this.words_data.length);
+        this.word_position = 0;
+        this.imgs_data.splice(0, this.imgs_data.length);
+        this.count_num = 0;
+    }
+
+    
+    
     /*if(!(val.target instanceof HTMLInputElement)) {
         return;
     }*/
     //console.log((<HTMLInputElement>event.target).value);
     const target_present = (<HTMLInputElement>event.target).value;
-    if(divide == 1) {
-        this.doSplice(1, 1, target_present);
+    
+    if(divide === 1) {
+        this.doSplice(1, 1, Number(target_present));
     } else {
-        this.doSplice(2, 1, target_present);
+        this.doSplice(2, 1, Number(target_present));
     }
+
     
 }
 selectPicture(e: Event): void{//写真
@@ -142,6 +160,21 @@ selectPicture(e: Event): void{//写真
             
 
         } else {//free以外のとき
+
+            if(this.save_storage[0] === "＜") {
+
+                const differential: number = this.save_storage[2] - this.save_storage[1];//＜のときの差分
+
+                //console.log(differential)
+                
+
+                if(differential <= this.count_num) {//これ以上の画像追加はできない
+               
+                    return;
+                }
+
+            }
+            
 
 
             if(this.count_num === 0) {//はじめの１回
@@ -172,6 +205,18 @@ decidedWord(): void {//文字
         this.doSplice(3, 1, this.written);
 
     } else {
+
+        if(this.save_storage[0] === "＜") {
+
+            const differential: number = this.save_storage[2] - this.save_storage[1];//＜のときの差分
+      
+            if(differential <= this.word_position) {//これ以上の画像追加はできない
+               
+                return;
+            }
+
+            
+        }
 
         if(this.word_position < 10) {
 
@@ -258,9 +303,21 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
             }
 
             //データをVuexへ
-            this.$store.dispatch("inData", row);
-
             const url_name =  this.$route.params.optionNum;
+
+            //if(url_name === "free") {//freeのときにvuexに入れるデータ
+
+                this.$store.dispatch("inData", row);
+
+            //} else {//selectのときにvuexに入れるデータ
+
+                //this.$store.dispatch("inSelectData", row);
+
+           // }
+            
+            
+
+            
 
             this.$router.push('/counterDo/counter_this/' + url_name);
 
