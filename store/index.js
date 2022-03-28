@@ -144,6 +144,12 @@ export const mutations = {
         state.back_data.splice(3, 1, content);
     },
 
+    inSelectData(state, content) {
+
+        state.back_select_data = content;
+
+    }
+
 
 };
 
@@ -211,6 +217,12 @@ export const actions = {
     chooseData(context, data) {
 
         context.commit("chooseData", data);
+
+    },
+
+    inSelectData(context, send_array) {
+
+        context.commit("inSelectData", send_array);
 
     }
 

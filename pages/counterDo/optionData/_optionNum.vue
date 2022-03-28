@@ -271,13 +271,13 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 
                 console.log(send_array);
 
-                if(!this.show_select_word && !this.show_select_picture) {
+                if(!this.show_select_word && !this.show_select_picture) {//ナシを選択したときのデータ
 
                     send_array.splice(0, 0, "");
 
                 }
 
-                if(send_array.length === 0) {
+                if(send_array.length === 0) {//写真、文字を選択したにもかかわらず、空だったとき
 
                     this.attention = "写真または文字がありません。";
                     return;
@@ -327,11 +327,10 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 }*/
 
                 
-            } else {
-
-                this.$store.dispatch("inData", row);
-
             }
+
+            //this.$store.dispatch("inData", row);
+            console.log(row)
 
             //データをVuexへ
             const url_name =  this.$route.params.optionNum;
