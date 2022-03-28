@@ -23,25 +23,13 @@
     export default class calculationComplete extends Vue {
 
         up_down(selection: string) {//increase number
-
-        //if(this.$store.state.select_plan === "free") {
-
-            //if(this.$store.state.back_data[0] ==  "＞" && this.$store.state.back_data[1] > this.$store.state.back_data[2]) {//UP
+            if(this.$store.state.back_data[0] ==  "＞" && this.$store.state.back_data[1] > this.$store.state.back_data[2]) {//UP
                     this.$store.dispatch("UpDownNumber", selection);
-            //} 
+            } 
             
-            //if(this.$store.state.back_data[0] ==  "＜" && this.$store.state.back_data[1] < this.$store.state.back_data[2]){//DOWN
-               // this.$store.dispatch("UpDownNumber", selection);
-           // }
-
-       // }
-            
-
-           /* if(selection === "up") {
-
-                this.$store.dispatch("show_bord", true);
-
-            }*/
+            if(this.$store.state.back_data[0] ==  "＜" && this.$store.state.back_data[1] < this.$store.state.back_data[2]){//DOWN
+                this.$store.dispatch("UpDownNumber", selection);
+            }
             
             /*this.$store.dispatch("UpDownNumber", selection);*/
             //console.log('t');
