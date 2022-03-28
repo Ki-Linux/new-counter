@@ -60,7 +60,7 @@
                         
 
                         //選択肢を表示
-                        if(this.first_set_word_or_img) {//初めの１回
+                        /*if(this.first_set_word_or_img) {//初めの１回
 
                             const choose_img = this.$store.state.back_data;
 
@@ -68,11 +68,11 @@
                                 this.choose_imgs.splice(i - 3, 1, choose_img[i]);
                             }
 
-                            this.first_set_word_or_img = false;
+                            this.first_set_word_or_img = false;*/
 
                             
 
-                        } else {//2回目から
+                        //} else {//2回目から
 
                             //if(this.$store.state.select_plan === "free") {// free plan
 
@@ -82,7 +82,7 @@
 
                         //}
 
-                        }
+                        //}
 
                         
                         
