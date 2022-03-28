@@ -128,8 +128,15 @@ export const mutations = {
         console.log(state.canClick)
     },
 
-    planSelect(state, content) {
+    planSelect_arrayDelete(state, content) {
         state.select_plan = content;
+
+        const back = state.back_data;
+        const select = state.back_select_data;
+
+        back.splice(0, back.length);
+        select.splice(0, select.length);
+        
     },
 
     chooseData(state, content) {
@@ -197,8 +204,8 @@ export const actions = {
         context.commit("changeClick", judge);
     },
 
-    planSelect(context, plan) {
-        context.commit("planSelect", plan);
+    planSelect_arrayDelete(context, plan) {
+        context.commit("planSelect_arrayDelete", plan);
     },
 
     chooseData(context, data) {

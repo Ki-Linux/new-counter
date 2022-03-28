@@ -98,7 +98,7 @@ created(): void{//選択の数字
 
     //planをvuexに入れる
     const plan = this.$route.params.optionNum
-    this.$store.dispatch("planSelect", plan);
+    this.$store.dispatch("planSelect_arrayDelete", plan);
 
     console.log(this.imgs_data)
 }
@@ -256,11 +256,38 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
     //console.log(this.save_storage);//保存[不等号,目標値,現在値,写真]
         
 
-        const send_data_go = () => {
+        const send_data_go = () => {//実行
 
             if(this.$route.params.optionNum !== "free") {//パラメータがfree以外のとき
 
-                let img_word_num = 3;
+
+                let send_array: string[] = this.words_data;//文字のデータを送る
+
+                if(this.show_select_picture) {//写真のデータを送る
+
+                    send_array = this.imgs_data;
+
+                }
+
+                console.log(send_array);
+
+                if(!this.show_select_word && !this.show_select_picture) {
+
+                    send_array.splice(0, 0, "");
+
+                }
+
+                if(send_array.length === 0) {
+
+                    this.attention = "写真または文字がありません。";
+                    return;
+                }
+
+                this.$store.dispatch("inSelectData", send_array);
+
+                
+
+                /*let img_word_num = 3;
 
                 row.splice(3, 1);//default
 
@@ -297,9 +324,13 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 
                     console.log(row);
 
-                }
+                }*/
 
                 
+            } else {
+
+                this.$store.dispatch("inData", row);
+
             }
 
             //データをVuexへ
@@ -307,7 +338,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 
             //if(url_name === "free") {//freeのときにvuexに入れるデータ
 
-                this.$store.dispatch("inData", row);
+                
 
             //} else {//selectのときにvuexに入れるデータ
 
@@ -322,37 +353,34 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
             this.$router.push('/counterDo/counter_this/' + url_name);
 
         }
+
+
         if(this.save_storage[0] === "＞") {
             if(this.save_storage[1] > this.save_storage[2]) {
 
-            
-
+                //値が正しければ次へ実行
                 send_data_go();
+                return;
                 
-            } else {
-                this.attention = "目標値・現在値が正しくありません";
-            }
+            } 
         }
         
         if(this.save_storage[0] === "＜") {
             if(this.save_storage[1] < this.save_storage[2]) {
+
+                //値が正しければ次へ実行
                 send_data_go();
-            } else {
-                this.attention = "目標値・現在値が正しくありません";
+                return;
+
             }
         }
-        //const not_send: boolean = (row[0] == "＞" && row[1] <= row[2]);
-        //const not_send_two:boolean = (row[0] == "＜" && row[1] >= row[2]);
-        //if(!not_send && !not_send_two) {
-                        
-            //データをVuexへ
-            //this.$store.dispatch("inData", row);
-            //次のページへ
-            //this.$router.push('/free_login_bothupdown');
-        /*} else {
-            this.attention = "目標値・現在値が正しくありません";
-        }*/
-        //console.log(row);
+
+       
+        this.attention = "目標値・現在値が正しくありません";
+
+
+
+       
     }
 }
 </script>
@@ -390,14 +418,14 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 font-size: 20px;
             }
             &:nth-of-type(3) {
-                margin-right: $em_size * 6;
+                margin-right: $em_size * 5;
             }
         }
         
         .to_left {
             
             //margin-right: 270px;
-            margin-right: $em_size * 5;
+            margin-right: $em_size * 6;
 
             li{
 
@@ -406,9 +434,13 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
             }
 
             
+
+            
         }
         .picture_word li {
             margin-top: 80px;
+
+            
         }
         .show_word {/* 写真or文字orなし */
             font-size: 25px;
@@ -485,7 +517,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
     
         } 
         .end_button {
-            margin-left: 2rem;
+            margin-left: 1rem;
             p {
                 color: red;
             }
