@@ -23,12 +23,32 @@
     export default class calculationComplete extends Vue {
 
         up_down(selection: string) {//increase number
-            if(this.$store.state.back_data[0] ==  "＞" && this.$store.state.back_data[1] > this.$store.state.back_data[2]) {//UP
-                    this.$store.dispatch("UpDownNumber", selection);
+
+
+
+            const countUpDown = (select: string) => {
+
+                this.$store.dispatch("UpDownNumber", select);
+
+            }
+
+            const state_data = this.$store.state.back_data;
+
+            const data_zero = state_data[0];
+            const data_one = state_data[1];
+            const data_two = state_data[2];
+
+
+            if(data_zero ===  "＞" && data_one > data_two) {//UP
+
+                countUpDown(selection);
+                    
             } 
             
-            if(this.$store.state.back_data[0] ==  "＜" && this.$store.state.back_data[1] < this.$store.state.back_data[2]){//DOWN
-                this.$store.dispatch("UpDownNumber", selection);
+            if(data_zero ===  "＜" && data_one < data_two){//DOWN
+
+                countUpDown(selection);
+                
             }
             
             /*this.$store.dispatch("UpDownNumber", selection);*/

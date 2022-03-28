@@ -329,7 +329,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 
             }
 
-            //this.$store.dispatch("inData", row);
+            this.$store.dispatch("inData", row);
             console.log(row)
 
             //データをVuexへ

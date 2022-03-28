@@ -4,7 +4,7 @@
     <div id="target_number">
         <div class="target_present">
             <h1>目標 : {{ backTargetData }}</h1>
-            <h1>現在 : {{ backPresentData }}</h1>
+            <h1>現在 : {{ showData }}</h1>
             <!--<p>{{ $store.state.back_data }}</p>
             <p>{{ backPresentData }}</p>
             <p>{{ backTargetData }}</p>-->
@@ -15,8 +15,9 @@
     import { Component, Vue } from 'vue-property-decorator';
     @Component
     export default class targetNumber extends Vue {
-        get backPresentData() {//現在のデータ　vuexから
-            return this.$store.getters.backPresentData;
+        
+        get showData() {//現在のデータ　vuexから
+            return this.$store.getters.showData;
         };
         get backTargetData() {//目標のデータ　vuexから
             return this.$store.getters.backTargetData;

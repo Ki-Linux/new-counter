@@ -7,9 +7,9 @@ Vue.use(Vuex)
 
 export const state = () => ({
     plan: 'free',
-    first_data: 0,
     back_data: [],//["", 8, 9, ""],
     back_select_data: [],
+    show_data: [0, ""],//[現在表示されている文字や画像の数, 文字や画像(freeは同じものが繰り返されるから１つだけ)]
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
     token: null,
     username: "",
@@ -35,34 +35,43 @@ export const mutations = {
 
     //Vue.set(state.back_data, 2, state.back_data[2]++);
 
-        if(selection === "up") {
+        if(selection === "up") {//数を増やす
 
-            state.which_button[0] = selection; 
+            //state.show_data.splice(0, 1, state_show_data++);
+            //state.which_button[0] = selection; 
 
-                if(state.select_plan === "free") {
+                /*if(state.select_plan === "free") {
 
-                    state.back_data.splice(2, 1, state.back_data[2]+=1);
+                    state.back_data.splice(2, 1, state.back_data[2]++);
 
-                }
+                }*/
 
-                state.back_data.splice(2, 1, state.back_data[2]+=1);
+            if(state.select_plan === "free") {
+
+                state.show_data.splice(0, 1, state.back_data[2]+=1);//表示されている数字にプラス１する
+
+            }
+
+            
                 
             
             
             //Vue.set(state., 2, state.back_data[2]++); 
-        } else if(selection === "down"){
+        } else if(selection === "down"){//数を減らす
 
-            state.which_button[0] = selection;
+            //state.which_button[0] = selection;
 
-            state.back_data.splice(2, 1, state.back_data[2]-=1);
+            if(state.select_plan === "free") {
+
+                state.show_data.splice(0, 1, state.back_data[2]-=1);//表示されている数字にマイナス１する
+            }
+
             
-
-                
-            
+ 
 
         } else {//初期化
 
-            state.back_data.splice(2, 1, state.first_data);
+            //state.back_data.splice(2, 1, state.first_data);
             state.which_button[0] = selection;
         }
 
@@ -103,7 +112,7 @@ export const mutations = {
 
         }
 
-        state.first_data = row[2];//初期化の方の数字
+        //state.back_data = row[2];//初期化の方の数字
 
     },
 
@@ -155,12 +164,12 @@ export const mutations = {
 
 
 export const getters = {
-    
+
+    showData(state) {//freeプランのときのみ
+        return state.show_data[0];
+    },
     whichButtonData(state) {
         return state.which_button;
-    },
-    backPresentData(state) {
-        return state.back_data[2];
     },
     backTargetData(state) {
         return state.back_data[1];

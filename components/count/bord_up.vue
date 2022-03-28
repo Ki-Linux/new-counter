@@ -5,8 +5,8 @@
             <p v-else>{{ show_img }}</p>
         </div>
         <div class="leftover">
-            <p v-if="$store.state.back_data[0] == '＞'">残り: {{ backTargetData - backPresentData }}</p>
-            <p v-else>残り: {{ backPresentData - backTargetData }}</p>
+            <p v-if="$store.state.back_data[0] == '＞'">残り: {{ backTargetData - showData }}</p>
+            <p v-else>残り: {{ showData - backTargetData }}</p>
         </div>
         <div class="select_bord">
             <ul v-for="(choose_img, index) in choose_imgs" :key="choose_img">
@@ -23,14 +23,15 @@
         choose_imgs: string[] = [];
         only_first: boolean = true;
         first_set_word_or_img: boolean = true;
+        get showData() {//free planのときのみ
+            return this.$store.getters.showData;
+        };
         get whichButtonData() {// get up or down data
             
             
             return this.$store.getters.whichButtonData;
         };
-        get backPresentData() {//現在のデータ　vuexから
-            return this.$store.getters.backPresentData;
-        };
+        
         get backTargetData() {//目標のデータ　vuexから
             return this.$store.getters.backTargetData;
         };
@@ -43,7 +44,7 @@
                 if(this.only_first === true) {//saisho
 
                     let count = 1;
-                    while(count <= this.backPresentData) {
+                    while(count <= this.showData) {
                         this.array_imgs.push(this.$store.getters.showImg);
                         count++;
                     //console.log(this.array_imgs);
