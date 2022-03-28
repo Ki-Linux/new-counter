@@ -14,7 +14,6 @@ export const state = () => ({
     username: "",
     canClick: true,
     select_plan: "",
-    show_bord: false,
     /*plugins: [
         createPersistedState({
             storage: {
@@ -42,15 +41,10 @@ export const mutations = {
                 if(state.select_plan === "free") {
 
                     state.back_data.splice(2, 1, state.back_data[2]+=1);
-                    
 
-                } //else {
+                }
 
-                    //state.back_data.splice(2, 1, state.back_data[2]+=1);
-
-                //}
-
-                
+                state.back_data.splice(2, 1, state.back_data[2]);
                 
             
             
@@ -126,12 +120,6 @@ export const mutations = {
         state.back_data.splice(3, 1, content);
     },
 
-    showBord(state, content) {
-
-        state.show_bord = content;
-
-    }
-
 
 };
 
@@ -149,9 +137,6 @@ export const getters = {
     },
     showImg(state) {//free
         return state.back_data[3];
-    },
-    showBord(state) {//free
-        return state.show_bord;
     },
     isAuthenticated(state) {
         return state.token != null
@@ -202,12 +187,6 @@ export const actions = {
     chooseData(context, data) {
 
         context.commit("chooseData", data);
-
-    },
-
-    show_bord(context, data_judge) {
-
-        context.commit("showBord", data_judge);
 
     }
 
