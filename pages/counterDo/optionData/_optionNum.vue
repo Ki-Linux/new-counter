@@ -218,7 +218,7 @@ decidedWord(): void {//文字
             
         }
 
-        if(this.word_position < 10) {
+        if(this.word_position < 10) {//10まで追加できる
 
             this.words_data.splice(this.word_position, 0, this.written);
             this.written = "";
