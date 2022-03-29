@@ -19,9 +19,7 @@
     import { Component, Vue } from 'vue-property-decorator';
     @Component
     export default class bord extends Vue {
-        choose_imgs: string[] = [];
-        only_first: boolean = true;
-        first_set_word_or_img: boolean = true;
+
         get showData() {//free planのときのみ
             return this.$store.getters.showData;
         };
@@ -51,37 +49,21 @@
             }
 
             return arrayWordImg;
-
-
-            //} else {//free以外
-
-                /*const img_data = this.$store.state.back_data;
-
-
-                for(let i=3; i < img_data.length; i++) {//Vuexの配列から値を表示
-                    this.array_imgs.splice(i - 3, 0, img_data[i]);
-                }*/
-
-
-            //}
     
             
         }
 
 
 
-        chooseData(choose_num: number) {
+        chooseData(choose_num: number) {//クリックした選択肢のデータ
 
-            this.$store.dispatch("chooseData", this.choose_imgs[choose_num]);
+            //this.$store.dispatch("chooseData", this.choose_imgs[choose_num]);
 
-
+            //this.$store.state.select_data = false;
+            console.log(choose_num)
 
         }
-        /*created(): void {
-                
-                
-            
-        }*/
+        
     }
 </script>
 <style lang="scss">
