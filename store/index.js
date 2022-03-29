@@ -113,8 +113,12 @@ export const mutations = {
 
         }
 
-        state.show_data[0] = row[2];//現在値を入れる
-        state.show_data[1] = row[3];//初期値を入れる
+
+        
+
+        for(let i=0; i< 2; i++) {//1番最初の文字や画像を入れる 現在値を入れる
+            state.show_data[i] = row[i + 2];
+        }
 
 
         //state.back_data = row[2];//初期化の方の数字
