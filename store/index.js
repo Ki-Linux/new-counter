@@ -125,6 +125,13 @@ export const mutations = {
 
     },
 
+    chooseData(state, content) {
+
+        state.show_data.splice(0, 1, state.show_data[0]+=1);//数を＋1する
+        state.show_data.splice(state.show_data.length, 0, content[0]);//選択したデータを入れる
+        state.show_select = content[1];//選択画面を閉じる
+        
+    },
     loginTokenName(state, res) {//トークンとユーザーネームをstoreへ
         state.token = res[0];
         state.username = res[1];
@@ -146,21 +153,19 @@ export const mutations = {
         console.log(state.canClick)
     },
 
-    planSelect_arrayDelete(state, content) {
+    planSelect_arrayDelete(state, content) {//データを削除
         state.select_plan = content;
 
         const back = state.back_data;
         const select = state.back_select_data;
+        const show_data = state.show_data;
 
         back.splice(0, back.length);
         select.splice(0, select.length);
+        show_data.splice(0, show_data.length);
         
     },
 
-    chooseData(state, content) {
-
-        state.back_data.splice(3, 1, content);
-    },
 
     inSelectData(state, content) {
 
@@ -212,6 +217,12 @@ export const actions = {
         context.commit("dataInto", row);
     },
 
+    chooseData(context, data) {
+
+        context.commit("chooseData", data);
+
+    },
+
     loginTokenName(context, res) {//setToken to cookie
 
         context.commit("loginTokenName", res);
@@ -233,12 +244,6 @@ export const actions = {
 
     planSelect_arrayDelete(context, plan) {
         context.commit("planSelect_arrayDelete", plan);
-    },
-
-    chooseData(context, data) {
-
-        context.commit("chooseData", data);
-
     },
 
     inSelectData(context, send_array) {

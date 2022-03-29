@@ -9,7 +9,7 @@
             <p v-else>残り: {{ showData - backTargetData }}</p>
         </div>
         <div class="select_bord" v-if="$store.state.select_plan !== 'free' && showSelect">
-            <ul v-for="(select_data, index) in $store.state.back_select_data" :key="select_data">
+            <ul v-for="(select_data, index) in back_select_data" :key="select_data">
                <li @click="chooseData(index)">{{ select_data }}</li> 
             </ul>
         </div>
@@ -19,8 +19,16 @@
     import { Component, Vue } from 'vue-property-decorator';
     @Component
     export default class bord extends Vue {
+        back_select_data: string[] = [];
+
+        mounted() {
+
+            this.back_select_data = this.$store.state.back_select_data
+
+        };
 
         get showData() {//free planのときのみ
+
             return this.$store.getters.showData;
         };
 
@@ -40,9 +48,10 @@
         get showWordImg() {//img data　vuexから
 
             let arrayWordImg: string[] = [];
+            const default_data = this.$store.state.back_data[2];
             const show_word_img = this.$store.getters.showWordImg;
 
-            for(let i=0; i < this.showData; i++) {
+            for(let i=0; i < default_data; i++) {
 
                 arrayWordImg.splice(i, 0, show_word_img);
 
@@ -57,7 +66,7 @@
 
         chooseData(choose_num: number) {//クリックした選択肢のデータ
 
-            //this.$store.dispatch("chooseData", this.choose_imgs[choose_num]);
+            this.$store.dispatch("chooseData", [this.back_select_data[choose_num], false]);//選択した文字、画像データ 選択データを閉じる
 
             //this.$store.state.select_data = false;
             console.log(choose_num)
