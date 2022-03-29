@@ -6,8 +6,7 @@ import * as Cookies from 'js-cookie'
 Vue.use(Vuex)
 
 export const state = () => ({
-    plan: 'free',
-    back_data: [],//["", 8, 9, ""],
+    back_data: [],//["", 目標値, 現在値, ""],
     back_select_data: [],
     show_data: [0, ""],//[現在表示されている文字や画像の数, 文字や画像(freeは同じものが繰り返されるから１つだけ)]
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
@@ -32,6 +31,8 @@ export const mutations = {
 
     UpDownNumber(state, selection) {
 
+        const show_data = state.show_data;
+
 
     //Vue.set(state.back_data, 2, state.back_data[2]++);
 
@@ -40,15 +41,15 @@ export const mutations = {
             //state.show_data.splice(0, 1, state_show_data++);
             //state.which_button[0] = selection; 
 
-                /*if(state.select_plan === "free") {
+            /*if(state.select_plan === "free") {
 
-                    state.back_data.splice(2, 1, state.back_data[2]++);
+                state.back_data.splice(2, 1, state.back_data[2]++);
 
-                }*/
+            }*/
 
             if(state.select_plan === "free") {
 
-                state.show_data.splice(0, 1, state.back_data[2]+=1);//表示されている数字にプラス１する
+                show_data.splice(0, 1, show_data[0]+=1);//表示されている数字にプラス１する
 
             }
 
@@ -63,7 +64,7 @@ export const mutations = {
 
             if(state.select_plan === "free") {
 
-                state.show_data.splice(0, 1, state.back_data[2]-=1);//表示されている数字にマイナス１する
+                show_data.splice(0, 1, show_data[0]-=1);//表示されている数字にマイナス１する
             }
 
             
@@ -107,10 +108,14 @@ export const mutations = {
             //Vue.set(state.back_data, i, row[i]);
             
 
-            which_array.splice(i, 1, row[i]);//文字や画像を入れる(!!基本となるデータ)
+            which_array.splice(i, 1, row[i]);//back_dataかback_select_dataに文字や画像を入れる(!!基本となるデータ)
 
 
         }
+
+        state.show_data[0] = row[2];//現在値を入れる
+        state.show_data[1] = row[3];//初期値を入れる
+
 
         //state.back_data = row[2];//初期化の方の数字
 
@@ -174,8 +179,8 @@ export const getters = {
     backTargetData(state) {
         return state.back_data[1];
     },
-    showImg(state) {//free
-        return state.back_data[3];
+    showWordImg(state) {//free
+        return state.show_data[1];
     },
     isAuthenticated(state) {
         return state.token != null

@@ -1,8 +1,8 @@
 <template>
     <div id="bord_up">
-        <div class="contents_item" v-for="(show_img, img_Index) in showImg" :key="img_Index">
-            <img v-if="show_img.match('http')" :src="show_img" alt="select_img">
-            <p v-else>{{ show_img }}</p>
+        <div class="contents_item" v-for="(show_word_img, img_Index) in showWordImg" :key="img_Index">
+            <img v-if="show_word_img.match('http')" :src="show_word_img" alt="select_img">
+            <p v-else>{{ show_word_img }}</p>
         </div>
         <div class="leftover">
             <p v-if="$store.state.back_data[0] == '＞'">残り: {{ backTargetData - showData }}</p>
@@ -19,7 +19,6 @@
     import { Component, Vue } from 'vue-property-decorator';
     @Component
     export default class bord extends Vue {
-        array_imgs: string[] = [];
         choose_imgs: string[] = [];
         only_first: boolean = true;
         first_set_word_or_img: boolean = true;
@@ -35,75 +34,19 @@
         get backTargetData() {//目標のデータ　vuexから
             return this.$store.getters.backTargetData;
         };
-        get showImg() {//img data　vuexから
+        get showWordImg() {//img data　vuexから
 
-                
+            let arrayWordImg: string[] = [];
+            const show_word_img = this.$store.getters.showWordImg;
 
-            //if(this.$store.state.select_plan === "free") {//free
+            for(let i=0; i < this.showData; i++) {
 
-                if(this.only_first === true) {//saisho
+                arrayWordImg.splice(i, 0, show_word_img);
 
-                    let count = 1;
-                    while(count <= this.showData) {
-                        this.array_imgs.push(this.$store.getters.showImg);
-                        count++;
-                    //console.log(this.array_imgs);
-                    }
-                    this.only_first = false;
-                    return this.array_imgs;
+            }
 
-                } else {//tugikara
+            return arrayWordImg;
 
-                    if(this.whichButtonData[0] == "up") {
-
-                        
-
-                        
-
-                        //選択肢を表示
-                        /*if(this.first_set_word_or_img) {//初めの１回
-
-                            const choose_img = this.$store.state.back_data;
-
-                            for(let i=3; i < choose_img.length; i++) {//Vuexの配列から値を表示
-                                this.choose_imgs.splice(i - 3, 1, choose_img[i]);
-                            }
-
-                            this.first_set_word_or_img = false;*/
-
-                            
-
-                        //} else {//2回目から
-
-                            //if(this.$store.state.select_plan === "free") {// free plan
-
-                            this.array_imgs.push(this.$store.getters.showImg);
-
-                            return this.array_imgs;
-
-                        //}
-
-                        //}
-
-                        
-                        
-
-                    } else if(this.whichButtonData[0] == "down") {
-                        this.array_imgs.splice(0,1);
-                        return this.array_imgs;
-                    } else {//初期化
-                        this.array_imgs = [];
-                        let count = 1;
-                        while(count <= this.$store.state.first_data) {
-                        this.array_imgs.push(this.$store.getters.showImg);
-                        count++;
-                    }
-                    return this.array_imgs;
-                    
-                    
-                    }
-                
-                }
 
             //} else {//free以外
 
