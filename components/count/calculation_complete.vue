@@ -28,8 +28,9 @@
 
             const countUpDown = (select: string) => {
 
-                this.$store.dispatch("UpDownNumber", select);//+-1
-                this.$store.dispatch("showSelect", true);
+                this.$store.dispatch("UpDownNumber", [select, true]);//+-1 　freeプラン以外のときに+-1ではなく選択肢表示
+                
+                //this.$store.dispatch("showSelect", true);
 
             }
 

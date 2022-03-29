@@ -37,7 +37,7 @@ export const mutations = {
 
     //Vue.set(state.back_data, 2, state.back_data[2]++);
 
-        if(selection === "up") {//数を増やす
+        if(selection[0] === "up") {//数を増やす
 
             //state.show_data.splice(0, 1, state_show_data++);
             //state.which_button[0] = selection; 
@@ -51,15 +51,16 @@ export const mutations = {
             if(state.select_plan === "free") {
 
                 show_data.splice(0, 1, show_data[0]+=1);//表示されている数字にプラス１する
+                return;
 
             }
 
-            
+            state.show_select = selection[1];//freeプラン以外のときはselect_dataをtrueにする
                 
             
             
             //Vue.set(state., 2, state.back_data[2]++); 
-        } else if(selection === "down"){//数を減らす
+        } else if(selection[0] === "down"){//数を減らす
 
             //state.which_button[0] = selection;
 
@@ -74,7 +75,7 @@ export const mutations = {
         } else {//初期化
 
             //state.back_data.splice(2, 1, state.first_data);
-            state.which_button[0] = selection;
+            state.which_button[0] = selection[0];
         }
 
         state.which_button.splice(1, 1, state.which_button[1]+=1);//getter反応のため
@@ -121,12 +122,6 @@ export const mutations = {
         } 
         
         show_data[1] = state.back_select_data[0];//free以外のときの1番最初の文字や画像を入れる
-
-    },
-
-    showSelect(state, judge) {
-
-        state.show_select = judge;
 
     },
 
@@ -182,7 +177,7 @@ export const getters = {
     showData(state) {//freeプランのときのみ
         return state.show_data[0];
     },
-    showSelect(state) {
+    showSelect(state) {//選択肢の表示
         return state.show_select;
     },
     whichButtonData(state) {
@@ -215,10 +210,6 @@ export const actions = {
     inData(context, row) {
 
         context.commit("dataInto", row);
-    },
-
-    showSelect(context, judge) {
-        context.commit("showSelect", judge);
     },
 
     loginTokenName(context, res) {//setToken to cookie
