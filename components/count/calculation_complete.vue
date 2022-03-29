@@ -28,7 +28,8 @@
 
             const countUpDown = (select: string) => {
 
-                this.$store.dispatch("UpDownNumber", select);
+                this.$store.dispatch("UpDownNumber", select);//+-1
+                this.$store.dispatch("showSelect", true);
 
             }
 

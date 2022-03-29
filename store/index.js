@@ -9,6 +9,7 @@ export const state = () => ({
     back_data: [],//["", 目標値, 現在値, ""],
     back_select_data: [],
     show_data: [0, ""],//[現在表示されている文字や画像の数, 文字や画像(freeは同じものが繰り返されるから１つだけ)]
+    show_select: false,//選択を表示するかどうか
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
     token: null,
     username: "",
@@ -123,6 +124,12 @@ export const mutations = {
 
     },
 
+    showSelect(state, judge) {
+
+        state.show_select = judge;
+
+    },
+
     loginTokenName(state, res) {//トークンとユーザーネームをstoreへ
         state.token = res[0];
         state.username = res[1];
@@ -175,6 +182,9 @@ export const getters = {
     showData(state) {//freeプランのときのみ
         return state.show_data[0];
     },
+    showSelect(state) {
+        return state.show_select;
+    },
     whichButtonData(state) {
         return state.which_button;
     },
@@ -205,6 +215,10 @@ export const actions = {
     inData(context, row) {
 
         context.commit("dataInto", row);
+    },
+
+    showSelect(context, judge) {
+        context.commit("showSelect", judge);
     },
 
     loginTokenName(context, res) {//setToken to cookie

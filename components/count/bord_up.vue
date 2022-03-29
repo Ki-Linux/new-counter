@@ -8,9 +8,9 @@
             <p v-if="$store.state.back_data[0] == '＞'">残り: {{ backTargetData - showData }}</p>
             <p v-else>残り: {{ showData - backTargetData }}</p>
         </div>
-        <div class="select_bord">
-            <ul v-for="(choose_img, index) in choose_imgs" :key="choose_img">
-               <li @click="chooseData(index)">{{ choose_img }}</li> 
+        <div class="select_bord" v-if="$store.state.select_plan !== 'free' && showSelect">
+            <ul v-for="(select_data, index) in $store.state.back_select_data" :key="select_data">
+               <li @click="chooseData(index)">{{ select_data }}</li> 
             </ul>
         </div>
     </div>
@@ -25,6 +25,11 @@
         get showData() {//free planのときのみ
             return this.$store.getters.showData;
         };
+
+        get showSelect() {
+            return this.$store.getters.showSelect;
+        };
+
         get whichButtonData() {// get up or down data
             
             
