@@ -92,14 +92,8 @@ export const mutations = {
 
         const into_array = row.length;
 
-        //freeのときに入れる配列
-        let which_array = state.back_data;
-
-        if(state.select_plan !== "free") {//free以外のときに入れる配列
-
-            which_array = state.back_select_data;
-
-        } 
+        
+        let which_array = state.back_data;//freeのときに入れる配列
 
         
 
@@ -114,14 +108,18 @@ export const mutations = {
         }
 
 
+        const show_data = state.show_data;
+        show_data[0] = row[2];//現在値を入れる
+
+
+        if(state.select_plan === "free") {//freeのときの文字や画像を入れる
+      
+            show_data[1] = row[3];
+            return;
+
+        } 
         
-
-        for(let i=0; i< 2; i++) {//1番最初の文字や画像を入れる 現在値を入れる
-            state.show_data[i] = row[i + 2];
-        }
-
-
-        //state.back_data = row[2];//初期化の方の数字
+        show_data[1] = state.back_select_data[0];//free以外のときの1番最初の文字や画像を入れる
 
     },
 

@@ -283,6 +283,8 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                     return;
                 }
 
+                console.log(send_array + 'ui')
+
                 this.$store.dispatch("inSelectData", send_array);
 
                 
