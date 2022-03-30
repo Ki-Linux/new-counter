@@ -10,7 +10,6 @@ export const state = () => ({
     back_select_data: [],
     show_data: [],//[現在表示されている文字や画像の数, 文字や画像(freeは同じものが繰り返されるから１つだけ)の代数]
     show_select: false,//選択を表示するかどうか
-    which_button: ["", 0],//0はgetterが反応するようにするためのもの
     token: null,
     username: "",
     canClick: true,
@@ -39,14 +38,6 @@ export const mutations = {
 
         if(selection[0] === "up") {//数を増やす
 
-            //state.show_data.splice(0, 1, state_show_data++);
-            //state.which_button[0] = selection; 
-
-            /*if(state.select_plan === "free") {
-
-                state.back_data.splice(2, 1, state.back_data[2]++);
-
-            }*/
 
             if(state.select_plan === "free") {
 
@@ -62,7 +53,7 @@ export const mutations = {
             //Vue.set(state., 2, state.back_data[2]++); 
         } else if(selection[0] === "down"){//数を減らす
 
-            //state.which_button[0] = selection;
+     
 
             //if(state.select_plan === "free") {
 
@@ -78,12 +69,9 @@ export const mutations = {
 
         } else {//初期化
 
-            //state.back_data.splice(2, 1, state.first_data);
-            state.which_button[0] = selection[0];
+            
         }
 
-        state.which_button.splice(1, 1, state.which_button[1]+=1);//getter反応のため
-        //localStorage.setItem('set_JSON', JSON.stringify(state.back_data));//tolocalStorage
 
     },
 
@@ -221,9 +209,6 @@ export const getters = {
     },
     showSelect(state) {//選択肢の表示
         return state.show_select;
-    },
-    whichButtonData(state) {
-        return state.which_button;
     },
     backTargetData(state) {
         return state.back_data[1];
