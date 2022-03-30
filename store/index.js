@@ -121,12 +121,31 @@ export const mutations = {
 
         } 
 
-        const img_num = state.back_select_data[0];//1番最初の数を入れる(デフォルトの表示)
+
+        const select_data = state.back_select_data;//登録したデータすべて1種類ずつ
+
+        
+
+            
+
+                //free以外のときに文字や画像を入れる(入れる個数)
+                    let time = 0;
 
 
-        for(let i=1; i <= show_data[0]; i++) {
-            show_data.splice(i, 0, img_num);//free以外のときの1番最初の文字や画像を入れる
-        }
+                        while(time < show_data[0]) {//回数
+                            for(let i=1; i <= select_data.length; i++) {//具体的な入れるもの　select_dataからデータを取ってくる
+
+                                show_data.splice(i, 0, select_data[i - 1]);
+                                time++;
+
+                                if(time === show_data[0]) {//回数に達したら強制終了
+                                    return;
+                                }
+                            }
+                        }
+
+                //}
+        
         
         
 
@@ -135,7 +154,10 @@ export const mutations = {
     chooseData(state, content) {
 
         state.show_data.splice(0, 1, state.show_data[0]+=1);//数を＋1する
-        state.show_data.splice(state.show_data.length, 0, content[0]);//選択したデータを入れる
+
+        //const alter_num = state.back_select_data.indexOf(content[0]);//文字列ではなく代わりに数字を入れる
+
+        state.show_data.splice(state.show_data.length, 0, content[0]);//選択したデータを入れる(数字のデータは1から始めるので+1する)
         state.show_select = content[1];//選択画面を閉じる
         
     },
