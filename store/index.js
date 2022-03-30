@@ -64,9 +64,13 @@ export const mutations = {
 
             //state.which_button[0] = selection;
 
-            if(state.select_plan === "free") {
+            //if(state.select_plan === "free") {
 
                 show_data.splice(0, 1, show_data[0]-=1);//表示されている数字にマイナス１する
+               
+            //}
+            if(state.select_plan !== "free") {//show_dataから一番最後のデータを削除する
+                show_data.splice(show_data.length - 1, 1);
             }
 
             
