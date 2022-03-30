@@ -23,8 +23,7 @@
 
         mounted() {
 
-            this.back_select_data = this.$store.state.back_select_data
-
+            this.back_select_data = this.$store.state.back_select_data;
         };
 
         get showData() {//free planのときのみ
@@ -45,17 +44,34 @@
         get backTargetData() {//目標のデータ　vuexから
             return this.$store.getters.backTargetData;
         };
-        get showWordImg() {//img data　vuexから
+        get showWordImg() {//img data　vuexから show_data[1]
 
             let arrayWordImg: string[] = [];
-            const default_data = this.$store.state.back_data[2];
-            const show_word_img = this.$store.getters.showWordImg;
+            
 
-            for(let i=0; i < default_data; i++) {
+            let into_data = this.$store.getters.showWordImg;//freeプランのときは同じ数を入れる
 
-                arrayWordImg.splice(i, 0, show_word_img);
+            for(let i=0; i < this.showData; i++) {
+
+                if(this.$store.state.select_plan !== "free") {
+
+                    into_data = this.$store.state.show_data[i + 1];//freeプラン以外のときは違うデータを代入する
+                }
+
+                arrayWordImg.splice(i, 0, into_data);
 
             }
+
+            //free = show_data内は[数字, 1つのデータ]
+            //free以外 = show_data内は[数字, データ, データ, データ...]
+
+
+            
+
+            /*if(this.$store.state.select_plan !== "free") {
+
+                arrayWordImg.splice(0, 1, this.$store.state.back_select_data[0])
+            }*/
 
             return arrayWordImg;
     

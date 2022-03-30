@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export const state = () => ({
     back_data: [],//["", 目標値, 現在値, ""],
     back_select_data: [],
-    show_data: [0, ""],//[現在表示されている文字や画像の数, 文字や画像(freeは同じものが繰り返されるから１つだけ)]
+    show_data: [],//[現在表示されている文字や画像の数, 文字や画像(freeは同じものが繰り返されるから１つだけ)の代数]
     show_select: false,//選択を表示するかどうか
     which_button: ["", 0],//0はgetterが反応するようにするためのもの
     token: null,
@@ -120,8 +120,15 @@ export const mutations = {
             return;
 
         } 
+
+        const img_num = state.back_select_data[0];//1番最初の数を入れる(デフォルトの表示)
+
+
+        for(let i=1; i <= show_data[0]; i++) {
+            show_data.splice(i, 0, img_num);//free以外のときの1番最初の文字や画像を入れる
+        }
         
-        show_data[1] = state.back_select_data[0];//free以外のときの1番最初の文字や画像を入れる
+        
 
     },
 
