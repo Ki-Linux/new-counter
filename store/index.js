@@ -132,8 +132,10 @@ export const mutations = {
                     let time = 0;
 
 
-                        while(time < show_data[0]) {//回数
+                        while(time <= show_data[0]) {//回数
                             for(let i=1; i <= select_data.length; i++) {//具体的な入れるもの　select_dataからデータを取ってくる
+                                
+                                
 
                                 show_data.splice(i, 0, select_data[i - 1]);
                                 time++;
@@ -141,6 +143,8 @@ export const mutations = {
                                 if(time === show_data[0]) {//回数に達したら強制終了
                                     return;
                                 }
+
+                                
                             }
                         }
 
