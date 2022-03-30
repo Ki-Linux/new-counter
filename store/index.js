@@ -69,6 +69,16 @@ export const mutations = {
 
         } else {//初期化
 
+            const delete_length = state.back_data[2];
+
+            show_data.splice(0, 1, delete_length);//数字を初期化
+
+            if(state.select_plan !== "free") {//freeプラン以外
+
+                show_data.splice(delete_length + 1, show_data.length - delete_length);//show_dataを初期化
+
+            }
+            
             
         }
 
