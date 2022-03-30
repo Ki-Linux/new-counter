@@ -76,8 +76,7 @@ export const mutations = {
             if(state.select_plan !== "free") {//freeプラン以外
 
                 show_data.splice(delete_length + 1, show_data.length - delete_length);//show_dataを初期化
-
-            }
+            }    
             
             
         }
