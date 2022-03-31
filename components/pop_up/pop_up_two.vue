@@ -5,8 +5,8 @@
             <p>ログインモードでは、カウントするごとに<br>画像を選択することもできます。</p>   
         </div>
         <div class="select_button">
-            <button @click="sameGo">毎回同じ画像</button>
-            <button @click="differenceGo">カウントする<br>ごとに画像を<br>選択</button>
+            <button @click="nextGo('same')">毎回同じ画像</button>
+            <button @click="nextGo('difference')">カウントする<br>ごとに画像を<br>選択</button>
         </div>  
     </div>
 </template>
@@ -22,11 +22,22 @@ export default class popUpTwo extends Vue {
 
     }
 
-    sameGo() {
+    nextGo(which_is: string) {
 
-        const name = this.$store.state.username
-        this.$router.push('/counterDo/optionData/' + name);
+        if(which_is === "same") {
+
+            this.$router.push('/counterDo/optionData/free');
+
+        } else {//diffeerenceのとき
+
+            const name = this.$store.state.username
+            this.$router.push('/counterDo/optionData/' + name);
+
+        }
+
+        
     }
+
     
 }
 </script>

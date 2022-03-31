@@ -18,7 +18,7 @@
                     <input v-if="select_img_chosen" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
                 </div>  
                 <div class="comment">
-                    <textarea name="comment" id="" cols="30" rows="10" maxlength="200" v-model="my_comment"></textarea>
+                    <textarea name="comment" id="" cols="30" rows="10" maxlength="200" placeholder="コメントを入力" v-model="my_comment"></textarea>
                 </div>         
             </div>
             <div class="right_position">
@@ -159,17 +159,17 @@ export default class edit extends Vue {
 
     dataSend() {//databaseへ
 
-        if(this.my_comment === "") {
-
-            this.my_comment = 'コメントがありません。';
-
-        }
-
         if(this.array_check.includes(2)) {
 
             alert('選択していない場所があります。');
 
             return;
+        }
+
+        if(this.my_comment === "") {
+
+            this.my_comment = 'コメントがありません。';
+
         }
 
         if(!this.url.includes('http')) {//画像でないときのみ代入
@@ -256,8 +256,13 @@ html {
 
                .img_box {
 
-                    width: 90%;
+                   p img {
+                       width: 100%;
                     background-color: rgba(187, 187, 187, 0.4);
+
+                   }
+
+                    
 
                 } 
 
