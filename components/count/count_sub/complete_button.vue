@@ -1,7 +1,7 @@
 
 <template>
     <div id="complete_button">
-        <button :class="{ Light_up: backPresentData }" @click="complete">完成</button>
+        <button :class="{ Light_up: showData }" @click="complete">完成</button>
     </div> 
 </template>
 <script lang="ts">
@@ -14,8 +14,8 @@ export default class completeOption extends Vue {
     get backTargetData() {//目標のデータ　vuexから
         return this.$store.getters.backTargetData;
     }
-    get backPresentData() {//現在のデータ　vuexから
-        if(this.$store.getters.backPresentData == this.backTargetData) {
+    get showData() {//現在のデータ　vuexから
+        if(this.$store.getters.showData === this.backTargetData) {
             const light = true;
             return light
         };
@@ -23,7 +23,7 @@ export default class completeOption extends Vue {
     complete() {
         const vuexData = this.$store.state
 
-            if(vuexData.back_data[1] == vuexData.back_data[2]) {
+            if(vuexData.show_data[0] === this.backTargetData) {
 
                 console.log('complete!');
 

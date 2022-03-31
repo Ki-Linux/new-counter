@@ -14,6 +14,7 @@ export const state = () => ({
     username: "",
     canClick: true,
     select_plan: "",
+    
     /*plugins: [
         createPersistedState({
             storage: {
@@ -27,6 +28,8 @@ export const state = () => ({
 
 
 export const mutations = {
+
+    
 
 
     UpDownNumber(state, selection) {
@@ -53,16 +56,20 @@ export const mutations = {
             //Vue.set(state., 2, state.back_data[2]++); 
         } else if(selection[0] === "down"){//数を減らす
 
-     
-
-            //if(state.select_plan === "free") {
+            if(show_data[0] !== 0) {//マイナス値に行かないようにする
 
                 show_data.splice(0, 1, show_data[0]-=1);//表示されている数字にマイナス１する
                
-            //}
-            if(state.select_plan !== "free") {//show_dataから一番最後のデータを削除する
-                show_data.splice(show_data.length - 1, 1);
+            
+                if(state.select_plan !== "free") {//show_dataから一番最後のデータを削除する
+                    show_data.splice(show_data.length - 1, 1);
+                }
+
             }
+
+            //if(state.select_plan === "free") {
+
+                
 
             
  
@@ -73,9 +80,53 @@ export const mutations = {
 
             show_data.splice(0, 1, delete_length);//数字を初期化
 
+           /* if(state.select_plan === "free") {//freeプラン
+
+                show_data.splice(0, 1, );
+            }*/
+
             if(state.select_plan !== "free") {//freeプラン以外
 
-                show_data.splice(delete_length + 1, show_data.length - delete_length);//show_dataを初期化
+                show_data.splice(1, show_data.length - 1);//一回、画像データをすべて削除する
+
+                const select_data = state.back_select_data;//登録したデータすべて1種類ずつ
+
+    //free以外のときに文字や画像を入れる(入れる個数)
+    let time = 0;
+
+
+        while(time <= show_data[0]) {//回数
+            for(let i=1; i <= select_data.length; i++) {//具体的な入れるもの　select_dataからデータを取ってくる
+
+                show_data.splice(i, 0, select_data[i - 1]);
+                time++;
+
+                if(time === show_data[0]) {//回数に達したら強制終了
+                    return;
+                }
+   
+            }
+        }
+
+                /*let time = 0;
+
+
+                while(time <= state.back_data[2]) {//回数
+                    for(let i=1; i <= state.back_select_data.length; i++) {//具体的な入れるもの　select_dataからデータを取ってくる        
+
+                        show_data.splice(i, 0, state.back_select_data[i - 1]);
+                        time++;
+
+                        if(time === show_data[0]) {//回数に達したら強制終了
+                            return;
+                        }
+
+                                
+                    }
+                    
+                }*/
+
+                //show_data.splice()//show_dataを初期化
             }    
             
             
@@ -122,33 +173,24 @@ export const mutations = {
 
         } 
 
-
         const select_data = state.back_select_data;//登録したデータすべて1種類ずつ
 
-        
-
-            
-
-                //free以外のときに文字や画像を入れる(入れる個数)
-                    let time = 0;
+    //free以外のときに文字や画像を入れる(入れる個数)
+    let time = 0;
 
 
-                        while(time <= show_data[0]) {//回数
-                            for(let i=1; i <= select_data.length; i++) {//具体的な入れるもの　select_dataからデータを取ってくる
-                                
-                                
+        while(time <= show_data[0]) {//回数
+            for(let i=1; i <= select_data.length; i++) {//具体的な入れるもの　select_dataからデータを取ってくる
 
-                                show_data.splice(i, 0, select_data[i - 1]);
-                                time++;
+                show_data.splice(i, 0, select_data[i - 1]);
+                time++;
 
-                                if(time === show_data[0]) {//回数に達したら強制終了
-                                    return;
-                                }
-
-                                
-                            }
-                        }
-
+                if(time === show_data[0]) {//回数に達したら強制終了
+                    return;
+                }
+   
+            }
+        }
                 //}
         
         

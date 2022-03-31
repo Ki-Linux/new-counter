@@ -38,7 +38,7 @@
 
             const data_zero = this.$store.state.back_data[0];
             const data_one = this.$store.state.back_data[1];
-            const data_two = this.$store.state.back_data[2];
+            const data_two = this.$store.state.show_data[0];
 
 
             if(data_zero ===  "＞" && data_one > data_two) {//UP
