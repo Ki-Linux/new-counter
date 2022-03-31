@@ -8,11 +8,14 @@
             <p v-if="$store.state.back_data[0] == '＞'">残り: {{ backTargetData - showData }}</p>
             <p v-else>残り: {{ showData - backTargetData }}</p>
         </div>
-        <div class="select_bord" v-if="$store.state.select_plan !== 'free' && showSelect">
-            <ul v-for="(select_data, index) in back_select_data" :key="select_data">
-               <li @click="chooseData(index)">{{ select_data }}</li> 
-            </ul>
-        </div>
+        <transition name="slide">
+            <div class="select_bord" v-if="$store.state.select_plan !== 'free' && showSelect">
+                <ul v-for="(select_data, index) in back_select_data" :key="select_data">
+                    <li v-if="select_data.match('http')" @click="chooseData(index)"><img :src="select_data" alt="select_data"></li>
+                    <li v-else @click="chooseData(index)">{{ select_data }}</li> 
+                </ul>  
+            </div>
+        </transition>
     </div>
 </template>
 <script lang="ts">
@@ -31,7 +34,7 @@
             return this.$store.getters.showData;
         };
 
-        get showSelect() {
+        get showSelect() {//選択肢の表示
             return this.$store.getters.showSelect;
         };
         
@@ -98,6 +101,52 @@
         .leftover p {
             color:rgb(255, 115, 0);
         }
+
+        //スライド 登場回だけ
+        .slide-enter {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+        .slide-enter-to {
+            transform: translateX(0);
+        }
+        .slide-enter-active{
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .select_bord {
+            
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            background-color:rgba(24, 24, 24, 0.8);
+            
+
+            ul {
+                font-size: 30px;
+                color: white;
+                list-style: none;
+                float: left;
+                
+                li:first-of-type {
+                    
+
+                    img {
+                        background-color: rgba(255, 255, 255, 0.8);
+                        width: 100px;
+                        display: inline;
+
+                    }
+
+                    
+
+                }
+            }
+
+
+        }
+
+        
  
     }
 </style>
