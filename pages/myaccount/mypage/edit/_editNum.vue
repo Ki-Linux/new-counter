@@ -11,7 +11,7 @@
             </div>
             <div class="post_data">
                 <div class="img_file">
-                    <div v-if="show_select_button">
+                    <div v-if="show_select_button && $store.state.back_data[4] === 'img'">
                         <div class="shift_data" v-for="(shift_img, index) in shift_imgs" :key="index">
                             <button type="button" @click="shiftImg(index)" :class="{second_button: index === 1}">{{ shift_img }}</button>
                         </div>
