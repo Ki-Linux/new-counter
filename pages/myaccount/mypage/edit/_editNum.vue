@@ -11,6 +11,11 @@
             </div>
             <div class="post_data">
                 <div class="img_file">
+                    <div v-if="show_select_button">
+                        <div class="shift_data" v-for="(shift_img, index) in shift_imgs" :key="index">
+                            <button type="button" @click="shiftImg(index)" :class="{second_button: index === 1}">{{ shift_img }}</button>
+                        </div>
+                    </div>
                     <div class="img_box">
                         <p v-if="select_img_chosen && url.match('http')"><img :src="url" alt="img none"></p>
                         <p v-else>画像はありません</p>
@@ -62,19 +67,15 @@ export default class edit extends Vue {
                             '画像を選択',
                             'なし'
                         ];
+    shift_imgs: string[] = ['◀', '▶'];//[現在の画像の番号, 画像の移動]
+    shift_num: number = 0;
     select_img_chosen: boolean  = true;
+    show_select_button: boolean = false;//画像切り替えボタンを表示する
 
     mounted() {
 
-        const img_data = this.$store.state.back_data[3];
 
-        //if(img_data.includes('http')) {//画像のときのみ代入
-
-            this.url = img_data;
-
-        //} 
-
-        
+ 
 
         const editNum = this.$route.params.editNum;
 
@@ -101,6 +102,67 @@ export default class edit extends Vue {
         }
 
 
+        let img_data = this.$store.state.back_data[3];
+
+                
+        if(img_data === "") {//画像をたくさん選択しているとき
+
+            
+            this.show_select_button = true;//画像を切り替えるボタンを表示
+
+            img_data = this.$store.state.back_select_data[this.shift_num];//最初は0
+
+        }
+
+        
+
+        //if(img_data.includes('http')) {//画像のときのみ代入
+
+            this.url = img_data;
+
+        //} 
+
+
+    }
+
+    shiftImg(img_num: number) {
+
+        const select_data = this.$store.state.back_select_data;
+        const last_data = select_data.length - 1;
+
+        if(img_num === 0) {//-1
+
+            this.shift_num -=1 ;
+
+            if(this.url === select_data[0]) {//最初のデータで左を押したときに一番最後のデータを表示する
+
+                this.shift_num = last_data;
+
+            }
+
+        }
+
+        if(img_num === 1) {//+1
+
+            this.shift_num++;
+            
+            if(this.url === select_data[last_data]) {//最後のデータで右を押したときに一番最初のデータを表示する
+                this.shift_num = 0;
+            }
+
+            
+        }
+
+
+        this.url = select_data[this.shift_num];
+
+        //const img_data = this.$store.state.back_select_data[1];
+
+        //if(img_data.includes('http')) {//画像のときのみ代入
+
+        //this.url = img_data;
+        console.log(img_num)
+
     }
 
     imgSelect(num: number) {
@@ -123,6 +185,7 @@ export default class edit extends Vue {
     }
     
     editPicture(e: Event) {
+        this.show_select_button = false;
 
         const  file = (<HTMLInputElement>e.target).files![0];
         this.url = URL.createObjectURL(file);
@@ -253,6 +316,15 @@ html {
             background-color: rgb(227, 255, 255);
 
            .img_file {
+
+               .shift_data {
+                   display: inline;
+
+                   .second_button {
+                       float: right;
+                   }
+                   
+               }
 
                .img_box {
 

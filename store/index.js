@@ -176,6 +176,12 @@ export const mutations = {
         const select_data = state.back_select_data;//登録したデータすべて1種類ずつ
 
     //free以外のときに文字や画像を入れる(入れる個数)
+    if(show_data[0] === 0) {//0だったらデータを何も入れない
+
+        return;
+
+    }
+    
     let time = 0;
 
 
