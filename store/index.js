@@ -14,6 +14,7 @@ export const state = () => ({
     username: "",
     canClick: true,
     select_plan: "",
+    select_contents: "",//画像か文字か
     
     /*plugins: [
         createPersistedState({

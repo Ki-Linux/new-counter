@@ -331,7 +331,17 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 
             }
 
-            this.$store.dispatch("inData", row);
+            let send_contents = "img";//画像か写真か
+
+            if(this.words_data.length !== 0) {
+
+                send_contents = "word";
+
+            }
+
+            row.splice(4, 0, send_contents);
+
+            this.$store.dispatch("inData", row);//基本データ
             console.log(row)
 
             //データをVuexへ
@@ -346,6 +356,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 //this.$store.dispatch("inSelectData", row);
 
            // }
+           console.log(this.words_data);
             
             
 
