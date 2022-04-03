@@ -102,15 +102,15 @@ export default class edit extends Vue {
         }
 
 
-        let img_data = this.$store.state.back_data[3];
+        let img_data = this.$store.state.back_data;
 
                 
-        if(img_data === "") {//画像をたくさん選択しているとき
+        if(img_data[3] === "" && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
 
             
             this.show_select_button = true;//画像を切り替えるボタンを表示
 
-            img_data = this.$store.state.back_select_data[this.shift_num];//最初は0
+            img_data[3] = this.$store.state.back_select_data[this.shift_num];//最初は0
 
         }
 
@@ -118,7 +118,7 @@ export default class edit extends Vue {
 
         //if(img_data.includes('http')) {//画像のときのみ代入
 
-            this.url = img_data;
+            this.url = img_data[3];
 
         //} 
 

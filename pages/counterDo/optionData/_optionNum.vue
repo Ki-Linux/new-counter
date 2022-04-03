@@ -333,9 +333,18 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 
             let send_contents = "img";//画像か写真か
 
-            if(this.words_data.length !== 0) {
+            if(!this.show_select_picture) {//画像選択していないとき
 
-                send_contents = "word";
+                if(this.show_select_word) {//文字を選択したとき
+
+                    send_contents = "word";
+
+                } else {//なしを選択したとき
+
+                    send_contents = "nothing";
+
+                }
+ 
 
             }
 

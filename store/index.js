@@ -6,7 +6,7 @@ import * as Cookies from 'js-cookie'
 Vue.use(Vuex)
 
 export const state = () => ({
-    back_data: [],//["", 目標値, 現在値, ""],
+    back_data: [],//["", 目標値, 現在値, "", "imgorword"],
     back_select_data: [],
     show_data: [],//[現在表示されている文字や画像の数, 文字や画像(freeは同じものが繰り返されるから１つだけ)の代数]
     show_select: false,//選択を表示するかどうか
@@ -14,7 +14,6 @@ export const state = () => ({
     username: "",
     canClick: true,
     select_plan: "",
-    select_contents: "",//画像か文字か
     
     /*plugins: [
         createPersistedState({
@@ -43,7 +42,7 @@ export const mutations = {
         if(selection[0] === "up") {//数を増やす
 
 
-            if(state.select_plan === "free") {
+            if(state.select_plan === "free" || state.back_data[4] === "nothing") {//いずれの選択でもなしはここで終了
 
                 show_data.splice(0, 1, show_data[0]+=1);//表示されている数字にプラス１する
                 return;
@@ -60,9 +59,10 @@ export const mutations = {
             if(show_data[0] !== 0) {//マイナス値に行かないようにする
 
                 show_data.splice(0, 1, show_data[0]-=1);//表示されている数字にマイナス１する
+
                
             
-                if(state.select_plan !== "free") {//show_dataから一番最後のデータを削除する
+                if(state.select_plan !== "free" && state.back_data[4] !== "nothing") {//show_dataから一番最後のデータを削除する　いずれの選択でもなしはここで終了
                     show_data.splice(show_data.length - 1, 1);
                 }
 
@@ -86,7 +86,7 @@ export const mutations = {
                 show_data.splice(0, 1, );
             }*/
 
-            if(state.select_plan !== "free") {//freeプラン以外
+            if(state.select_plan !== "free" && state.back_data[4] !== "nothing") {//freeプランかつなし以外
 
                 show_data.splice(1, show_data.length - 1);//一回、画像データをすべて削除する
 
