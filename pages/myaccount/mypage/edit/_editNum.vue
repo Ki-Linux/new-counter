@@ -173,10 +173,11 @@ export default class edit extends Vue {
 
                 case 0:
                     this.select_img_chosen = true;
-                
+                    this.show_select_button = true;//◀▶
                 break;
                 case 1:
                     this.select_img_chosen = false;
+                    this.show_select_button = false;//◀▶
                 break;
 
             }
