@@ -284,8 +284,9 @@ export default class edit extends Vue {
 
             if(res.success === "store_true") {
                 console.log("success");
+                this.$router.push('/myaccount/mypage/album_select/choose_album');
 
-                this.$router.push('/myaccount/mypage/' + name);
+                //this.$router.push('/myaccount/mypage/' + name);
             }
         })
     }
