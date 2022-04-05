@@ -20,14 +20,18 @@
                     </div>
                     <div class="img_box">
                         <div v-if="show_all_img[0] && !show_all_img[1]">
-                            <p v-if="select_img_chosen && url.match('http')"><img :src="url" alt="img none"></p>
+                            <div v-if="select_img_chosen && url.match('http')">
+                                <p>
+                                    <img :src="url" alt="img none">
+                                </p>
+                                <div v-if="show_all_img.every((value)=>value==true)">
+                                    <all_data/>
+                                </div>
+                            </div>      
                             <p v-else>画像はありません</p>
-                        </div>    
-                        <div v-if="show_all_img.every((value)=>value==true)">
-                            <all_data/>
-                        </div>       
+                        </div>          
                     </div>    
-                    <button type="button" v-if="show_all_img[0]" @click="selectAllData">{{ all_or_select_word }}</button>
+                    <button type="button" v-if="show_all_img[0] && $store.state.back_data[4] === 'img'" @click="selectAllData">{{ all_or_select_word }}</button>
                     <input v-if="select_img_chosen && !this.show_all_img[1]" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
                 </div>  
                 <div class="comment">
