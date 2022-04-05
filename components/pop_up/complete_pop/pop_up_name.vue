@@ -23,8 +23,9 @@ export default class popUpName extends Vue {
 
     noClick() {
         
-        const name: string = this.$store.state.username;
-        this.$router.push('/myaccount/mypage/' + name);
+        //const name: string = this.$store.state.username;
+        //this.$router.push('/myaccount/mypage/' + name);
+        this.$router.push('/myaccount/mypage/album_select/choose_album');
     }
 
 }

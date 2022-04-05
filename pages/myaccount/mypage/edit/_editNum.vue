@@ -11,16 +11,24 @@
             </div>
             <div class="post_data">
                 <div class="img_file">
-                    <div v-if="show_select_button && $store.state.back_data[4] === 'img'">
+                    <div v-if="show_select_button && show_all_img[0] && !show_all_img[1] && $store.state.back_data[4] === 'img'">
                         <div class="shift_data" v-for="(shift_img, index) in shift_imgs" :key="index">
-                            <button type="button" @click="shiftImg(index)" :class="{second_button: index === 1}">{{ shift_img }}</button>
+                            <button type="button" @click="shiftImg(index)" :class="{second_button: index === 1}">
+                                {{ shift_img }}
+                            </button>
                         </div>
                     </div>
                     <div class="img_box">
-                        <p v-if="select_img_chosen && url.match('http')"><img :src="url" alt="img none"></p>
-                        <p v-else>画像はありません</p>
+                        <div v-if="show_all_img[0] && !show_all_img[1]">
+                            <p v-if="select_img_chosen && url.match('http')"><img :src="url" alt="img none"></p>
+                            <p v-else>画像はありません</p>
+                        </div>    
+                        <div v-if="show_all_img.every((value)=>value==true)">
+                            <all_data/>
+                        </div>       
                     </div>    
-                    <input v-if="select_img_chosen" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
+                    <button type="button" v-if="show_all_img[0]" @click="selectAllData">{{ all_or_select_word }}</button>
+                    <input v-if="select_img_chosen && !this.show_all_img[1]" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
                 </div>  
                 <div class="comment">
                     <textarea name="comment" id="" cols="30" rows="10" maxlength="200" placeholder="コメントを入力" v-model="my_comment"></textarea>
@@ -47,8 +55,13 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { AxiosRequestConfig } from 'axios';
+import all_select_img from '../../../../components/select_img/all_select_img.vue'
 
-@Component
+@Component({
+    components: {
+        'all_data': all_select_img
+    }
+})
 export default class edit extends Vue {
     url = require("../../../../static/edit/hatena.png");//[default_img, select_img]
     my_comment = "";
@@ -71,6 +84,8 @@ export default class edit extends Vue {
     shift_num: number = 0;
     select_img_chosen: boolean  = true;
     show_select_button: boolean = false;//画像切り替えボタンを表示する
+    show_all_img: boolean[] = [true, false];//[ボタンや切り替えボタンを表示するかしないか ,すべての画像を表示]
+    all_or_select_word: string = "すべての画像";
 
     mounted() {
 
@@ -168,18 +183,46 @@ export default class edit extends Vue {
     imgSelect(num: number) {
         console.log(num);
 
-
             switch(num) {
 
                 case 0:
                     this.select_img_chosen = true;
+                    this.show_all_img[0] = true;
                 
                 break;
                 case 1:
                     this.select_img_chosen = false;
+                    this.show_all_img[0] = false;
                 break;
 
             }
+        
+
+    }
+
+    selectAllData() {
+        
+
+        
+
+        if(this.show_all_img[1] === true) {
+
+            this.show_all_img[1] = false;
+            this.all_or_select_word = "すべての画像";
+            return;
+
+        } 
+
+        
+        //false
+        this.show_all_img[1] = true;
+        this.all_or_select_word = "選択画像";
+        
+
+        
+
+            
+            
         
 
     }
@@ -319,6 +362,7 @@ html {
 
                .shift_data {
                    display: inline;
+                   text-align: center;
 
                    .second_button {
                        float: right;
