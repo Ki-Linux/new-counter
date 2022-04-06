@@ -2,6 +2,9 @@
     <div id="myname">
         <reminder_name/>
         <profile_name/>
+        <div class="to_album">
+            <button @click="toAlbum">マイアルバム</button>
+        </div>
         <div class="pop_up" v-if="show_pop">
            <pop_up v-if="show_pop" @pop_up_show="popShow"/>
         </div>
@@ -48,6 +51,11 @@ export default class myname extends Vue {
   }
 
 
+  toAlbum() {
+    this.$router.push('/myaccount/mypage/album_select/my_album');
+  }
+
+
   toSelectPage() {
     this.show_pop = true;
 
@@ -58,6 +66,8 @@ export default class myname extends Vue {
 }
 </script>
 <style lang="scss">
+
+
 
 li {
     list-style: none;
@@ -78,7 +88,15 @@ li {
   }
 }
 
+ .to_album {
+    float: left;
+    margin: 20px 0 0 40px;
+    font-size: 19px;
 
+    button {
+      background-color: beige;
+    }
+  }
 
 
 .up_down_button {
@@ -88,7 +106,7 @@ li {
 
     button {
       padding: 10px 30px;
-      margin: 0 10px;
+      margin-right: 20px;
       background-color: rgb(236, 236, 236);
       color: rgb(29, 104, 0);
     

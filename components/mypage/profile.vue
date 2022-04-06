@@ -5,9 +5,6 @@
             <p @click="editImgName('img')"><img :src="img_data" alt="nothing img"></p>
             <p @click="editImgName('name')">{{ send_username }}</p>
         </div>   
-        <div class="to_album">
-            <button @click="toAlbum">マイアルバム</button>
-        </div>
     </div>
 </template>
 <script lang="ts">
@@ -88,9 +85,6 @@ export default class profile extends Vue {
 
     }
 
-    toAlbum() {
-        this.$router.push('/myaccount/mypage/album_select/my_album');
-    }
 }
 </script>
 <style lang="scss">
@@ -127,15 +121,7 @@ export default class profile extends Vue {
 
         }
 
-        .to_album {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 19px;
-
-            button {
-                background-color: beige;
-            }
-        }
+       
         
    
         
