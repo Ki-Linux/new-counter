@@ -17,7 +17,7 @@
                     <p class="selector">{{ album_data.selector }}</p>
                     <p class="title">{{ album_data.title }}</p>
                     <div class="img_box">
-                        <img :src="album_data.image" alt="not_image">
+                        <img :src="require(album_data.image)" alt="not_image">
                     </div>
                     <div class="target_present">
                         <p><span>{{ album_data.present }}</span>から<span>{{ album_data.target }}</span>達成!!</p>
