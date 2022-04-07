@@ -174,10 +174,11 @@ export default class my_album extends Vue {
 
             .img_box {
 
-                margin:20px 0 0 50%;
-                transform: translateX(-50%);
+                margin:20px 0 0 60%;
+                transform: translateX(-55%);
                 img {
-                    width: 200px;
+                    width: 60%;//200px
+                    
                     background-color: rgba(0, 0, 0, 0.1);
                 }
             }

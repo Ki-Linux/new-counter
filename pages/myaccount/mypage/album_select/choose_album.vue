@@ -37,10 +37,11 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import imageCompression from 'browser-image-compression';
 
 @Component
 export default class chooseAlbum extends Vue {
-    img_data: string | ArrayBuffer | null = require('../../../../static/edit/hatena.png');
+    img_data: any/*string | ArrayBuffer | null*/ = require('../../../../static/edit/hatena.png');
     img_num: number = 0;
     next_imgs: string[] = ["◀", "▶"];
     written_name: string = "";
@@ -106,23 +107,33 @@ export default class chooseAlbum extends Vue {
 
     }
 
-    editImg(e: Event) {
+    async editImg(e: Event) {
 
         this.show_next_img = false;
 
        // const file = document.querySelector('input[type=file]').files![0];
         const  file = (<HTMLInputElement>e.target).files![0];
+
+        
+        const options = {
+            //MAXSIZEMB: 10,
+            maxWidthOrHeight: 120
+        }
+        const compression_file = await imageCompression(file, options);
+
+
         const reader = new FileReader();
 
         reader.addEventListener('load', () => {
             this.img_data = reader.result
+            console.log(this.img_data)
         })
 
         
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(compression_file);
         
         
-        console.log(this.img_data)
+        //console.log(this.img_data)
 
         
         //this.img_data = URL.createObjectURL(file);
