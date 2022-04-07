@@ -73,6 +73,8 @@ export default class my_album extends Vue {
 
                 }
 
+               // album_content[i].image = album_content[i].image);
+
                 this.albums_data.splice(i, 0, album_content[i]);
 
             }
