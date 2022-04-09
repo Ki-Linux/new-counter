@@ -21,6 +21,8 @@ export default class profile extends Vue {
     @Prop()
     public can_click!: boolean;
 
+    @Prop()
+    public from_contents!: boolean;
    
 
     mounted() {
@@ -51,6 +53,10 @@ export default class profile extends Vue {
             //this.img_data = pull_img[0].icon;
 
                 this.$emit('emit_id', pull_img[0]);
+
+                if(this.from_contents) {//contentsデータのみに送信
+                    this.$emit('to_contents_img', this.img_data);
+                }
 
             
             
