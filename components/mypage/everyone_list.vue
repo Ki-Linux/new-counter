@@ -8,6 +8,7 @@
                 <li>{{ content_array.username }}</li>
             </ul>          
         </div>
+        <p>↓</p>
     </div>
 </template>
 <script lang="ts">
@@ -18,9 +19,16 @@ export default class everyone_list extends Vue {
     contents_array: { picture:string, my_comment: string, username: string }[]
                      = [{ picture: '', my_comment: '', username: '' }];
 
+    contents_num: number = 1;
+
     created() {
 
-        this.$axios.get('pull_all')
+
+        this.$axios.get('pull_all', {
+            params: {
+                contents_num: 0,
+            }
+        })
         .then((response) => {
             console.log(response);
             const all_data = response.data.allData;
@@ -46,3 +54,28 @@ export default class everyone_list extends Vue {
     }
 }
 </script>
+<style lang="scss">
+    #everyone_list {
+        p {
+            font-size: 30px;
+            margin: 20px 0 0 70px;
+        }
+
+        #show_list {
+
+            ul {
+
+                list-style: none;
+
+                li:first-of-type {
+
+                    
+                    
+                }
+
+
+            }
+
+        }
+    }
+</style>

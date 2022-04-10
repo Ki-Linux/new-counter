@@ -1,6 +1,6 @@
 <template>
     <div id="everyone">
-        <div class="set_pop" v-if="show_detail">
+        <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
             <div class="profile_detail">
                 <ul v-for="(detail_profile, index) in details_profile" :key="index">
@@ -9,11 +9,13 @@
                 </ul>
             </div>
         </div>
-        <div class="everyone_list_my_name" v-else>
-            <div class="my_profile">
+        <div class="everyone_list_my_name"  v-show="!show_detail">
+            <div class="profile_list my_profile">
                 <profile_data :can_click="true" :from_contents="true" @send_data="detailData" @to_contents_img="contentsImg"/>
             </div>
-        <everyone_list/>
+            <div class="profile_list everyone">
+                <everyone_list/>
+            </div>
         </div>        
     </div>
 </template>
@@ -114,6 +116,16 @@ export default class everyone extends Vue {
                         }
                     }
                 }
+            }
+        }
+
+        .everyone_list_my_name {
+            .profile_list {
+                float: left;
+            }
+
+            .everyone {
+                
             }
         }
     }
