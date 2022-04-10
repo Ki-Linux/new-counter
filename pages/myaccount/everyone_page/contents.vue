@@ -86,7 +86,7 @@ export default class everyone extends Vue {
             top: 10%;
             left: 50%;
             transform: translateX(-50%);
-            background-color: aquamarine;
+            background-color: rgb(193, 255, 234);
             width: 700px;
             height: 800px;
 
@@ -109,8 +109,8 @@ export default class everyone extends Vue {
                     
                     li {
                         img {
-                            width: 30%;
-                            background-color: aqua;
+                            //width: 30%;
+                            //background-color: rgb(160, 255, 255);
                             margin-left: 50%;
                             transform: translateX(-50%);
                         }
@@ -120,12 +120,20 @@ export default class everyone extends Vue {
         }
 
         .everyone_list_my_name {
+            display: flex;
+            padding-top: 100px;
+            margin-left: 50%;
+            transform: translateX(-50%);
+            
+
             .profile_list {
-                float: left;
+                //float: left;
+                //background-color: blue;
+                margin-right: 30px;
             }
 
-            .everyone {
-                
+            .my_profile {
+               margin-top: 40px;
             }
         }
     }

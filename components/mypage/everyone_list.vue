@@ -1,14 +1,16 @@
 <template>
     <div id="everyone_list">
         <p>閲覧リスト</p>
+        <button @click="nextContents('front')" v-if="contents_num !== 1">◀</button>
         <div id="show_list" v-for="content_array in contents_array" :key="content_array.picture">
             <ul>
+                <li>{{ contents_num }}</li>
                 <li><img :src="content_array.picture" alt="写真"></li>
                 <li>{{ content_array.my_comment }}</li>
                 <li>{{ content_array.username }}</li>
             </ul>          
         </div>
-        <p @click="nextContents">↓</p>
+        <button @click="nextContents('back')">▶</button>
     </div>
 </template>
 <script lang="ts">
@@ -40,6 +42,8 @@ export default class everyone_list extends Vue {
 
             }
 
+
+
   
         })
         .catch((error) => {
@@ -59,27 +63,60 @@ export default class everyone_list extends Vue {
 
     }
 
-    nextContents() {
+    nextContents(which_click: string) {
 
         this.contents_array.splice(0, 4);
 
-        const multiplication_num = this.contents_num * 4;
+        if(which_click === "front") {
+
+            this.contents_num -= 1;
+
+        } 
+
+                    
+        if(which_click === "back"){
+
+            this.contents_num++;
+
+        }
+
+
+        let multiplication_num = 1;
+
+        if(this.contents_num !== 1) {
+            
+            multiplication_num = this.contents_num * 4;
+
+        }
+
+        
 
         this.getContents(multiplication_num);
 
-
-        this.contents_num++;
-
-
-
     }
+
 }
 </script>
 <style lang="scss">
     #everyone_list {
+        background-color: rgb(255, 202, 132);
+        //margin-left: 70px;
+        width: 450px;
+        text-align: center;
         p {
+            //text-align: center;
             font-size: 30px;
-            margin: 20px 0 0 70px;
+            margin-top: 20px;
+            //background-color: rgb(218, 238, 255);
+
+        }
+
+        button {
+            display: inline-block;  
+            background-color: white;
+            font-size: 20px;
+            margin: 10px 0;
+            transform: rotate(90deg);
         }
 
         #show_list {
@@ -87,11 +124,38 @@ export default class everyone_list extends Vue {
             ul {
 
                 list-style: none;
+                background-color: rgba(212, 255, 195, 0.6);
+                font-size: 23px;
+                padding: 20px;
+                li {
 
-                li:first-of-type {
+                    &:first-of-type {
+                        padding-top: 20px;
+                        position: fixed;
+                        //float: left;
+                        img {
+                            width: 90px;
+                            
+                            background-color: bisque;
+                        }
+                    }
+                    
+                    &:nth-of-type(2), &:nth-of-type(3) {
+                        margin-left: 100px;
+                        padding: 10px;
 
-                    
-                    
+                    }
+
+                    &:nth-of-type(2) {
+                        display: inline-block;
+                        width: 280px;
+                        background-color: white;
+                    }
+
+                    &:nth-of-type(3) {
+                        font-size: 17px;
+                        margin-left: 80%;
+                    }
                 }
 
 
