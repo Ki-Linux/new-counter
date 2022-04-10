@@ -34,6 +34,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import profileData from '../../../../components/mypage/profile.vue';
 import backButton from '../../../../components/back_button/back.vue';
+import imageCompression from 'browser-image-compression';
 
 @Component({
     components: {
@@ -100,10 +101,32 @@ export default class change_profile extends Vue {
         this.change_data[2].img_name_comment = value.comment;
     }
 
-    changeIcon(e: Event) {
+    async changeIcon(e: Event) {
+        //const  file = (<HTMLInputElement>e.target).files![0];
+        //const file_url = URL.createObjectURL(file);
+        //this.change_data[0].img_name_comment = file_url;
+
         const  file = (<HTMLInputElement>e.target).files![0];
-        const file_url = URL.createObjectURL(file);
-        this.change_data[0].img_name_comment = file_url;
+
+        const options = {
+            //MAXSIZEMB: 10,
+            maxWidthOrHeight: 120, //OrHeight
+            //maxHeight: 500
+        }
+        const compression_file = await imageCompression(file, options);
+
+
+        const reader = new FileReader();
+
+        reader.addEventListener('load', () => {
+
+            
+            this.change_data[0].img_name_comment = reader.result
+            console.log(this.change_data[0])
+        })
+
+        
+        reader.readAsDataURL(compression_file);
 
     }
 

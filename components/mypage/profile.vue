@@ -28,6 +28,7 @@ export default class profile extends Vue {
     mounted() {
         console.log(this.send_username);
 
+
         //const 
         //this.send_username = this.$store.state.username;
     
@@ -36,8 +37,11 @@ export default class profile extends Vue {
         //setTimeout(() => {
 
 
-        this.$axios.post("account", {
-            accountName: this.send_username,
+        this.$axios.get("account", {
+            params: {
+                accountName: this.send_username,
+            }
+            
         })
         .then((response) => {
             console.log(response.data.img_icon_data);
@@ -83,10 +87,14 @@ export default class profile extends Vue {
         }
 
         if(this.can_click) {
+            
 
             send_img_or_name(which_click);
 
         }
+
+
+        
 
 
     }
