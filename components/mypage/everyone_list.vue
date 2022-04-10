@@ -8,7 +8,7 @@
                 <li>{{ content_array.username }}</li>
             </ul>          
         </div>
-        <p>↓</p>
+        <p @click="nextContents">↓</p>
     </div>
 </template>
 <script lang="ts">
@@ -17,16 +17,15 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component
 export default class everyone_list extends Vue {
     contents_array: { picture:string, my_comment: string, username: string }[]
-                     = [{ picture: '', my_comment: '', username: '' }];
+                     = [];
 
     contents_num: number = 1;
 
-    created() {
-
+    public getContents = (num: number) => {
 
         this.$axios.get('pull_all', {
             params: {
-                contents_num: 0,
+                contents_num: num,
             }
         })
         .then((response) => {
@@ -41,15 +40,37 @@ export default class everyone_list extends Vue {
 
             }
 
-            this.contents_array.splice(0, 1);
-
-            
+  
         })
         .catch((error) => {
             console.log(error);
         })
 
+    }
+
+    created() {
+
+        this.getContents(1);
+
+
+        
+
         console.log('in')
+
+    }
+
+    nextContents() {
+
+        this.contents_array.splice(0, 4);
+
+        const multiplication_num = this.contents_num * 4;
+
+        this.getContents(multiplication_num);
+
+
+        this.contents_num++;
+
+
 
     }
 }
