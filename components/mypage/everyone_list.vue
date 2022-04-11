@@ -4,14 +4,12 @@
         <button @click="nextContents('front')" v-if="contents_num !== 1">◀</button>
         <div id="show_list" v-for="content_array in contents_array" :key="content_array.picture">
             <ul>
-                <li>{{ contents_num }}</li>
                 <li><img :src="content_array.picture" alt="写真"></li>
                 <li>{{ content_array.my_comment }}</li>
                 <li>{{ content_array.username }}</li>
             </ul>          
         </div>
-        <button @click="nextContents('back')" v-if="!delete_back_button">▶</button>
-        <p>{{ delete_back_button }}</p>
+        <button @click="nextContents('back')" v-if="!delete_back_button[0]">▶</button>
     </div>
 </template>
 <script lang="ts">
@@ -23,7 +21,7 @@ export default class everyone_list extends Vue {
                      = [];
 
     contents_num: number = 1;
-    delete_back_button: boolean = false;
+    delete_back_button: boolean[] = [false];
 
     public getContents = (num: number) => {
 
@@ -37,10 +35,10 @@ export default class everyone_list extends Vue {
 
             const all_data = response.data.allData;
 
-            if(response.data.last_number) {
-                this.delete_back_button = true
-            }
-             //response.data.last_number;
+            //最後のときにボタンを表示させなくする
+            const last_judge = response.data.last_number;
+            this.delete_back_button.splice(0, 1, last_judge);
+
 
             for(let i=0; i < all_data.length; i++) {
 
@@ -63,9 +61,6 @@ export default class everyone_list extends Vue {
     created() {
 
         this.getContents(1);
-
-
-        
 
         console.log('in')
 
