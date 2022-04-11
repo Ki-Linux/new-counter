@@ -10,7 +10,8 @@
                 <li>{{ content_array.username }}</li>
             </ul>          
         </div>
-        <button @click="nextContents('back')">▶</button>
+        <button @click="nextContents('back')" v-if="!delete_back_button">▶</button>
+        <p>{{ delete_back_button }}</p>
     </div>
 </template>
 <script lang="ts">
@@ -22,6 +23,7 @@ export default class everyone_list extends Vue {
                      = [];
 
     contents_num: number = 1;
+    delete_back_button: boolean = false;
 
     public getContents = (num: number) => {
 
@@ -32,7 +34,13 @@ export default class everyone_list extends Vue {
         })
         .then((response) => {
             console.log(response);
+
             const all_data = response.data.allData;
+
+            if(response.data.last_number) {
+                this.delete_back_button = true
+            }
+             //response.data.last_number;
 
             for(let i=0; i < all_data.length; i++) {
 
