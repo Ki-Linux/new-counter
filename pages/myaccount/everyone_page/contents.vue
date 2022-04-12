@@ -10,9 +10,12 @@
             </div>
             <div class="list_detail" v-else>
                 <ul>
+                    <li>{{ details_list.id }}</li>
                     <li><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
+                    <li>{{ details_list.updated_at }}</li>
                     <li><img :src="my_icon" alt="not_img"></li>
+                    <li>{{ good_point }}</li>
                 </ul>
             </div>
         </div>
@@ -39,11 +42,12 @@ import profileData from '../../../components/mypage/profile.vue';
 })
 export default class everyone extends Vue {
     details_profile: string[] = [];
-    details_list: { picture: string, my_comment: string, username: string } = { picture: '', my_comment: '', username: '' };
+    details_list: { id: number, picture: string, my_comment: string, username: string, updated_at: string } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '' };
     username: string = "";
     show_detail: boolean = false;
     detail_contents: string = "";
     my_icon: string = "";
+    good_point: number = 0;
 
     mounted() {
         this.username = this.$store.state.username;
@@ -87,7 +91,7 @@ export default class everyone extends Vue {
 
     }
 
-    listDetail(value: [boolean, { picture:string, my_comment: string, username: string }]) {
+    listDetail(value: [boolean, { id: number, picture:string, my_comment: string, username: string, updated_at: string }]) {
 
         this.detail_contents = "list";
 
@@ -98,15 +102,19 @@ export default class everyone extends Vue {
 
         this.$axios.get('get_img_good_comment', {
             params: {
-                name_data: this.details_list.username
+                id_data: 22,//this.details_list.id,
+                name_data: this.details_list.username,
+                
             }
         })
         .then((response) => {
-            console.log(response.data.icon_data);
+            console.log(response.data);
 
-            const icon = response.data.icon_data;
+            const icon_good = response.data;
 
-            this.my_icon = icon[0].icon;
+            this.my_icon = icon_good.icon_data[0].icon;
+
+            this.good_point = icon_good.point_data[0].good_point;
         })
     }
 

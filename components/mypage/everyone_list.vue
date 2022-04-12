@@ -17,7 +17,7 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component
 export default class everyone_list extends Vue {
-    contents_array: { picture:string, my_comment: string, username: string }[]
+    contents_array: { id: number, picture:string, my_comment: string, username: string, updated_at: string }[]
                      = [];
 
     contents_num: number = 1;
@@ -42,7 +42,7 @@ export default class everyone_list extends Vue {
 
             for(let i=0; i < all_data.length; i++) {
 
-                let push_item = { picture: all_data[i].picture,  my_comment: all_data[i].my_comment,  username: all_data[i].username};
+                let push_item = { id: all_data[i].id, picture: all_data[i].picture,  my_comment: all_data[i].my_comment,  username: all_data[i].username, updated_at: all_data[i].updated_at};
 
                 this.contents_array.push(push_item);
 
