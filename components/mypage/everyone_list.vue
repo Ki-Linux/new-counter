@@ -42,7 +42,10 @@ export default class everyone_list extends Vue {
 
             for(let i=0; i < all_data.length; i++) {
 
-                let push_item = { id: all_data[i].id, picture: all_data[i].picture,  my_comment: all_data[i].my_comment,  username: all_data[i].username, updated_at: all_data[i].updated_at};
+                //日付だけ表示
+                const new_date = all_data[i].updated_at.split('T').splice(0, 1);
+
+                let push_item = { id: all_data[i].id, picture: all_data[i].picture,  my_comment: all_data[i].my_comment,  username: all_data[i].username, updated_at: new_date[0]};
 
                 this.contents_array.push(push_item);
 

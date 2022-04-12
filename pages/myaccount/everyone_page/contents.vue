@@ -2,20 +2,20 @@
     <div id="everyone">
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
-            <div class="profile_detail" v-if="detail_contents === 'profile'">
+            <div class="profile_detail detail" v-if="detail_contents === 'profile'">
                 <ul v-for="(detail_profile, index) in details_profile" :key="index">
                     <li v-if="index === 1"><img :src="detail_profile" alt="img"></li>
                     <li v-else>{{ detail_profile }}</li>
                 </ul>
             </div>
-            <div class="list_detail" v-else>
+            <div class="list_detail detail" v-else>
                 <ul>
-                    <li>{{ details_list.id }}</li>
-                    <li><img :src="details_list.picture" alt="写真"></li>
+                    <!--<li>{{ details_list.id }}</li>-->
+                    <li><img src="../../../static/edit/hatena.png" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
                     <li><img :src="icon_point.my_icon" alt="not_img"></li>
-                    <li>{{ icon_point.good_point }}</li>
+                    <li><span></span>{{ icon_point.good_point }}</li>
                 </ul>
             </div>
         </div>
@@ -140,16 +140,11 @@ export default class everyone extends Vue {
                 
             }
 
-            .profile_detail {
+            .detail {
                 text-align: center;
-                
-                
 
                 ul {
-                    font-size: 20px;
                     list-style: none;
-                    //text-align: center;
-                    
                     li {
                         img {
                             //width: 30%;
@@ -158,8 +153,67 @@ export default class everyone extends Vue {
                             transform: translateX(-50%);
                         }
                     }
+
+                }
+                
+            }
+
+            .profile_detail {
+
+                ul {
+                    font-size: 20px;
+                    
                 }
             }
+
+            .list_detail {
+
+                ul {
+                    font-size: 30px;
+                    li {
+                        padding: 0 20px;
+
+                        &:first-of-type {
+                            
+                            img {
+                                width: 290px;
+                            }
+                        }
+
+                        &:nth-of-type(2), &:nth-of-type(3) {
+                            margin: 0 100px;
+                            background-color: white;
+                        }
+
+                        &:nth-of-type(2) {
+                            margin-top: 30px;
+                            padding-top: 20px;
+                            
+                        }
+
+                        &:nth-of-type(3) {
+                            font-size: 15px;
+                            padding-top: 10px;
+                            padding-left: 55%;
+                        }
+
+                        &:nth-of-type(4) {
+
+                            margin: 40px 0 0 55%;
+                            
+                            img {
+                                width: 70px;
+                                height: 70px;
+                                border-radius: 50%;
+                                z-index: 5;
+                                background-color: rgba(0, 0, 0, 0.4);
+                            }
+                        }
+                    }
+                }
+            }
+
+
         }
 
         .everyone_list_my_name {
