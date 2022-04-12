@@ -14,8 +14,8 @@
                     <li><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li><img :src="my_icon" alt="not_img"></li>
-                    <li>{{ good_point }}</li>
+                    <li><img :src="icon_point.my_icon" alt="not_img"></li>
+                    <li>{{ icon_point.good_point }}</li>
                 </ul>
             </div>
         </div>
@@ -46,8 +46,7 @@ export default class everyone extends Vue {
     username: string = "";
     show_detail: boolean = false;
     detail_contents: string = "";
-    my_icon: string = "";
-    good_point: number = 0;
+    icon_point: { my_icon: string, good_point: number } = { my_icon: '', good_point: 0 };
 
     mounted() {
         this.username = this.$store.state.username;
@@ -112,9 +111,9 @@ export default class everyone extends Vue {
 
             const icon_good = response.data;
 
-            this.my_icon = icon_good.icon_data[0].icon;
+            this.icon_point.my_icon = icon_good.icon_data[0].icon;
 
-            this.good_point = icon_good.point_data[0].good_point;
+            this.icon_point.good_point = icon_good.point_data[0].good_point;
         })
     }
 
