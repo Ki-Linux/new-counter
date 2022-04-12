@@ -2,8 +2,8 @@
     <div id="everyone_list">
         <p>閲覧リスト</p>
         <button @click="nextContents('front')" v-if="contents_num !== 1">◀</button>
-        <div id="show_list" v-for="content_array in contents_array" :key="content_array.picture">
-            <ul>
+        <div id="show_list" v-for="(content_array, index) in contents_array" :key="index">
+            <ul @click="detailDataShow(index)">
                 <li><img :src="content_array.picture" alt="写真"></li>
                 <li>{{ content_array.my_comment }}</li>
                 <li>{{ content_array.username }}</li>
@@ -96,6 +96,10 @@ export default class everyone_list extends Vue {
 
         this.getContents(multiplication_num);
 
+    }
+
+    detailDataShow(index_num: number) {
+        this.$emit('detail_data_show', [true, this.contents_array[index_num]]);
     }
 
 }
