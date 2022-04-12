@@ -9,13 +9,16 @@
                 </ul>
             </div>
             <div class="list_detail detail" v-else>
-                <ul>
+                <ul class="post_contents">
                     <!--<li>{{ details_list.id }}</li>-->
                     <li><img src="../../../static/edit/hatena.png" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
                     <li><img :src="icon_point.my_icon" alt="not_img"></li>
-                    <li><span></span>{{ icon_point.good_point }}</li>
+                </ul>
+                <ul class="good_and_comment">
+                    <li @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
+                    <li><span>↓</span>コメント</li>
                 </ul>
             </div>
         </div>
@@ -47,6 +50,7 @@ export default class everyone extends Vue {
     show_detail: boolean = false;
     detail_contents: string = "";
     icon_point: { my_icon: string, good_point: number } = { my_icon: '', good_point: 0 };
+    heart: boolean = false;
 
     mounted() {
         this.username = this.$store.state.username;
@@ -117,6 +121,15 @@ export default class everyone extends Vue {
         })
     }
 
+    changeHeart() {
+        this.heart = true;
+
+        this.$axios.put('details_good_more/' + this.details_list.id)
+        .then ((response) => {
+            console.log(response);
+        })
+    }
+
     
 
 }
@@ -168,8 +181,11 @@ export default class everyone extends Vue {
 
             .list_detail {
 
-                ul {
+                .post_contents {
                     font-size: 30px;
+                    background-color: bisque;
+                    padding: 40px 0;
+                    margin: 0 20px;
                     li {
                         padding: 0 20px;
 
@@ -208,6 +224,40 @@ export default class everyone extends Vue {
                                 z-index: 5;
                                 background-color: rgba(0, 0, 0, 0.4);
                             }
+                        }
+                        
+                    }
+                }
+
+                .good_and_comment {
+                    .change_heart_on {
+                        background: url("../../../static/list_detail/heart_color.png") left center no-repeat;
+                    }
+
+                    .change_heart_off {
+                        background: url("../../../static/list_detail/heart_no_color.png") left center no-repeat;
+                    }
+
+                    li {
+                        &:first-of-type {
+                            
+                            //background: url("../../../static/list_detail/heart_no_color.png") left center no-repeat;
+                            float: left;
+                            margin-left: 100px;
+                            span {
+                                font-size: 22px;
+                                margin-left: 35px;
+                                
+                            }
+                        }
+
+                        
+
+                        &:last-of-type {
+                            display: inline-block;
+                            font-size: 25px;
+                            margin: 80px 50px 0 0;
+                            transform: translateX(-50%);
                         }
                     }
                 }
