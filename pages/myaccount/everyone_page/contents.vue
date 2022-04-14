@@ -141,10 +141,56 @@ export default class everyone extends Vue {
         .then ((response) => {
             console.log(response);
         })
+
     }
 
     toCommentList() {
-        this.comment_lists.push({ user_icon:'ui', user_comment: 'io' });
+        //this.comment_lists.push({ user_icon:'ui', user_comment: 'io' });
+
+        this.$axios.get('get_comment_data', {
+            params: {
+                id_data: 22,//どのデータか識別するため
+            }
+        })
+        .then((response) => {
+            console.log(response.data);
+
+            const res = response.data;
+
+            console.log(res.name_comment[1].other_comment);
+
+            /*for(let j=0; j < res.name_icon.length; j++) {
+
+                res.name_icon[j].username = res.name_icon[j].icon;
+            
+            }*/
+
+            let img_get = "";
+
+            for(let i=0; i < res.name_comment.length; i++) {     
+
+                for(let j=0; j < res.name_icon.length; j++) {
+
+                    if(res.name_comment[i].username === res.name_icon[j].username) {
+                        img_get = res.name_icon[j].icon;
+                    }
+
+                    //res.name_icon[j].username = res.name_icon[j].icon;
+
+                    //console.log(res.name_icon[j].username)
+                }
+                                                    /*this.detail_profile.user_icon*/
+                this.comment_lists.push({ user_icon: img_get, user_comment: res.name_comment[i].other_comment });
+
+                
+            }
+
+            
+
+            
+
+            console.log(this.comment_lists);
+        })
     }
 
     addComment() {
@@ -163,8 +209,8 @@ export default class everyone extends Vue {
 
         })
         .then((response) => {
-            console.log(response);
-
+            console.log(response.data);
+  
             
         })
 
