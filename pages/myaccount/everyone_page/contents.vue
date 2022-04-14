@@ -22,7 +22,7 @@
                     <li @click="toCommentList"><span>↓</span>コメント</li>
                 </ul>
                 <div class="comment">
-                    <ul class="comment_contents" v-for="comment_list in comment_lists" :key="comment_list">
+                    <ul class="comment_contents" v-for="comment_list in comment_lists" :key="comment_list.user_comment">
                         <li><img :src="comment_list.user_icon" alt="icon_img"></li>
                         <li>{{ comment_list.user_comment }}</li>
                     </ul>
@@ -149,7 +149,24 @@ export default class everyone extends Vue {
 
     addComment() {
 
+        //UIに表示
         this.comment_lists.push({ user_icon: this.detail_profile.user_icon, user_comment: this.comment_add });
+
+        
+
+        this.$axios.post('add_comment_data', {
+
+            id_data: 22,//どのデータか識別するため
+            username: this.username,
+            comment: this.comment_add,
+            
+
+        })
+        .then((response) => {
+            console.log(response);
+
+            
+        })
 
         this.comment_add = "";
     }
