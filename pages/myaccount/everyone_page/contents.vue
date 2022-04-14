@@ -3,9 +3,10 @@
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
             <div class="profile_detail detail" v-if="detail_contents === 'profile'">
-                <ul v-for="(detail_profile, index) in details_profile" :key="index">
-                    <li v-if="index === 1"><img :src="detail_profile" alt="img"></li>
-                    <li v-else>{{ detail_profile }}</li>
+                <ul>
+                    <li>{{ detail_profile.username }}</li>
+                    <li><img :src="detail_profile.user_icon" alt="img"></li>
+                    <li>{{ detail_profile.user_comment }}</li>
                 </ul>
             </div>
             <div class="list_detail detail" v-else>
@@ -18,8 +19,18 @@
                 </ul>
                 <ul class="good_and_comment">
                     <li @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
-                    <li><span>↓</span>コメント</li>
+                    <li @click="toCommentList"><span>↓</span>コメント</li>
                 </ul>
+                <div class="comment">
+                    <ul class="comment_contents" v-for="comment_list in comment_lists" :key="comment_list">
+                        <li><img :src="comment_list.user_icon" alt="icon_img"></li>
+                        <li>{{ comment_list.user_comment }}</li>
+                    </ul>
+                    <form @submit.prevent="addComment">
+                        <input type="text" v-model="comment_add">
+                        <input type="submit">
+                    </form>
+                </div>
             </div>
         </div>
         <div class="everyone_list_my_name"  v-show="!show_detail">
@@ -44,13 +55,15 @@ import profileData from '../../../components/mypage/profile.vue';
     }
 })
 export default class everyone extends Vue {
-    details_profile: string[] = [];
+    detail_profile: { username: string, user_icon: string, user_comment: string }= { username: '', user_icon: '', user_comment: '' };
     details_list: { id: number, picture: string, my_comment: string, username: string, updated_at: string } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '' };
     username: string = "";
     show_detail: boolean = false;
     detail_contents: string = "";
     icon_point: { my_icon: string, good_point: number } = { my_icon: '', good_point: 0 };
     heart: boolean = false;
+    comment_lists: { user_icon: string, user_comment: string }[] = [];
+    comment_add: string = "";
 
     mounted() {
         this.username = this.$store.state.username;
@@ -59,7 +72,7 @@ export default class everyone extends Vue {
     closePop() {
         this.show_detail = false;
 
-        this.details_profile.splice(2, 1);
+        this.detail_profile.user_comment = "";
 
     }
 
@@ -68,8 +81,8 @@ export default class everyone extends Vue {
         console.log('es')
 
         
-
-       this.details_profile.splice(0, 0, this.username, value);
+        this.detail_profile.username = this.username;
+        this.detail_profile.user_icon = value;
     }
 
 
@@ -88,7 +101,7 @@ export default class everyone extends Vue {
             console.log(response.data);
 
             const my_comment = response.data.my_comment.comment;
-            this.details_profile.splice(2, 0, my_comment);
+            this.detail_profile.user_comment = my_comment;
 
         })
 
@@ -130,7 +143,16 @@ export default class everyone extends Vue {
         })
     }
 
-    
+    toCommentList() {
+        this.comment_lists.push({ user_icon:'ui', user_comment: 'io' });
+    }
+
+    addComment() {
+
+        this.comment_lists.push({ user_icon: this.detail_profile.user_icon, user_comment: this.comment_add });
+
+        this.comment_add = "";
+    }
 
 }
 </script>
