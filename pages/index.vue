@@ -8,7 +8,7 @@
       <header>
         <transition-group name="slide-fade">
             <div v-show="show_section" class="show_login" v-for="login in logins" v-bind:key="login">
-              <nuxt-link class="link" to="/about">{{ login }}</nuxt-link>
+              <nuxt-link class="link" :to="login.to_url">{{ login.showed_data }}</nuxt-link>
             </div> 
         </transition-group>
       </header>
@@ -74,7 +74,11 @@
 import { Vue, Component } from 'vue-property-decorator';
 @Component
 export default class Home extends Vue{
-  logins: string[] = ["ログイン", "新規登録", "ログアウト"];
+  logins: { showed_data: string, to_url: string }[] = [ 
+    { showed_data: "ログイン", to_url: "/addInfo/login/2" },
+    { showed_data: "新規登録", to_url: "/addInfo/new_account" },
+    { showed_data: "ログアウト", to_url: "/addInfo/logout" },
+  ];
   url_change: string = require("../static/Home/selector_box.png");
   change_box: boolean = true;//urlの変更
   show_section: boolean = false; //ログイン欄の表示(true==表示,false==非表示)
@@ -85,6 +89,9 @@ export default class Home extends Vue{
                 }]
     
     created() {
+
+     
+
       this.$axios.get('only_top')
       .then((response) => {
         console.log(response.data.topData);
@@ -95,6 +102,11 @@ export default class Home extends Vue{
       .catch((response) => {
         console.log(response);
       })
+    }
+
+    mounted() {
+      //localStorageのデータを削除
+      localStorage.clear();
     }
     
     changeBox() {//2つの画像の変更の繰り返し

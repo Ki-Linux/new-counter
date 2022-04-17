@@ -43,17 +43,14 @@
     .select_button {
         font-size: 20px;
         padding: 40px 20px;
-        p {
-            text-align: center;
-        }
+        text-align: center;
+
         
         button {
-            display: block;
+            margin-top: 30px;
             padding: 10px 20px;
             font-size: 25px;
-            margin:0 auto;
             color: rgba(36, 36, 36, 0.9);
-            background-color: rgba(235, 235, 235, 0.7);
         }
     }
     .styleClass {/*上*/
