@@ -67,6 +67,8 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import imageCompression from 'browser-image-compression';
+
 @Component
 export default class Option extends Vue {
     target_presents: string[] = ["目標値", "現在値"];
@@ -75,16 +77,16 @@ export default class Option extends Vue {
     show_select_picture: boolean = false;//写真選択の表示
     show_select_word: boolean = false;//文字の記入
     written: string = "";//画面に表示する文字
-    imgs_data: string[] = [require("../../../static/edit/hatena.png")];
+    imgs_data: (string | ArrayBuffer | null)[] = [require("../../../static/edit/hatena.png")];
     words_data: string[] = [];
     word_position: number = 0;
     count_num: number = 0;
     sign: string = "＞";
     target_number: string = "";
     attention: string = "";//不等号に逆らった時
-    save_storage: [string, number, number, string] = ["＞", 0, 0, ""];//保存[不等号,目標値,現在値,写真]
+    save_storage: (string | number | ArrayBuffer | null)[] = ["＞", 0, 0, ""];//保存[不等号,目標値,現在値,写真]
     
-    doSplice = (num1: number, num2: number, changed: (number|string)) => {//splice function
+    doSplice = (num1: number, num2: number, changed: (string | number | ArrayBuffer | null)) => {//splice function
         this.save_storage.splice(num1, num2, changed);
     };
     doArray = (max: number) => {//配列
@@ -138,62 +140,106 @@ doTargetPresent(event: Event, divide: number): void {
 
     
 }
-selectPicture(e: Event): void{//写真
+async selectPicture(e: Event){//写真
         const  file = (<HTMLInputElement>e.target).files![0];
-        const file_url = URL.createObjectURL(file);
+        //const file_url = URL.createObjectURL(file);
 
-        if(this.count_num > 9) {//10個まで
-            
-            return;
+
+
+
+        
+        const options = {
+            //MAXSIZEMB: 10,
+            maxWidthOrHeight: 120
         }
+        const compression_file = await imageCompression(file, options);
 
-        let change_num = 0;
+        const selector_img_data = (img: (string | ArrayBuffer | null)) => {//画像データの扱いを実行(ここから)
 
-        if(this.$route.params.optionNum === "free") {//パラメーターがfreeのときは固定
+            if(this.count_num > 9) {//10個まで
+            
+                return;
+            }
 
-            change_num = 1;
-            this.count_num = 0;
-            this.imgs_data.splice(1, 1);//はてなを削除
+            let change_num = 0;
 
-            //console.log(this.img_picture)
-            this.doSplice(3, 1, file_url);
+            if(this.$route.params.optionNum === "free") {//パラメーターがfreeのときは固定
+
+                change_num = 1;
+                this.count_num = 0;
+                this.imgs_data.splice(1, 1);//はてなを削除
+
+                //console.log(this.img_picture)
+                this.doSplice(3, 1, img);
             
 
-        } else {//free以外のとき
+            } else {//free以外のとき
 
-            if(this.save_storage[0] === "＜") {
+                if(this.save_storage[0] === "＜") {
 
-                const differential: number = this.save_storage[2] - this.save_storage[1];//＜のときの差分
+                    if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {//NUMBERのとき
 
-                //console.log(differential)
+                        const differential: number = this.save_storage[2] - this.save_storage[1];//＜のときの差分
                 
 
-                if(differential <= this.count_num) {//これ以上の画像追加はできない
+                        if(differential <= this.count_num) {//これ以上の画像追加はできない
                
-                    return;
+                            return;
+                        }
+
+                    }
+
+                }
+            
+
+
+                if(this.count_num === 0) {//はじめの１回
+
+                    change_num = 1;
+
+                    //はてなを追加
+                    this.imgs_data.splice(1, 0, require("../../../static/edit/hatena.png"));
+                
+                }else if(this.count_num === 9) {
+
+                    this.imgs_data.splice(9, 1);//はてなを削除
+
                 }
 
             }
-            
 
-
-            if(this.count_num === 0) {//はじめの１回
-
-                change_num = 1;
-
-                //はてなを追加
-                this.imgs_data.splice(1, 0, require("../../../static/edit/hatena.png"));
-                
-            } else if(this.count_num === 9) {
-
-                this.imgs_data.splice(9, 1);//はてなを削除
-
-            }
+            this.imgs_data.splice(this.count_num, change_num, img);//配列を変える
+            this.count_num++;//配列の順番を+1
 
         }
 
-        this.imgs_data.splice(this.count_num, change_num, file_url);//配列を変える
-        this.count_num++;//配列の順番を+1
+
+        const reader = new FileReader();
+
+        reader.addEventListener('load', () => {
+            
+            selector_img_data(reader.result);//画像データの扱いを実行
+ 
+        })
+
+        
+        reader.readAsDataURL(compression_file);//URL作成
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         
         
 }
@@ -208,12 +254,17 @@ decidedWord(): void {//文字
 
         if(this.save_storage[0] === "＜") {
 
-            const differential: number = this.save_storage[2] - this.save_storage[1];//＜のときの差分
+            if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {
+                const differential: number = Number(this.save_storage[2]) - Number(this.save_storage[1]);//＜のときの差分
       
-            if(differential <= this.word_position) {//これ以上の画像追加はできない
+                if(differential <= this.word_position) {//これ以上の画像追加はできない
                
-                return;
+                    return;
+                }
+
             }
+
+            
 
             
         }
@@ -261,7 +312,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
             if(this.$route.params.optionNum !== "free") {//パラメータがfree以外のとき
 
 
-                let send_array: string[] = this.words_data;//文字のデータを送る
+                let send_array: (string | ArrayBuffer | null)[] = this.words_data;//文字のデータを送る
 
                 if(this.show_select_picture) {//写真のデータを送る
 
@@ -377,23 +428,33 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 
 
         if(this.save_storage[0] === "＞") {
-            if(this.save_storage[1] > this.save_storage[2]) {
 
-                //値が正しければ次へ実行
-                send_data_go();
-                return;
+            if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {
+
+                if(this.save_storage[1] > this.save_storage[2]) {
+
+                    //値が正しければ次へ実行
+                    send_data_go();
+                    return;
                 
-            } 
+                } 
+            }
         }
         
         if(this.save_storage[0] === "＜") {
-            if(this.save_storage[1] < this.save_storage[2]) {
 
-                //値が正しければ次へ実行
-                send_data_go();
-                return;
+            if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {
 
+                if(this.save_storage[1] < this.save_storage[2]) {
+
+                    //値が正しければ次へ実行
+                    send_data_go();
+                    return;
+
+                }
             }
+
+            
         }
 
        
