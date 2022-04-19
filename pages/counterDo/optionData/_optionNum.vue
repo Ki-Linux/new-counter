@@ -48,7 +48,7 @@
                 </div>
                 <div class="picture_show" v-if="show_select_picture">
                     <ul v-for="img_data in imgs_data" :key="img_data">
-                        <li><img :src="img_data" alt="選択した画像"></li>
+                        <li><img :src="'data:image/' + img_data" alt="選択した画像"></li>
                     </ul>
                 </div>
                 <div class="text_write_in button_select" v-if="show_select_word">
@@ -144,7 +144,7 @@ async selectPicture(e: Event){//写真
         const  file = (<HTMLInputElement>e.target).files![0];
         //const file_url = URL.createObjectURL(file);
 
-
+    //data:image/png;base64,
 
 
         
@@ -217,8 +217,22 @@ async selectPicture(e: Event){//写真
         const reader = new FileReader();
 
         reader.addEventListener('load', () => {
+
+            const result = reader.result;
+
+            //console.log(result)
+
             
-            selector_img_data(reader.result);//画像データの扱いを実行
+
+            if(typeof(result) === "string") {
+                
+                const option_url = result.replace('data:image/', '');
+                console.log(option_url)
+            
+                selector_img_data(option_url);//画像データの扱いを実行
+            }
+
+            
  
         })
 
