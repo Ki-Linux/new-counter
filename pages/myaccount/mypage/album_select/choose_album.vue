@@ -13,7 +13,7 @@
         </div>
         <div class="img_box">
             <div class="show_img">
-                <img :src="img_data" alt="select_img">
+                <img :src="'data:image/'+img_data" alt="select_img">
             </div>
             <div class="select_img" v-if="$store.state.select_plan !== 'free' && $store.state.back_data[4] === 'img' && show_next_img">
                 <p v-for="(next_img, index_num) in next_imgs" :key="index_num">
@@ -125,8 +125,19 @@ export default class chooseAlbum extends Vue {
         const reader = new FileReader();
 
         reader.addEventListener('load', () => {
-            this.img_data = reader.result
+
+            const result = reader.result;
+
+            if(typeof(result) === "string") {
+                
+                const option_url = result.replace('data:image/', '');
+                //console.log(option_url)
+            
+                this.img_data = option_url;//画像データの扱いを実行
+            }
+
             console.log(this.img_data)
+
         })
 
         

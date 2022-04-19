@@ -3,7 +3,6 @@
         <button @click="toHome">ホームに戻る</button>
         <p v-if="$store.state.back_data[0] === '＞'">アップ</p>
         <p v-else>ダウン</p>
-        <p>{{ $store.state.back_data }}</p>
     </div>
 </template>
 <script lang="ts">

@@ -106,6 +106,7 @@ export default class Home extends Vue{
 
     mounted() {
       //localStorageのデータを削除
+      
       localStorage.clear();
     }
     

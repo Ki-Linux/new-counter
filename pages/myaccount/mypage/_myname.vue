@@ -44,6 +44,13 @@ import popUp from '../../../components/pop_up/pop_up_two.vue';
 export default class myname extends Vue {
   show_pop: boolean = false;
 
+  mounted() {
+    //localStorageのデータを削除
+      
+    const account_name = this.$route.params.myname;
+    this.$store.dispatch("planSelect_arrayDelete", account_name);
+  }
+
   popShow(value: boolean) {
 
     this.show_pop = value;

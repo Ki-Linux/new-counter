@@ -2,6 +2,7 @@
     <div id="edit">
         <form @submit.prevent="dataSend">
             <div class="sub_button">
+                <button type="button" @click="stopPost">{{ button_name }}をやめる</button>
                 <button type="submit">{{ button_name }}</button>
             </div>
             <div class="img_selector">
@@ -17,7 +18,7 @@
                         </div>
                     </div>
                     <div class="img_box">
-                        <p v-if="select_img_chosen && url.match('http')"><img :src="url" alt="img none"></p>
+                        <p v-if="select_img_chosen && this.url.length > 40"><img :src="'data:image/'+url" alt="img none"></p>
                         <p v-else>画像はありません</p>
                     </div>    
                     <input v-if="select_img_chosen" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
@@ -26,6 +27,9 @@
                     <textarea name="comment" id="" cols="30" rows="10" maxlength="200" placeholder="コメントを入力" v-model="my_comment"></textarea>
                 </div>         
             </div>
+            <div>
+                    
+                </div>
             <div class="right_position">
                 <div class="desc">
                     <p>※選択しないところはデフォルトで【はい】として扱われます。</p>
@@ -47,6 +51,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { AxiosRequestConfig } from 'axios';
+import imageCompression from 'browser-image-compression';
 
 @Component
 export default class edit extends Vue {
@@ -74,7 +79,6 @@ export default class edit extends Vue {
 
     mounted() {
 
-
  
 
         const editNum = this.$route.params.editNum;
@@ -87,8 +91,10 @@ export default class edit extends Vue {
 
             this.button_name = "編集";
 
-            this.$axios.post("edit_show", {
-                id: editNum,
+            this.$axios.get("edit_show", {
+                params: {
+                    id: editNum,
+                }
             })
             .then((response) => {
                 const res = response.data[0];
@@ -185,12 +191,43 @@ export default class edit extends Vue {
 
     }
     
-    editPicture(e: Event) {
+    async editPicture(e: Event) {
         this.show_select_button = false;
 
         const  file = (<HTMLInputElement>e.target).files![0];
-        this.url = URL.createObjectURL(file);
+ 
+        const options = {
+            MAXSIZEMB: 1,
+            maxWidthOrHeight: 80
+        }
+        const compression_file = await imageCompression(file, options);
 
+
+        const reader = new FileReader();
+
+        reader.addEventListener('load', () => {
+
+            const result = reader.result;
+
+            if(typeof(result) === "string") {
+                
+                const option_url = result.replace('data:image/', '');
+                //console.log(option_url)
+            
+                this.url = option_url;//画像データの扱いを実行
+            }
+
+        })
+
+        
+        reader.readAsDataURL(compression_file);
+
+    }
+
+    stopPost() {
+        if(confirm('本当にやめますか?')) {
+            this.$router.push('/myaccount/mypage/album_select/choose_album');
+        }
     }
 
     checkOn(index: number, select_num: number) {
@@ -236,7 +273,7 @@ export default class edit extends Vue {
 
         }
 
-        if(!this.url.includes('http')) {//画像でないときのみ代入
+        if(!this.select_img_chosen || this.url.length < 40) {//画像でないときのみ代入
 
             this.url = "notImg";
 

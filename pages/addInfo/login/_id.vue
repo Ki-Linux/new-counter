@@ -68,7 +68,7 @@ export default class login extends Vue {
                     if(this.$route.params.id === "toNextEdit") {
 
                         //param_url = '/myaccount/mypage/edit/new_post';
-                        param_url = '/myaccount/mypage/album_select/choose_album';
+                        param_url = '/myaccount/mypage/edit/new_post';
 
                     }
 

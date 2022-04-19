@@ -1,7 +1,7 @@
 <template>
     <div id="bord_up">
         <div class="contents_item" v-for="(show_word_img, img_Index) in showWordImg" :key="img_Index">
-            <img v-if="$store.state.back_data[4] === 'img'" :src="show_word_img" alt="select_img">
+            <img v-if="$store.state.back_data[4] === 'img'" :src="'data:image/'+show_word_img" alt="select_img">
             <p v-else>{{ show_word_img }}</p>
         </div>
         <div class="leftover">
@@ -11,7 +11,7 @@
         <transition name="slide">
             <div class="select_bord" v-if="$store.state.select_plan !== 'free' && showSelect">
                 <ul v-for="(select_data, index) in back_select_data" :key="select_data">
-                    <li v-if="$store.state.back_data[4] === 'img'" @click="chooseData(index)"><img :src="select_data" alt="select_data"></li>
+                    <li v-if="$store.state.back_data[4] === 'img'" @click="chooseData(index)"><img :src="'data:image/'+select_data" alt="select_data"></li>
                     <li v-else @click="chooseData(index)">{{ select_data }}</li> 
                 </ul>  
             </div>

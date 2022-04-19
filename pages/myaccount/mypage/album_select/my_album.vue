@@ -17,7 +17,7 @@
                     <p class="selector">{{ album_data.selector }}</p>
                     <p class="title">{{ album_data.title }}</p>
                     <div class="img_box">
-                        <img :src="album_data.image" alt="not_image">
+                        <img :src="'data:image/'+album_data.image" alt="not_image">
                     </div>
                     <div class="target_present">
                         <p><span>{{ album_data.present }}</span>から<span>{{ album_data.target }}</span>達成!!</p>
@@ -50,7 +50,7 @@ export default class my_album extends Vue {
 
         const name = this.$store.state.username;
 
-        this.$axios.get('/my_album_data_get', {
+        this.$axios.get('my_album_data_get', {
             params: {
                 username: name
             }

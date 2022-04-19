@@ -1,7 +1,7 @@
 <template>
     <div id="pop_up_one" v-if="!$store.state.canClick">
-        <pop_up_free v-if="$store.state.select_plan === 'free'"/>
-        <pop_up_name v-if="$store.state.select_plan === 'towa'"/>
+        <pop_up_free v-if="$store.state.select_plan === 'free' && $store.state.username === ''"/>
+        <pop_up_name v-else/>
     </div>
 </template>
 <script lang="ts">
