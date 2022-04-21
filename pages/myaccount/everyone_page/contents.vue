@@ -15,7 +15,7 @@
                     <li><img src="../../../static/edit/hatena.png" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li><img :src="icon_point.my_icon" alt="not_img"></li>
+                    <li><img :src="'data:image/'+icon_point.my_icon" alt="not_img"></li>
                 </ul>
                 <ul class="good_and_comment">
                     <li @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
@@ -23,7 +23,7 @@
                 </ul>
                 <div class="comment">
                     <ul class="comment_contents" v-for="comment_list in comment_lists" :key="comment_list.user_comment">
-                        <li><img :src="comment_list.user_icon" alt="icon_img"></li>
+                        <li><img :src="'data:image/'+comment_list.user_icon" alt="icon_img"></li>
                        <li>{{ comment_list.user_comment }}</li>
                     </ul>
                     <form @submit.prevent="addComment">
