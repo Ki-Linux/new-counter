@@ -24,7 +24,7 @@ export default class popUp extends Vue {
 </script>
 <style lang="scss">
 #pop_up_one {
- width: 60%;
+ width: 80%;
  position: fixed;
 background-color: rgb(255, 195, 223);
 top: 50%;

@@ -2,26 +2,27 @@
     <div id="pop_up_free">
         <div class="title_desc">
                 <h1>完成しました!!</h1>
-                <p>ログインで完成した記録を</p>
                 <div class="canDesc">
-                    <p>
-                        <span>専用のアルバムに保存</span>    
-                        <br><span>手頃なシェア</span>
-                        <br>することができます!
-                    </p>
+                    <ul>
+                        <li>ログインで</li>
+                        <li>自分専用のアルバムに記録</li>    
+                        <li>記録をシェア</li>
+                        <li>みんなの投稿を見る</li>
+                        <li>ができます!</li>
+                    </ul>
                 </div>
-                <p>このサイトでシェアすると</p>
             </div>
             <ul class="merit">
-                <li>いいね、コメントなど様々な機能を選択したうえで投稿できる!!</li>
-                <li>機能を制限しても「制限しています」のような表示がないので、Twitter、Instagramよりも制限しやすい!!</li>
+                <p>このサイトで<span>シェア</span>すると</p>
+                <li>いいね、コメントなど機能を選択したうえで投稿できる!!</li>
+                <!--<li>機能を制限しても「制限しています」のような表示がないので、Twitter、Instagramよりも制限しやすい!!</li>-->
                 <li>周りを気にしない気軽な投稿をしたい!!</li>
                 <ul>
-                    <li>Twitter、Instagramでは投稿しにくいな</li>
-                    <li>Twitter、Instagramでこんな投稿しちゃっていいのかな</li>
-                    <li>誰からもいいねされなかったらどうしよう</li>
+                    <li>Twitter、Instagramのコミュニティでは投稿しにくいな...</li>
+                    <li>Twitter、Instagramでこんな投稿しちゃっていいのかな...</li>
+                    <li>誰からもいいねされなかったら嫌だな...</li>
                 </ul>
-                <li>そんな方には、周りを気にしなくていいこのサイトでのシェアがおすすめ!!</li>
+                <li>そんな方には、記録の共有に特化したここでのシェアがおすすめ!!</li>
             </ul>
             <div class="selector">
                 <button @click="toLogin">ログインする</button>
@@ -62,34 +63,62 @@ export default class popUpFree extends Vue {
         text-align: center;
 
         h1 {
-            font-size: 50px;
+            font-size: 40px;
         }
 
         .canDesc {
-            padding: 25px 0;
+            margin-right: 30px;
 
-            span:first-of-type {
-                text-decoration: underline;
-                text-decoration-color: rgba(122, 255, 60, 0.9);
+            ul {
+                font-size: 25px;
+                li {
+                    &:first-of-type {
+                        padding-bottom: 10px;
+                    }
+
+                    &:nth-of-type(2) { 
+                        
+                        color: rgba(4, 119, 0, 0.9);
+                    }
+
+                    &:nth-of-type(3) {
+                        color: rgba(150, 177, 0, 0.9);
+                    }
+
+                    &:nth-of-type(4) {
+                        color: rgba(2, 0, 95, 0.9);
+                    }
+
+                    &:last-of-type {
+                        padding-top: 10px;
+                    }
+                }
             }
 
-            span:nth-of-type(2) {
-                text-decoration: underline;
-                text-decoration-color: rgba(226, 255, 60, 0.9);
-            }
         }
+
+    }
+
+    .merit {
+         color: rgb(49, 49, 49);
 
         p {
             font-size: 30px;
+            text-align: center;
+            margin-right: 30px;
+
+            span {
+                color: rgba(150, 177, 0, 0.9);
+            }
+           
         }
-    }
 
-    .merit li{
-
-        padding: 5px 0;
-        font-size: 20px;
+        li{
+            padding: 5px 0;
+            font-size: 20px;
         
-    }
+        }
+    } 
 
 
 
@@ -104,7 +133,6 @@ export default class popUpFree extends Vue {
 
     .twitter {
         display: block;
-        background-color: red;
         margin: 20px 17vw;
         color: rgb(0, 110, 255);
         
