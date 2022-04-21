@@ -117,6 +117,7 @@ export default class everyone_list extends Vue {
             //text-align: center;
             font-size: 30px;
             margin-top: 20px;
+            padding: 20px 0;
             //background-color: rgb(218, 238, 255);
 
         }

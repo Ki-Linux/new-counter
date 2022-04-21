@@ -221,11 +221,11 @@ export default class everyone extends Vue {
 </script>
 <style lang="scss">
     #everyone {
-
+        padding: 20px 0;
         .set_pop {
-            position: fixed;
-            top: 10%;
-            left: 50%;
+            //position: fixed;
+            
+            margin-left: 50%;
             transform: translateX(-50%);
             background-color: rgb(193, 255, 234);
             width: 700px;
@@ -257,9 +257,29 @@ export default class everyone extends Vue {
             }
 
             .profile_detail {
+                margin-right: 30px;
 
                 ul {
                     font-size: 20px;
+
+                    li {
+                        padding: 30px 0;
+
+                        &:first-of-type {
+                            font-size: 30px;
+                        }
+
+                        &:nth-of-type(2) {
+                            background-color: rgba(78, 78, 78, 0.3);
+                            display: inline-block;
+                            padding: 20px;
+                        }
+
+                        &:nth-of-type(3) {
+                            margin-top: 20px;
+                            background-color: azure;
+                        }
+                    }
                     
                 }
             }
@@ -344,6 +364,14 @@ export default class everyone extends Vue {
                             margin: 80px 50px 0 0;
                             transform: translateX(-50%);
                         }
+                    }
+                }
+
+                .comment {
+                    background-color: rgb(193, 255, 234);
+                    padding: 30px 0;
+                    form {
+                        margin-bottom: 30px;
                     }
                 }
             }

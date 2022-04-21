@@ -240,8 +240,9 @@ export default class change_profile extends Vue {
         transform: translate(-50%, -50%);
         z-index: 5;
         background-color: rgba(66, 66, 66, 0.8);
-        width: 40vw;
-        height: 40vh;
+        padding: 50px;
+        //width: 40vw;
+        //height: 40vh;
         text-align: center;
 
         img {
@@ -292,20 +293,17 @@ export default class change_profile extends Vue {
     }
 
     .my_data_edit {
+        
 
         .my_data {
 
-       
-       // &:last-of-type {
-
-        position: fixed;
-        left: 50%;
+        display: inline-block;
+        margin-left: 50%;
         transform: translateX(-50%);
         background-color: rgb(255, 244, 206);
         padding: 20px;
-        display: inline-block;
+        
 
-        //}
         
 
 
@@ -317,7 +315,7 @@ export default class change_profile extends Vue {
 
             margin: 60px auto;
             width: 300px;
-            height: 20vh;
+            height: 200px;
             background-color: white;
             overflow-Y: scroll;
             
@@ -339,7 +337,7 @@ export default class change_profile extends Vue {
     }
 
     .back_button {
-        margin-top: 60vh;
+        margin: 40px;
         text-align: center;
     }
 

@@ -4,7 +4,7 @@
                 <div class="alerm_button">   
                     <p @click="showYellowList"><img src="../../static/mypage/bell2.png" alt="reminder"></p>  
                     <p v-if="this.title_length !== 0">{{ title_length }}</p>    
-                    <button>みんなの投稿</button>     
+                    <button @click="toEveryonePostPage">みんなの投稿</button>     
                 </div>
                 <div class="reminder_list" v-if="show_yellow">
                     <ul v-for="(title_list, index) in title_lists" :key="index">
@@ -77,6 +77,10 @@ export default class reminder extends Vue {
             
         })
 
+    }
+
+    toEveryonePostPage() {
+        this.$router.push('/myaccount/everyone_page/contents');
     }
 
     showYellowList() {
