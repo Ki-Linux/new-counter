@@ -24,10 +24,11 @@
                 <div class="comment">
                     <ul class="comment_contents" v-for="comment_list in comment_lists" :key="comment_list.user_comment">
                         <li><img :src="comment_list.user_icon" alt="icon_img"></li>
-                        <li>{{ comment_list.user_comment }}</li>
+                       <li>{{ comment_list.user_comment }}</li>
                     </ul>
                     <form @submit.prevent="addComment">
-                        <input type="text" v-model="comment_add">
+                        <!--<input type="text" v-model="comment_add">-->
+                        <textarea name="comment" id="" cols="30" rows="2" v-model="comment_add"></textarea>
                         <input type="submit">
                     </form>
                 </div>
@@ -370,9 +371,83 @@ export default class everyone extends Vue {
                 .comment {
                     background-color: rgb(193, 255, 234);
                     padding: 30px 0;
+
+                    .comment_contents {
+                        
+                        
+                            
+                            //@each $var in list {
+                                
+                            //}text-align: center;
+                            /*&:first-of-type {
+                                padding-top: 40px;
+                            }*/
+                            margin-right: 50%;
+                            
+
+                            li {
+                                
+                                //transform: translateX(-50%);
+                               
+                                &:first-of-type {
+                                    
+                                    background-color: aqua;
+                                    //padding-left: 80px;
+
+                                    
+                                    img {
+                                    float: left;
+                                    //margin-top: 80px;
+                                    width: 70px;
+                                    height: 70px;
+                                    border-radius: 50%;
+                                    z-index: 5;
+                                    background-color: rgba(0, 0, 0, 0.4);
+                                
+                                    }
+                                
+                                }
+
+                                &:nth-of-type(2) {
+                                    font-size: 20px;
+                                    margin: 50px 0;
+                                    margin-left: 230px;
+                                    width: 320px;
+                                    background-color: azure;
+                                    padding: 20px 10px;
+                                    word-break: break-all;
+                                    
+                                }
+                            }
+
+          
+                        
+                    }
+
                     form {
                         margin-bottom: 30px;
+                        margin-left: 20px;
+
+                        textarea {
+                            padding: 5px;
+                            font-size: 20px;
+                            
+                        }
+
+                        input[type="submit"]{
+                            position: absolute;
+                            margin-top: 15px;
+                            margin-left: 5px;
+                            width: 60px;
+                            padding: 3px;
+                            font-size: 20px;
+                        }
+                            
+                        
+
                     }
+
+                   
                 }
             }
 
