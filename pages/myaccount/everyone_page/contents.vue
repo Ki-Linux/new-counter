@@ -165,7 +165,7 @@ export default class everyone extends Vue {
 
             const res = response.data;
 
-            if(res.name_comment === []) {
+            if(res.name_comment.length === 0) {
                 return;
             }
 
@@ -187,10 +187,11 @@ export default class everyone extends Vue {
                     
                     if(comment_name_icon[j].username === res.name_icon[i].username) {
                         comment_name_icon[j].icon = res.name_icon[i].icon;
+                        
                     }
 
                 
-                    this.comment_lists.push({user_icon: comment_name_icon[j].icon, user_comment: comment_name_icon[j].other_comment});
+                    
                     /*if(res.name_comment[i].username === res.name_icon[j].username) {
                         img_get = res.name_icon[j].icon;
                     }*/
@@ -203,6 +204,12 @@ export default class everyone extends Vue {
                // this.comment_lists.push({ user_icon: img_get, user_comment: res.name_comment[i].other_comment });
 
                 
+            }
+
+            
+
+            for(let i=0; i < comment_name_icon.length; i++) {
+                this.comment_lists.splice(i, 1, { user_icon: 'data:image/'+comment_name_icon[i].icon, user_comment: comment_name_icon[i].other_comment});
             }
 
             
