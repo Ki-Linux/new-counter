@@ -11,19 +11,19 @@
             </div>
             <div class="list_detail detail" v-else>
                 <ul class="post_contents">
-                    <!--<li>{{ details_list.id }}</li>-->
-                    <li><img src="../../../static/edit/hatena.png" alt="写真"></li>
+                    <!--<li>{{ details_list.id }}</li>'data:image/'+-->
+                    <li><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li><img :src="'data:image/'+icon_point.my_icon" alt="not_img"></li>
+                    <li><img :src="icon_point.my_icon" alt="not_img"></li>
                 </ul>
                 <ul class="good_and_comment">
                     <li @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
                     <li @click="toCommentList"><span>↓</span>コメント</li>
                 </ul>
-                <div class="comment">
+                <div class="comment" v-if="show_comment_list">
                     <ul class="comment_contents" v-for="comment_list in comment_lists" :key="comment_list.user_comment">
-                        <li><img :src="'data:image/'+comment_list.user_icon" alt="icon_img"></li>
+                        <li><img :src="comment_list.user_icon" alt="icon_img"></li>
                        <li>{{ comment_list.user_comment }}</li>
                     </ul>
                     <form @submit.prevent="addComment">
@@ -56,15 +56,16 @@ import profileData from '../../../components/mypage/profile.vue';
     }
 })
 export default class everyone extends Vue {
-    detail_profile: { username: string, user_icon: string, user_comment: string }= { username: '', user_icon: '', user_comment: '' };
-    details_list: { id: number, picture: string, my_comment: string, username: string, updated_at: string } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '' };
+    detail_profile: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string }= { username: '', user_icon: '', user_comment: '' };
+    details_list: { id: number, picture: string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '' };
     username: string = "";
     show_detail: boolean = false;
     detail_contents: string = "";
     icon_point: { my_icon: string, good_point: number } = { my_icon: '', good_point: 0 };
     heart: boolean = false;
-    comment_lists: { user_icon: string, user_comment: string }[] = [];
+    comment_lists: { user_icon: string|ArrayBuffer|null, user_comment: string }[] = [];
     comment_add: string = "";
+    show_comment_list: boolean  = false;
 
     mounted() {
         this.username = this.$store.state.username;
@@ -108,7 +109,7 @@ export default class everyone extends Vue {
 
     }
 
-    listDetail(value: [boolean, { id: number, picture:string, my_comment: string, username: string, updated_at: string }]) {
+    listDetail(value: [boolean, { id: number, picture:string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string }]) {
 
         this.detail_contents = "list";
 
@@ -119,7 +120,7 @@ export default class everyone extends Vue {
 
         this.$axios.get('get_img_good_comment', {
             params: {
-                id_data: 22,//this.details_list.id,
+                id_data: this.details_list.id,//this.details_list.id,
                 name_data: this.details_list.username,
                 
             }
@@ -148,9 +149,15 @@ export default class everyone extends Vue {
     toCommentList() {
         //this.comment_lists.push({ user_icon:'ui', user_comment: 'io' });
 
+        /*if(this.show_comment_list === true) {
+            return;
+        } */
+        
+        this.show_comment_list = true;
+
         this.$axios.get('get_comment_data', {
             params: {
-                id_data: 22,//どのデータか識別するため
+                id_data: this.details_list.id,//どのデータか識別するため
             }
         })
         .then((response) => {
@@ -158,7 +165,11 @@ export default class everyone extends Vue {
 
             const res = response.data;
 
-            console.log(res.name_comment[1].other_comment);
+            if(res.name_comment === []) {
+                return;
+            }
+
+            console.log(res);
 
             /*for(let j=0; j < res.name_icon.length; j++) {
 
@@ -166,31 +177,39 @@ export default class everyone extends Vue {
             
             }*/
 
-            let img_get = "";
+            let comment_name_icon = [{other_comment: '', username: '', icon: '' }]
 
-            for(let i=0; i < res.name_comment.length; i++) {     
-
-                for(let j=0; j < res.name_icon.length; j++) {
-
-                    if(res.name_comment[i].username === res.name_icon[j].username) {
-                        img_get = res.name_icon[j].icon;
+            for(let i=0; i < res.name_icon.length; i++) {
+            
+                for(let j=0; j < res.name_comment.length; j++) {  
+                    
+                    comment_name_icon.splice(j, 1, res.name_comment[j]);
+                    
+                    if(comment_name_icon[j].username === res.name_icon[i].username) {
+                        comment_name_icon[j].icon = res.name_icon[i].icon;
                     }
+
+                
+                    this.comment_lists.push({user_icon: comment_name_icon[j].icon, user_comment: comment_name_icon[j].other_comment});
+                    /*if(res.name_comment[i].username === res.name_icon[j].username) {
+                        img_get = res.name_icon[j].icon;
+                    }*/
 
                     //res.name_icon[j].username = res.name_icon[j].icon;
 
                     //console.log(res.name_icon[j].username)
                 }
                                                     /*this.detail_profile.user_icon*/
-                this.comment_lists.push({ user_icon: img_get, user_comment: res.name_comment[i].other_comment });
+               // this.comment_lists.push({ user_icon: img_get, user_comment: res.name_comment[i].other_comment });
 
                 
             }
 
             
-
+            console.log(this.comment_lists);
             
 
-            console.log(this.comment_lists);
+           // console.log(this.comment_lists);
         })
     }
 
@@ -203,7 +222,7 @@ export default class everyone extends Vue {
 
         this.$axios.post('add_comment_data', {
 
-            id_data: 22,//どのデータか識別するため
+            id_data: this.details_list.id,//どのデータか識別するため
             username: this.username,
             comment: this.comment_add,
             

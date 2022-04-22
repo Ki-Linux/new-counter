@@ -17,7 +17,7 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component
 export default class everyone_list extends Vue {
-    contents_array: { id: number, picture:string, my_comment: string, username: string, updated_at: string }[]
+    contents_array: { id: number, picture:string | ArrayBuffer | null, my_comment: string, username: string, updated_at: string }[]
                      = [];
 
     contents_num: number = 1;
@@ -45,7 +45,7 @@ export default class everyone_list extends Vue {
                 //日付だけ表示
                 const new_date = all_data[i].updated_at.split('T').splice(0, 1);
 
-                let push_item = { id: all_data[i].id, picture: all_data[i].picture,  my_comment: all_data[i].my_comment,  username: all_data[i].username, updated_at: new_date[0]};
+                let push_item = { id: all_data[i].id, picture: 'data:image/'+all_data[i].picture,  my_comment: all_data[i].my_comment,  username: all_data[i].username, updated_at: new_date[0]};
 
                 this.contents_array.push(push_item);
 
@@ -63,7 +63,7 @@ export default class everyone_list extends Vue {
 
     created() {
 
-        this.getContents(1);
+        this.getContents(1 - 1);
 
         console.log('in')
 
