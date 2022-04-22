@@ -2,7 +2,7 @@
     <div id="change_profile"> 
         <form class="edit_profile" v-if="edit_contents" @submit="goChange">
             <div class="edit_image center" v-if="change_data[0].show_data">
-                <img :src="change_data[0].img_name_comment" alt="change_img">
+                <img :src="'data:image/'+change_data[0].img_name_comment" alt="change_img">
                 <input type="file" name="change_image" ref="preview" @change="changeIcon">
             </div>
             <div v-if="change_data[1].show_data" class="center">

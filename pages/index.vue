@@ -52,7 +52,7 @@
             <caption>みんなの投稿一覧</caption>
             <tbody>
             <tr v-for="show_every_data in showEveryData" :key="show_every_data.picture">
-              <th><img :src="show_every_data.picture" alt="picture"></th>
+              <th><img :src="'data:image/'+show_every_data.picture" alt="picture"></th>
               <td>{{ show_every_data.my_comment }}</td>
             </tr>
             </tbody>
