@@ -24,7 +24,9 @@
                 <div class="comment" v-if="show_comment_list">
                     <ul class="comment_contents" v-for="comment_list in comment_lists" :key="comment_list.user_comment">
                         <li><img :src="comment_list.user_icon" alt="icon_img"></li>
-                       <li>{{ comment_list.user_comment }}</li>
+                        <li>{{ comment_list.date }}</li>
+                       <li>{{ comment_list.user_comment }}</li>   
+                       
                     </ul>
                     <form @submit.prevent="addComment">
                         <!--<input type="text" v-model="comment_add">-->
@@ -64,7 +66,7 @@ export default class everyone extends Vue {
     icon_point: { my_icon: string, good_point: number } = { my_icon: '', good_point: 0 };
     show_heart: boolean = true;//ハートを表示するかしないか
     heart: boolean = false;//ハートを色つける
-    comment_lists: { user_icon: string|ArrayBuffer|null, user_comment: string }[] = [];
+    comment_lists: { user_icon: string|ArrayBuffer|null, user_comment: string, date: string }[] = [];
     comment_add: string = "";
     show_comment: boolean  = false;//そもそもコメントを表示するかしないか
     show_comment_list: boolean  = false;//コメントリストを表示する
@@ -217,7 +219,7 @@ export default class everyone extends Vue {
             
             }*/
 
-            let comment_name_icon = [{other_comment: '', username: '', icon: '' }]
+            let comment_name_icon = [{other_comment: '', username: '', icon: '', updated_at: '' }]
 
             for(let i=0; i < res.name_icon.length; i++) {
             
@@ -246,10 +248,29 @@ export default class everyone extends Vue {
                 
             }
 
-            
+            let written_date
+            let written_time
+            let hour_split
+            let hour
+            let minute
+
 
             for(let i=0; i < comment_name_icon.length; i++) {
-                this.comment_lists.splice(i, 1, { user_icon: 'data:image/'+comment_name_icon[i].icon, user_comment: comment_name_icon[i].other_comment});
+
+                let T_split = comment_name_icon[i].updated_at.split(/T/)
+                
+                //日付
+                written_date = T_split.splice(0, 1);
+
+                //時間
+                written_time = comment_name_icon[i].updated_at.split(/T/).splice(1, 1);
+
+                hour_split = written_time[0].split(/:/)
+
+                hour = hour_split.splice(0, 1);//時
+                minute = written_time[0].split(/:/).splice(1, 1);//分
+
+                this.comment_lists.splice(i, 1, { user_icon: 'data:image/'+comment_name_icon[i].icon, user_comment: comment_name_icon[i].other_comment, date: written_date[0] + " " + hour + ":" + minute});
             }
 
             
@@ -273,9 +294,29 @@ export default class everyone extends Vue {
     }
 
     addComment() {
+        const now = new Date();
+
+        const Year = now.getFullYear();
+        let Month = now.getMonth() + 1;
+        let Day = now.getDate();
+        let Hour = now.getHours();
+        let Min = now.getMinutes();
+
+        const array_day = [String(Month), String(Day), String(Hour), String(Min)];
+
+        for(let i=0; i < 4; i++) {
+
+            if(array_day[i].length === 1) {
+                array_day[i] = "0" + array_day[i];
+            }
+            
+        }
+
+        const time = Year + "-" + array_day[0] + "-" + array_day[1] + " " + array_day[2] + ":" + array_day[3];
+
 
         //UIに表示
-        this.comment_lists.push({ user_icon: this.detail_profile.user_icon, user_comment: this.comment_add });
+        this.comment_lists.push({ user_icon: this.detail_profile.user_icon, user_comment: this.comment_add, date: time });
 
         
 
@@ -361,6 +402,8 @@ export default class everyone extends Vue {
                     }
                     
                 }
+
+                
             }
 
             .list_detail {
@@ -487,7 +530,7 @@ export default class everyone extends Vue {
                                 
                                 }
 
-                                &:nth-of-type(2) {
+                                &:nth-of-type(3) {
                                     font-size: 20px;
                                     margin: 50px 0;
                                     margin-left: 230px;
@@ -497,11 +540,23 @@ export default class everyone extends Vue {
                                     word-break: break-all;
                                     
                                 }
+
+                                &:nth-of-type(2) {
+                                    
+                                    position: absolute;
+                                    width: 50%;
+                                    margin-left: 200px;
+                                    padding-left: 250px;
+                                    font-size: 10px;
+   
+                                }
+
                             }
 
           
                         
                     }
+
 
                     form {
                         margin-bottom: 30px;
