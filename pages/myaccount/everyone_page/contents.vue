@@ -18,8 +18,8 @@
                     <li><img :src="icon_point.my_icon" alt="not_img"></li>
                 </ul>
                 <ul class="good_and_comment">
-                    <li @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
-                    <li @click="toCommentList"><span>↓</span>コメント</li>
+                    <li v-show="show_heart" @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
+                    <li v-show="show_comment" @click="toCommentList"><span>↓</span>コメント</li>
                 </ul>
                 <div class="comment" v-if="show_comment_list">
                     <ul class="comment_contents" v-for="comment_list in comment_lists" :key="comment_list.user_comment">
@@ -62,10 +62,13 @@ export default class everyone extends Vue {
     show_detail: boolean = false;
     detail_contents: string = "";
     icon_point: { my_icon: string, good_point: number } = { my_icon: '', good_point: 0 };
-    heart: boolean = false;
+    show_heart: boolean = true;//ハートを表示するかしないか
+    heart: boolean = false;//ハートを色つける
     comment_lists: { user_icon: string|ArrayBuffer|null, user_comment: string }[] = [];
     comment_add: string = "";
-    show_comment_list: boolean  = false;
+    show_comment: boolean  = false;//そもそもコメントを表示するかしないか
+    show_comment_list: boolean  = false;//コメントリストを表示する
+    
 
     mounted() {
         this.username = this.$store.state.username;
@@ -75,6 +78,8 @@ export default class everyone extends Vue {
         this.show_detail = false;
 
         this.detail_profile.user_comment = "";
+
+        location.reload();
 
     }
 
@@ -128,11 +133,22 @@ export default class everyone extends Vue {
         .then((response) => {
             console.log(response.data);
 
-            const icon_good = response.data;
+            const icon_good_comment = response.data;
 
-            this.icon_point.my_icon = icon_good.icon_data[0].icon;
+            this.icon_point.my_icon = icon_good_comment.icon_data[0].icon;
 
-            this.icon_point.good_point = icon_good.point_data[0].good_point;
+            if(icon_good_comment.point_data.length === 0) {
+                this.show_heart = false;
+                return;
+            }
+
+            this.icon_point.good_point = icon_good_comment.point_data[0].good_point;
+
+            const which_comment = icon_good_comment.which_comment[0].can_comment;
+
+            if(which_comment === 1) {
+                this.show_comment = true;
+            }
         })
     }
 
