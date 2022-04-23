@@ -79,7 +79,13 @@ export default class everyone extends Vue {
 
         this.detail_profile.user_comment = "";
 
-        location.reload();
+        this.comment_lists = [];
+        this.show_heart = true;
+        this.heart = false;
+        this.show_comment = false;//そもそもコメントを表示するかしないか
+        this.show_comment_list = false;//コメントリストを表示する
+
+        //location.reload();
 
     }
 
@@ -153,12 +159,25 @@ export default class everyone extends Vue {
     }
 
     changeHeart() {
-        this.heart = true;
 
-        this.$axios.put('details_good_more/' + this.details_list.id)
-        .then ((response) => {
-            console.log(response);
-        })
+        const plus_one = (id: number) => {
+            this.$axios.put('details_good_more/' + id)
+            .then ((response) => {
+                console.log(response);
+            })
+        }
+
+
+        if(this.heart === false) {
+            this.heart = true;
+            plus_one(this.details_list.id)
+        }
+        
+
+        
+
+
+        
 
     }
 
@@ -340,7 +359,8 @@ export default class everyone extends Vue {
                         &:first-of-type {
                             
                             img {
-                                width: 290px;
+                                width:250px;//290px;
+                                max-height: 27vh;
                             }
                         }
 

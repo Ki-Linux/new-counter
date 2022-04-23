@@ -1,7 +1,7 @@
 <template>
     <div id="everyone_list">
         <p>閲覧リスト</p>
-        <button @click="nextContents('front')" v-if="contents_num !== 1">◀</button>
+        <button @click="nextContents('front')" v-if="contents_num !== 0">◀</button>
         <div id="show_list" v-for="(content_array, index) in contents_array" :key="index">
             <ul @click="detailDataShow(index)">
                 <li><img :src="content_array.picture" alt="写真"></li>
@@ -20,7 +20,7 @@ export default class everyone_list extends Vue {
     contents_array: { id: number, picture:string | ArrayBuffer | null, my_comment: string, username: string, updated_at: string }[]
                      = [];
 
-    contents_num: number = 1;
+    contents_num: number = 0;
     delete_back_button: boolean[] = [false];
 
     public getContents = (num: number) => {
@@ -63,7 +63,7 @@ export default class everyone_list extends Vue {
 
     created() {
 
-        this.getContents(1 - 1);
+        this.getContents(0);
 
         console.log('in')
 
@@ -77,6 +77,10 @@ export default class everyone_list extends Vue {
 
             this.contents_num -= 1;
 
+            /*if(this.contents_num === 1) {
+                this.contents_num = 0;
+            }*/
+
         } 
 
                     
@@ -87,13 +91,14 @@ export default class everyone_list extends Vue {
         }
 
 
-        let multiplication_num = 1;
 
-        if(this.contents_num !== 1) {
+        //if(this.contents_num !== 1) {
             
-            multiplication_num = this.contents_num * 4;
+            let multiplication_num = this.contents_num * 4;
 
-        }
+        //}
+
+        console.log(multiplication_num)
 
         
 
