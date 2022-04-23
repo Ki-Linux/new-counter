@@ -6,7 +6,7 @@
                 <ul>
                     <li>{{ detail_profile.username }}</li>
                     <li><img :src="detail_profile.user_icon" alt="img"></li>
-                    <li>{{ detail_profile.user_comment }}</li>
+                    <li v-if="detail_profile.user_comment !== 'コメントはありません。'">{{ detail_profile.user_comment }}</li>
                 </ul>
             </div>
             <div class="list_detail detail" v-else>
@@ -113,7 +113,12 @@ export default class everyone extends Vue {
         .then((response) => {
             console.log(response.data);
 
-            const my_comment = response.data.my_comment.comment;
+            let my_comment = response.data.my_comment.comment;
+
+            if(my_comment === "") {
+                my_comment = "コメントはありません。";
+            }
+
             this.detail_profile.user_comment = my_comment;
 
         })
@@ -188,11 +193,11 @@ export default class everyone extends Vue {
             return;
         } */
         
-        this.show_comment_list = true;
+        const listShow = (id: number) => {
 
-        this.$axios.get('get_comment_data', {
+            this.$axios.get('get_comment_data', {
             params: {
-                id_data: this.details_list.id,//どのデータか識別するため
+                id_data: id,//どのデータか識別するため
             }
         })
         .then((response) => {
@@ -253,6 +258,18 @@ export default class everyone extends Vue {
 
            // console.log(this.comment_lists);
         })
+
+        }
+        
+
+        
+
+        if(this.show_comment_list === false) {
+
+            this.show_comment_list = true;
+            listShow(this.details_list.id);
+
+        }
     }
 
     addComment() {
