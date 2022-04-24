@@ -8,6 +8,7 @@
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
             <div class="profile_detail detail" v-if="detail_contents === 'profile'">
+                
                 <ul>
                     <li>{{ detail_profile.username }}</li>
                     <li><img :src="detail_profile.user_icon" alt="img"></li>
@@ -32,9 +33,7 @@
                         <li @click="detailData('other_with_comment', index)"><img :src="comment_list.user_icon" alt="icon_img"></li>
                         <li @click="deleteOrTell(index)">…</li>
                         <li>{{ comment_list.date }}</li>
-                        
                        <li>{{ comment_list.user_comment }}</li>   
-                       
                     </ul>
                     <form @submit.prevent="addComment">
                         <!--<input type="text" v-model="comment_add">-->
@@ -545,11 +544,12 @@ export default class everyone extends Vue {
             height: 800px;
 
             p {
+
                 display: inline-block;
-                font-size: 30px;
                 margin: 20px 30px;
-                
-            }
+                font-size: 30px;
+
+            } 
 
             .detail {
                 text-align: center;
@@ -600,6 +600,14 @@ export default class everyone extends Vue {
             }
 
             .list_detail {
+
+                p {
+                    position: fixed;
+                    font-size: 30px;
+                    right: 20px;
+                    padding: 0 10px;
+                }
+
 
                 .post_contents {
                     font-size: 30px;
