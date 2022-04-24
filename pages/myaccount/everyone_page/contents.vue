@@ -24,7 +24,9 @@
                 <div class="comment" v-if="show_comment_list">
                     <ul class="comment_contents" v-for="(comment_list, index) in comment_lists" :key="index">
                         <li @click="detailData('other_with_comment' , index)"><img :src="comment_list.user_icon" alt="icon_img"></li>
+                        <li>…</li>
                         <li>{{ comment_list.date }}</li>
+                        
                        <li>{{ comment_list.user_comment }}</li>   
                        
                     </ul>
@@ -551,7 +553,7 @@ export default class everyone extends Vue {
                                 
                                 }
 
-                                &:nth-of-type(3) {
+                                &:nth-of-type(4) {
                                     font-size: 20px;
                                     margin: 50px 0;
                                     margin-left: 230px;
@@ -562,14 +564,25 @@ export default class everyone extends Vue {
                                     
                                 }
 
-                                &:nth-of-type(2) {
-                                    
-                                    position: absolute;
-                                    width: 50%;
-                                    margin-left: 200px;
-                                    padding-left: 250px;
+                                &:nth-of-type(2), &:nth-of-type(3) {
+                                    position: fixed;
+                                    right: 110px;
                                     font-size: 10px;
+                                }
+
+                                &:nth-of-type(2) {
+                                   
+
+                                    font-size: 15px;
+                                    padding: 0 10px;
+                                    background-color: rgba(185, 185, 185, 0.7);
    
+                                }
+
+                                &:nth-of-type(3) {
+                                
+                                    margin-top: 3px;
+                                    margin-right: 40px;
                                 }
 
                             }
