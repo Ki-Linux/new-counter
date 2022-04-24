@@ -1,5 +1,10 @@
 <template>
     <div id="everyone">
+        <div class="delete_tell_pop" v-if="show_select_del_or_tell">
+                <button @click="deleteReport('delete')" v-if="deleteMyComment">削除する</button>
+                <button @click="deleteReport('report')">報告する</button>
+                <p @click="closeSelect">✕閉じる</p>
+            </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
             <div class="profile_detail detail" v-if="detail_contents === 'profile'">
@@ -10,6 +15,7 @@
                 </ul>
             </div>
             <div class="list_detail detail" v-else>
+                <p @click="deleteOrTell('post_report')">…</p>
                 <ul class="post_contents">
                     <!--<li>{{ details_list.id }}</li>'data:image/'+-->
                     <li><img :src="details_list.picture" alt="写真"></li>
@@ -23,8 +29,8 @@
                 </ul>
                 <div class="comment" v-if="show_comment_list">
                     <ul class="comment_contents" v-for="(comment_list, index) in comment_lists" :key="index">
-                        <li @click="detailData('other_with_comment' , index)"><img :src="comment_list.user_icon" alt="icon_img"></li>
-                        <li>…</li>
+                        <li @click="detailData('other_with_comment', index)"><img :src="comment_list.user_icon" alt="icon_img"></li>
+                        <li @click="deleteOrTell(index)">…</li>
                         <li>{{ comment_list.date }}</li>
                         
                        <li>{{ comment_list.user_comment }}</li>   
@@ -38,6 +44,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="everyone_list_my_name"  v-show="!show_detail">
             <div class="profile_list my_profile">
                 <profile_data :can_click="true" :from_contents="true" @send_data="detailData('me')" @to_contents_img="contentsImg"/>
@@ -52,6 +59,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import everyoneList from '../../../components/mypage/everyone_list.vue';
 import profileData from '../../../components/mypage/profile.vue';
+import { AxiosRequestConfig } from 'axios';
 
 @Component({
     components: {
@@ -73,10 +81,124 @@ export default class everyone extends Vue {
     comment_add: string = "";
     show_comment: boolean  = false;//そもそもコメントを表示するかしないか
     show_comment_list: boolean  = false;//コメントリストを表示する
+    show_select_del_or_tell: boolean = false;
+    deleteMyComment: boolean = false;//自分の名前と違ったときはfalse
+    get_click_num_delete_report: number = 0;//クリックしているコメント番号を取得する
+    post_report: boolean = false;//trueのとき投稿を通報する
     
 
     mounted() {
         this.username = this.$store.state.username;
+    }
+
+    deleteReport(which_contents: string) {
+
+        const num = this.get_click_num_delete_report;//クリックしているコメント番号を取得する
+
+        const list = this.comment_lists[num];
+
+        const delete_report = (delete_or_report: string) => {
+
+            const edit_id = this.details_list.id;
+
+            let data_set
+
+            if(delete_or_report === "delete") {
+
+                data_set = {//消すとき
+                    username: list.username,
+                    user_comment: list.user_comment
+                }
+
+            }
+
+                //console.log(this.array_check);
+            let method_url: AxiosRequestConfig = { //delete
+                method: 'delete',
+                url: 'comment_delete/' + edit_id,
+                params: data_set
+            }
+
+            if(delete_or_report === "report") {//通報
+
+                let post_or_comment;
+                let username;//通報される名前
+                let comment;//通報するコメント
+
+                if(this.post_report) {//投稿の通報
+
+                    post_or_comment = '投稿';
+                    username = this.details_list.username;//通報される名前
+                    comment = "";//投稿なため、コメントはない
+                    this.post_report = false;
+
+                } else {//コメントの通報
+
+                    post_or_comment = 'コメント'
+                    comment = list.user_comment;
+                    username = list.username;
+
+                }
+
+                const reported_data = {//投稿のの通報
+                        id: edit_id,
+                        reported_name: username,
+                        user_comment: comment,
+                        from_name: this.username,
+                        post_or_comment: post_or_comment,
+                }
+
+                method_url = { 
+                    method: 'post',
+                    url: 'comment_report',
+                    params: reported_data
+                }
+
+                
+            }
+
+       /*if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
+
+            method_url = {
+                method: 'post',
+                url: 'edit',
+                params: set_data
+            }
+            
+
+        } */
+
+            this.$axios(method_url)
+            .then((response) => {
+                console.log(response);
+
+                const res_data = response.data.can_delete_or_report;
+
+                console.log(res_data)
+
+                if(res_data === "can_delete") {//UI上で削除
+                    this.comment_lists.splice(num, 1);
+                }
+
+                
+
+        
+            })
+
+        }
+
+     
+            delete_report(which_contents);
+            this.show_select_del_or_tell = false;
+        //}
+
+    }
+
+    closeSelect() {
+
+        this.show_select_del_or_tell = false;//ボタンリスト初期化
+        this.deleteMyComment = false;//削除ボタン初期化
+
     }
 
     closePop() {
@@ -360,13 +482,61 @@ export default class everyone extends Vue {
         this.comment_add = "";
     }
 
+    deleteOrTell(num_str: string|number) {
+
+        
+
+        if(this.show_select_del_or_tell === false) {
+
+            this.show_select_del_or_tell = true;
+
+            if(num_str === "post_report") {//投稿の通報
+                this.post_report = true;
+                return;
+            }
+
+            if(this.comment_lists[Number(num_str)].username === this.username) {//自分の番号だけ
+                
+                this.deleteMyComment = true;//ボタンを表示する
+                this.get_click_num_delete_report = Number(num_str);
+
+            }
+
+        }
+        
+    }
+
 }
 </script>
 <style lang="scss">
     #everyone {
         padding: 20px 0;
+
+        .delete_tell_pop {
+
+            position: fixed;
+            margin-top: 20%;
+            margin-left: 50%;
+            transform: translate(-50%);
+            width: 200px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index:10;
+            text-align: center;
+
+            button {
+                margin: 20px 5px;
+            }
+
+            p {
+                display: inline-block;
+                background-color: aquamarine;
+            }
+        }
+
         .set_pop {
             //position: fixed;
+            
             
             margin-left: 50%;
             transform: translateX(-50%);
@@ -513,6 +683,8 @@ export default class everyone extends Vue {
                     }
                 }
 
+                
+
                 .comment {
                     background-color: rgb(193, 255, 234);
                     padding: 30px 0;
@@ -572,7 +744,7 @@ export default class everyone extends Vue {
 
                                 &:nth-of-type(2) {
                                    
-
+                                    cursor: default;
                                     font-size: 15px;
                                     padding: 0 10px;
                                     background-color: rgba(185, 185, 185, 0.7);
