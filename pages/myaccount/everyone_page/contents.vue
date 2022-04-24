@@ -15,15 +15,15 @@
                     <li><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li><img :src="icon_point.my_icon" alt="not_img"></li>
+                    <li @click="detailData('other')"><img :src="icon_point.my_icon" alt="not_img"></li>
                 </ul>
                 <ul class="good_and_comment">
                     <li v-show="show_heart" @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
                     <li v-show="show_comment" @click="toCommentList"><span>↓</span>コメント</li>
                 </ul>
                 <div class="comment" v-if="show_comment_list">
-                    <ul class="comment_contents" v-for="comment_list in comment_lists" :key="comment_list.user_comment">
-                        <li><img :src="comment_list.user_icon" alt="icon_img"></li>
+                    <ul class="comment_contents" v-for="(comment_list, index) in comment_lists" :key="index">
+                        <li @click="detailData('other_with_comment' , index)"><img :src="comment_list.user_icon" alt="icon_img"></li>
                         <li>{{ comment_list.date }}</li>
                        <li>{{ comment_list.user_comment }}</li>   
                        
@@ -38,7 +38,7 @@
         </div>
         <div class="everyone_list_my_name"  v-show="!show_detail">
             <div class="profile_list my_profile">
-                <profile_data :can_click="true" :from_contents="true" @send_data="detailData" @to_contents_img="contentsImg"/>
+                <profile_data :can_click="true" :from_contents="true" @send_data="detailData('me')" @to_contents_img="contentsImg"/>
             </div>
             <div class="profile_list everyone">
                 <everyone_list @detail_data_show="listDetail"/>
@@ -60,13 +60,14 @@ import profileData from '../../../components/mypage/profile.vue';
 export default class everyone extends Vue {
     detail_profile: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string }= { username: '', user_icon: '', user_comment: '' };
     details_list: { id: number, picture: string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '' };
+    my_icon: string|ArrayBuffer|null = "";//自分のアイコン画像
     username: string = "";
     show_detail: boolean = false;
     detail_contents: string = "";
     icon_point: { my_icon: string, good_point: number } = { my_icon: '', good_point: 0 };
     show_heart: boolean = true;//ハートを表示するかしないか
     heart: boolean = false;//ハートを色つける
-    comment_lists: { user_icon: string|ArrayBuffer|null, user_comment: string, date: string }[] = [];
+    comment_lists: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string, date: string }[] = [];
     comment_add: string = "";
     show_comment: boolean  = false;//そもそもコメントを表示するかしないか
     show_comment_list: boolean  = false;//コメントリストを表示する
@@ -86,6 +87,8 @@ export default class everyone extends Vue {
         this.heart = false;
         this.show_comment = false;//そもそもコメントを表示するかしないか
         this.show_comment_list = false;//コメントリストを表示する
+        this.detail_profile.username = this.username;//name自分
+        this.detail_profile.user_icon = this.my_icon;//icon自分
 
         //location.reload();
 
@@ -97,19 +100,35 @@ export default class everyone extends Vue {
 
         
         this.detail_profile.username = this.username;
-        this.detail_profile.user_icon = value;
+        this.detail_profile.user_icon = value;//表示される自分のアイコン
+        this.my_icon = value;//保存される不変のアイコン(closeのとき用)
     }
 
+    
 
-    detailData() {
+
+    detailData(who_icon: string, icon_num: number) {
         console.log('ui')
         this.detail_contents = "profile";
 
         this.show_detail = true;
 
+        let name = this.username;
+
+        if(who_icon === "other") {
+            name = this.details_list.username;
+            this.detail_profile.username = name;
+            this.detail_profile.user_icon = this.icon_point.my_icon;
+            
+        } else if(who_icon === "other_with_comment") {
+            name = this.comment_lists[icon_num].username;
+            this.detail_profile.username = name;
+            this.detail_profile.user_icon = this.comment_lists[icon_num].user_icon;
+        }
+
         this.$axios.get('get_comment', {
             params: {
-                username: this.username,
+                username: name,
             }
         })
         .then((response) => {
@@ -120,6 +139,8 @@ export default class everyone extends Vue {
             if(my_comment === "") {
                 my_comment = "コメントはありません。";
             }
+
+            console.log(my_comment)
 
             this.detail_profile.user_comment = my_comment;
 
@@ -270,7 +291,7 @@ export default class everyone extends Vue {
                 hour = hour_split.splice(0, 1);//時
                 minute = written_time[0].split(/:/).splice(1, 1);//分
 
-                this.comment_lists.splice(i, 1, { user_icon: 'data:image/'+comment_name_icon[i].icon, user_comment: comment_name_icon[i].other_comment, date: written_date[0] + " " + hour + ":" + minute});
+                this.comment_lists.splice(i, 1, { username: comment_name_icon[i].username, user_icon: 'data:image/'+comment_name_icon[i].icon, user_comment: comment_name_icon[i].other_comment, date: written_date[0] + " " + hour + ":" + minute});
             }
 
             
@@ -316,7 +337,7 @@ export default class everyone extends Vue {
 
 
         //UIに表示
-        this.comment_lists.push({ user_icon: this.detail_profile.user_icon, user_comment: this.comment_add, date: time });
+        this.comment_lists.push({ username: this.username, user_icon: this.detail_profile.user_icon, user_comment: this.comment_add, date: time });
 
         
 
@@ -442,7 +463,7 @@ export default class everyone extends Vue {
                         }
 
                         &:nth-of-type(4) {
-
+                            display: inline-block;
                             margin: 40px 0 0 55%;
                             
                             img {
@@ -513,7 +534,7 @@ export default class everyone extends Vue {
                                
                                 &:first-of-type {
                                     
-                                    background-color: aqua;
+                                    //background-color: aqua;
                                     //padding-left: 80px;
 
                                     
