@@ -1,9 +1,9 @@
 <template>
     <div id="everyone">
         <div class="delete_tell_pop" v-if="show_select_del_or_tell">
+                <p @click="closeSelect">✕閉じる</p>
                 <button @click="deleteReport('delete')" v-if="deleteMyComment">削除する</button>
                 <button @click="deleteReport('report')">報告する</button>
-                <p @click="closeSelect">✕閉じる</p>
             </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
@@ -519,17 +519,18 @@ export default class everyone extends Vue {
             transform: translate(-50%);
             width: 200px;
             height: 100px;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: white;
             z-index:10;
             text-align: center;
 
-            button {
-                margin: 20px 5px;
+            p {
+                position: fixed;
+                padding: 3px;
             }
 
-            p {
-                display: inline-block;
-                background-color: aquamarine;
+            button {
+                margin: 50px 5px;
+
             }
         }
 
