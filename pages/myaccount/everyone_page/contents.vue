@@ -312,10 +312,14 @@ export default class everyone extends Vue {
     changeHeart() {
 
         const plus_one = (id: number) => {
-            this.$axios.put('details_good_more/' + id)
+
+            this.$axios.put('details_good_more/' + id, {
+                username: this.username,
+            })
             .then ((response) => {
                 console.log(response);
             })
+
         }
 
 
