@@ -18,8 +18,8 @@
             <div class="list_detail detail" v-else>
                 <p @click="deleteOrTell('post_report')">…</p>
                 <ul class="post_contents">
-                    <!--<li>{{ details_list.id }}</li>'data:image/'+-->
-                    <li><img :src="details_list.picture" alt="写真"></li>
+                    <li v-if="details_list.picture === 'data:image/notImg'">写真はありません</li>
+                    <li v-else><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
                     <li @click="detailData('other')"><img :src="icon_point.my_icon" alt="not_img"></li>

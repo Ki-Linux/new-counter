@@ -4,7 +4,8 @@
         <button @click="nextContents('front')" v-if="contents_num !== 0">◀</button>
         <div id="show_list" v-for="(content_array, index) in contents_array" :key="index">
             <ul @click="detailDataShow(index)">
-                <li><img :src="content_array.picture" alt="写真"></li>
+                <li v-if="content_array.picture === 'data:image/notImg'"></li>
+                <li v-else><img :src="content_array.picture" alt="写真"></li>
                 <li>{{ content_array.my_comment }}</li>
                 <li>{{ content_array.username }}</li>
             </ul>          
