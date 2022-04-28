@@ -152,7 +152,7 @@ export default class everyone_list extends Vue {
                         //float: left;
                         img {
                             width: 90px;
-                            
+                            max-height: 80px;
                             background-color: bisque;
                         }
                     }

@@ -1,7 +1,7 @@
 <template>
     <div id="my_list">
         <div class="toeveryone">
-            <nuxt-link class="everyone_page" to="">←みんなの投稿へ</nuxt-link>
+            <nuxt-link class="everyone_page" to="/myaccount/everyone_page/everyone">←みんなの投稿へ</nuxt-link>
         </div>
         <div class="list">
             <ul @click="detailShow(index)" v-for="(picture_data, index) in picturesData" :key="index">
@@ -99,7 +99,7 @@ export default class myList extends Vue {
     //width: 700px;
             //height: 400px;
             padding-top: 60px;
-            margin: 0 auto;
+            
             display: flex;
             flex-wrap: wrap;
             justify-content: center;

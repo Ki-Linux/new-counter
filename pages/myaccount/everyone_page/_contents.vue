@@ -7,10 +7,11 @@
             </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
-            <div class="see_and_edit" v-if="$route.params.contents !== 'everyone' && detail_contents === 'list'">
+            <div class="see_and_edit" v-if="$route.params.contents !== 'everyone'">
                 <p v-if="details_list.can_see === 1">
                    閲覧数:{{ view_point }}
                 </p>
+                <p v-else>no views</p>
                 <button>編集する</button>
             </div>
             <div class="profile_detail detail" v-if="detail_contents === 'profile'">
@@ -21,13 +22,13 @@
                 </ul>
             </div>
             <div class="list_detail detail" v-else>
-                <p @click="deleteOrTell('post_report')">…</p>
+                <p @click="deleteOrTell('post_report')" v-if="$route.params.contents === 'everyone'">…</p>
                 <ul class="post_contents">
                     <li v-if="details_list.picture === 'data:image/notImg'">写真はありません</li>
                     <li v-else><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li @click="detailData('other')"><img :src="icon_point.my_icon" alt="not_img"></li>
+                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'"><img :src="icon_point.my_icon" alt="not_img"></li>
                 </ul>
                 <ul class="good_and_comment">
                     <li v-show="show_heart" @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
@@ -48,11 +49,11 @@
                 </div>
             </div>
         </div>
-        
         <div class="everyone_list_my_name"  v-show="!show_detail" v-if="$route.params.contents === 'everyone'">
             <div class="profile_list my_profile">
                 <profile_data :can_click="true" :from_contents="true" @send_data="detailData('me')" @to_contents_img="contentsImg"/>
-                <button>マイ投稿</button>
+                <button @click="toMyPage">マイ投稿</button>
+                <back_account where_go="account"/>
             </div>
             <div class="profile_list everyone">
                 <everyone_list @detail_data_show="listDetail"/>
@@ -68,6 +69,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import everyoneList from '../../../components/mypage/everyone_list.vue';
 import myList from '../../../components/mypage/my_list.vue';
 import profileData from '../../../components/mypage/profile.vue';
+import backAccount from '../../../components/back_button/back.vue';
 import { AxiosRequestConfig } from 'axios';
 
 @Component({
@@ -75,6 +77,7 @@ import { AxiosRequestConfig } from 'axios';
         'everyone_list': everyoneList,
         'profile_data': profileData,
         'my_list': myList,
+        'back_account': backAccount,
     }
 })
 export default class everyone extends Vue {
@@ -297,7 +300,6 @@ export default class everyone extends Vue {
                 id_data: this.details_list.id,//this.details_list.id,
                 name_data: this.details_list.username,
                 my_name: this.username,
-                can_see_data: this.details_list.can_see,
             }
         })
         .then((response) => {
@@ -524,6 +526,10 @@ export default class everyone extends Vue {
         
     }
 
+    toMyPage() {
+        this.$router.push("/myaccount/everyone_page/" + this.username);
+    }
+
 }
 </script>
 <style lang="scss">
@@ -555,13 +561,12 @@ export default class everyone extends Vue {
 
         .set_pop {
             //position: fixed;
-            
-            
+ 
             margin-left: 50%;
             transform: translateX(-50%);
             background-color: rgb(193, 255, 234);
             width: 700px;
-            height: 800px;
+            //height: 500px;
 
             p {
 

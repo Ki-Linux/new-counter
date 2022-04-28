@@ -80,7 +80,7 @@ export default class reminder extends Vue {
     }
 
     toEveryonePostPage() {
-        this.$router.push('/myaccount/everyone_page/contents');
+        this.$router.push('/myaccount/everyone_page/everyone');
     }
 
     showYellowList() {
