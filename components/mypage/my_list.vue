@@ -8,7 +8,7 @@
                 <li v-if="picture_data.picture === 'notImg'"></li>
                 <li v-else><img :src="'data:image/'+picture_data.picture" alt="写真"></li>
                 <li>{{ picture_data.my_comment }}</li>
-                <li>{{ picture_data.updated_at }}</li>
+                <li>{{ picture_data.created_at }}</li>
             </ul>  
         </div>
     </div>
@@ -18,12 +18,12 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component
 export default class myList extends Vue {
-    picturesData: { id: number; my_comment: string; picture: string|number|ArrayBuffer; can_see: number; updated_at: string }[] = [];
+    picturesData: { id: number; my_comment: string; picture: string|number|ArrayBuffer; can_see: number; created_at: string }[] = [];
 
 
     mounted() {//データを表示する
 
-        const my_name = this.$store.state.username
+        const my_name = this.$store.state.username;
 
         this.$axios.get("edit_show", {
             params: {
@@ -37,8 +37,8 @@ export default class myList extends Vue {
 
             for(let i=0; i < data.length; i++) {
 
-                const new_date = data[i].updated_at.split('T').splice(0, 1);//日にちだけの表示
-                data[i].updated_at = new_date[0];
+                const new_date = data[i].created_at.split('T').splice(0, 1);//日にちだけの表示
+                data[i].created_at = new_date[0];
 
                 this.picturesData.splice(i, 1, data[i]);
             }
