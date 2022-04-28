@@ -8,6 +8,7 @@
                 <li v-if="picture_data.picture === 'notImg'"></li>
                 <li v-else><img :src="'data:image/'+picture_data.picture" alt="写真"></li>
                 <li>{{ picture_data.my_comment }}</li>
+                <li>{{ picture_data.updated_at }}</li>
             </ul>  
         </div>
     </div>
@@ -32,9 +33,13 @@ export default class myList extends Vue {
         .then((response) => {
             console.log(response.data);
 
-            const data = response.data.contents;
+            let data = response.data.contents;
 
             for(let i=0; i < data.length; i++) {
+
+                const new_date = data[i].updated_at.split('T').splice(0, 1);//日にちだけの表示
+                data[i].updated_at = new_date[0];
+
                 this.picturesData.splice(i, 1, data[i]);
             }
             
@@ -114,6 +119,8 @@ export default class myList extends Vue {
                 
             }
 
+
+
             &:nth-of-type(2) {
                 
                 margin-top: 30px;
@@ -121,6 +128,7 @@ export default class myList extends Vue {
                 background-color: white;
                 word-break: break-all;
             }
+
         }
     }
                 
