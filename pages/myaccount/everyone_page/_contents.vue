@@ -7,8 +7,10 @@
             </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
-            <div class="see_and_edit" v-if="detail_contents === 'list'">
-                <p>閲覧数:</p>
+            <div class="see_and_edit" v-if="$route.params.contents !== 'everyone' && detail_contents === 'list'">
+                <p v-if="details_list.can_see === 1">
+                   閲覧数:{{ view_point }}
+                </p>
                 <button>編集する</button>
             </div>
             <div class="profile_detail detail" v-if="detail_contents === 'profile'">
@@ -77,12 +79,13 @@ import { AxiosRequestConfig } from 'axios';
 })
 export default class everyone extends Vue {
     detail_profile: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string }= { username: '', user_icon: '', user_comment: '' };
-    details_list: { id: number, picture: string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '' };
+    details_list: { id: number, picture: string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string, can_see: number } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '', can_see: 0 };
     my_icon: string|ArrayBuffer|null = "";//自分のアイコン画像
     username: string = "";
     show_detail: boolean = false;
     detail_contents: string = "";
     icon_point: { my_icon: string, good_point: number } = { my_icon: '', good_point: 0 };
+    view_point: number = 0;
     show_heart: boolean = true;//ハートを表示するかしないか
     heart: boolean = false;//ハートを色つける
     comment_lists: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string, date: string }[] = [];
@@ -280,7 +283,7 @@ export default class everyone extends Vue {
 
     }
 
-    listDetail(value: [boolean, { id: number, picture:string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string }]) {
+    listDetail(value: [boolean, { id: number, picture:string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string, can_see: number }]) {
 
         this.detail_contents = "list";
 
@@ -293,7 +296,7 @@ export default class everyone extends Vue {
             params: {
                 id_data: this.details_list.id,//this.details_list.id,
                 name_data: this.details_list.username,
-                
+                can_see_data: this.details_list.can_see,
             }
         })
         .then((response) => {
@@ -302,6 +305,8 @@ export default class everyone extends Vue {
             const icon_good_comment = response.data;
 
             this.icon_point.my_icon = icon_good_comment.icon_data[0].icon;
+
+            this.view_point = icon_good_comment.view_data;
 
             if(icon_good_comment.point_data.length === 0) {
                 this.show_heart = false;
