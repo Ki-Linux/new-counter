@@ -7,8 +7,11 @@
             </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
+            <div class="see_and_edit" v-if="detail_contents === 'list'">
+                <p>閲覧数:</p>
+                <button>編集する</button>
+            </div>
             <div class="profile_detail detail" v-if="detail_contents === 'profile'">
-                
                 <ul>
                     <li>{{ detail_profile.username }}</li>
                     <li><img :src="detail_profile.user_icon" alt="img"></li>
@@ -53,8 +56,8 @@
                 <everyone_list @detail_data_show="listDetail"/>
             </div>
         </div>        
-        <div v-else>
-            <my_list/>
+        <div v-else  v-show="!show_detail">
+            <my_list @detail_data_show="listDetail"/>
         </div>
     </div>
 </template>
@@ -561,6 +564,17 @@ export default class everyone extends Vue {
                 font-size: 30px;
 
             } 
+
+            .see_and_edit {
+                button {
+                    float: right;
+                    font-size: 25px;
+                    padding: 10px 20px;
+                    margin-top: 5px;
+                    margin-right: 20px;
+                    background-color: rgba(255, 255, 255, 0.8);
+                }
+            }
 
             .detail {
                 text-align: center;

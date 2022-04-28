@@ -4,7 +4,7 @@
             <nuxt-link class="everyone_page" to="">←みんなの投稿へ</nuxt-link>
         </div>
         <div class="list">
-            <ul v-for="(picture_data, index) in picturesData" :key="index">
+            <ul @click="detailShow(index)" v-for="(picture_data, index) in picturesData" :key="index">
                 <li v-if="picture_data.picture === 'notImg'"></li>
                 <li v-else><img :src="'data:image/'+picture_data.picture" alt="写真"></li>
                 <li>{{ picture_data.my_comment }}</li>
@@ -19,15 +19,15 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component
 export default class myList extends Vue {
     picturesData: { id: number; my_comment: string; picture: string|number|ArrayBuffer; can_see: number; created_at: string }[] = [];
-
+    my_name: string = "";
 
     mounted() {//データを表示する
 
-        const my_name = this.$store.state.username;
+        this.my_name = this.$store.state.username;
 
         this.$axios.get("edit_show", {
             params: {
-                username: my_name,
+                username: this.my_name,
             }
         })
         .then((response) => {
@@ -45,6 +45,22 @@ export default class myList extends Vue {
             
         })
     
+    }
+
+    detailShow(show_num: number) {
+        let send_data: { id: number; picture: string|number|ArrayBuffer; my_comment: string; username: string;  updated_at: string; can_see: number; };
+
+        const content = this.picturesData[show_num];
+
+        const send_id = content.id;
+        const send_picture = content.picture;
+        const send_comment = content.my_comment;
+        const send_day = content.created_at;
+        const send_see = content.can_see;
+
+        send_data = { id: send_id, picture: 'data:image/'+send_picture, my_comment: send_comment, username: this.my_name, updated_at: send_day, can_see: send_see};
+
+        this.$emit('detail_data_show', [true, send_data]);
     }
 
     /*removing(index: number) {//削除したいものを削除する
