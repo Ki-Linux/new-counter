@@ -47,6 +47,7 @@
         <div class="everyone_list_my_name"  v-show="!show_detail">
             <div class="profile_list my_profile">
                 <profile_data :can_click="true" :from_contents="true" @send_data="detailData('me')" @to_contents_img="contentsImg"/>
+                <button>マイ投稿</button>
             </div>
             <div class="profile_list everyone">
                 <everyone_list @detail_data_show="listDetail"/>
@@ -814,14 +815,17 @@ export default class everyone extends Vue {
             transform: translateX(-50%);
             
 
-            .profile_list {
-                //float: left;
-                //background-color: blue;
-                margin-right: 30px;
-            }
-
             .my_profile {
-               margin-top: 40px;
+                margin-top: 20px;
+                background-color: rgba(255, 213, 158, 0.4);
+                padding: 30px 40px 0 0;
+
+                button {
+                    font-size: 20px;
+                    margin: 20px 0 0 40px;
+                    padding: 10px 22.5px;
+                    background-color: rgb(255, 251, 241);
+                }
             }
         }
     }
