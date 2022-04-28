@@ -296,6 +296,7 @@ export default class everyone extends Vue {
             params: {
                 id_data: this.details_list.id,//this.details_list.id,
                 name_data: this.details_list.username,
+                my_name: this.username,
                 can_see_data: this.details_list.can_see,
             }
         })
