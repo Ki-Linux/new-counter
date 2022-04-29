@@ -18,7 +18,9 @@
                         </div>
                     </div>
                     <div class="img_box">
-                        <p v-if="select_img_chosen && this.url.length > 40"><img :src="'data:image/'+url" alt="img none"></p>
+                        <p v-if="select_img_chosen && this.url !== 'notImg'">
+                            <img :src="show_url" alt="img none">
+                        </p>
                         <p v-else>画像はありません</p>
                     </div>    
                     <input v-if="select_img_chosen" type="file" name="picture" ref="preview" @change="editPicture" multiple="multiple">
@@ -55,7 +57,9 @@ import imageCompression from 'browser-image-compression';
 
 @Component
 export default class edit extends Vue {
-    url = require("../../../../static/edit/hatena.png");//[default_img, select_img]
+    url: string|ArrayBuffer|null = "notImg";//送るurl
+    show_url: string|ArrayBuffer|null = "";//示すurl
+    str_url: string = "";
     my_comment = "";
     array_check: number[] = [2, 2, 2, 2, 2];
     //check: boolean = false;
@@ -94,11 +98,12 @@ export default class edit extends Vue {
             this.$axios.get("edit_show", {
                 params: {
                     id: editNum,
+                    target: 'edit',
                 }
             })
             .then((response) => {
-                const res = response.data[0];
-                this.url = res.picture;
+                const res = response.data.contents[0];
+                this.show_url = 'data:image/'+res.picture;
                 this.my_comment = res.my_comment;
                 this.array_check.splice(0, 5, res.can_list , res.can_good, res.can_comment, res.can_see, res.can_top);
                 this.show_checked = true;
@@ -162,6 +167,7 @@ export default class edit extends Vue {
 
         this.url = select_data[this.shift_num];
 
+        this.show_url = 'data:image/'+this.url;
         //const img_data = this.$store.state.back_select_data[1];
 
         //if(img_data.includes('http')) {//画像のときのみ代入
@@ -209,13 +215,17 @@ export default class edit extends Vue {
 
             const result = reader.result;
 
+            this.show_url = result;
+
+           // this.url = result;//画像データの扱いを実行
+
             if(typeof(result) === "string") {
                 
-                const option_url = result.replace('data:image/', '');
+                this.url = result.replace('data:image/', '');
                 //console.log(option_url)
-            
-                this.url = option_url;//画像データの扱いを実行
             }
+                
+            
 
         })
 
@@ -273,13 +283,13 @@ export default class edit extends Vue {
 
         }
 
-        if(!this.select_img_chosen || this.url.length < 40) {//画像でないときのみ代入
+        if(!this.select_img_chosen) {//画像でないときのみ代入
 
             this.url = "notImg";
 
         } 
 
-
+      
 
         const editNum = this.$route.params.editNum;
         const name = this.$store.state.username;

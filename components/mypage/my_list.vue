@@ -28,6 +28,7 @@ export default class myList extends Vue {
         this.$axios.get("edit_show", {
             params: {
                 username: this.my_name,
+                target: 'list',
             }
         })
         .then((response) => {
