@@ -83,15 +83,34 @@ export default class edit extends Vue {
 
     mounted() {
 
- 
-
         const editNum = this.$route.params.editNum;
 
-        if(editNum === 'new_post') {
+        if(editNum === 'new_post') {//投稿
 
             this.button_name = "投稿";
 
-        } else {
+             let img_data = this.$store.state.back_data;
+
+                
+            if(img_data[3] === "" && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
+
+            
+                this.show_select_button = true;//画像を切り替えるボタンを表示
+
+                img_data[3] = this.$store.state.back_select_data[this.shift_num];//最初は0
+
+            }
+
+            this.url = img_data[3];
+            this.show_url = 'data:image/'+this.url;
+
+            if(img_data[4] === "nothing" || "word") {//画像以外のとき
+                this.url = "notImg";
+                this.show_url = "notImg";
+            }
+
+
+        } else {//編集
 
             this.button_name = "編集";
 
@@ -110,36 +129,6 @@ export default class edit extends Vue {
                 this.show_checked = true;
             })
 
-
-        }
-
-
-        if(editNum === 'new_post') {//投稿のときだけ
-
-            let img_data = this.$store.state.back_data;
-
-                
-            if(img_data[3] === "" && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
-
-            
-                this.show_select_button = true;//画像を切り替えるボタンを表示
-
-                img_data[3] = this.$store.state.back_select_data[this.shift_num];//最初は0
-
-            }
-
-        
-
-        //if(img_data.includes('http')) {//画像のときのみ代入
-
-                this.url = img_data[3];
-                this.show_url = 'data:image/'+this.url;
-
-                if(img_data[4] === "nothing" || "word") {//画像以外のとき
-                    this.url = "notImg";
-                    this.show_url = "notImg";
-                }
-        //} 
 
         }
 
@@ -247,9 +236,23 @@ export default class edit extends Vue {
     }
 
     stopPost() {
-        if(confirm('本当にやめますか?')) {
-            this.$router.push('/myaccount/mypage/album_select/choose_album');
+
+        const editNum = this.$route.params.editNum;
+
+        if(editNum === 'new_post') {//post
+
+            if(confirm('本当にやめますか?')) {
+                this.$router.push('/myaccount/mypage/album_select/choose_album');
+            }
+
+        } else {//edit
+
+            const name = this.$store.state.username;
+
+            this.$router.push('/myaccount/everyone_page/' + name);
+
         }
+        
     }
 
     checkOn(index: number, select_num: number) {
