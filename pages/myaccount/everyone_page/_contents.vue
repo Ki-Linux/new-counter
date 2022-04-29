@@ -12,7 +12,7 @@
                    閲覧数:{{ view_point }}
                 </p>
                 <p v-else>no views</p>
-                <button>編集する</button>
+                <button @click="toEditPage">編集する</button>
             </div>
             <div class="profile_detail detail" v-if="detail_contents === 'profile'">
                 <ul>
@@ -528,6 +528,10 @@ export default class everyone extends Vue {
 
     toMyPage() {
         this.$router.push("/myaccount/everyone_page/" + this.username);
+    }
+
+    toEditPage() {
+        this.$router.push("/myaccount/mypage/edit/" + this.details_list.id);
     }
 
 }

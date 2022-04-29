@@ -58,7 +58,7 @@ import imageCompression from 'browser-image-compression';
 @Component
 export default class edit extends Vue {
     url: string|ArrayBuffer|null = "notImg";//送るurl
-    show_url: string|ArrayBuffer|null = "";//示すurl
+    show_url: string|ArrayBuffer|null = require("../../../../static/edit/hatena.png");//示すurl
     str_url: string = "";
     my_comment = "";
     array_check: number[] = [2, 2, 2, 2, 2];
@@ -103,7 +103,8 @@ export default class edit extends Vue {
             })
             .then((response) => {
                 const res = response.data.contents[0];
-                this.show_url = 'data:image/'+res.picture;
+                this.url = res.picture;
+                this.show_url = 'data:image/'+this.url;
                 this.my_comment = res.my_comment;
                 this.array_check.splice(0, 5, res.can_list , res.can_good, res.can_comment, res.can_see, res.can_top);
                 this.show_checked = true;
@@ -113,25 +114,36 @@ export default class edit extends Vue {
         }
 
 
-        let img_data = this.$store.state.back_data;
+        if(editNum === 'new_post') {//投稿のときだけ
+
+            let img_data = this.$store.state.back_data;
 
                 
-        if(img_data[3] === "" && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
+            if(img_data[3] === "" && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
 
             
-            this.show_select_button = true;//画像を切り替えるボタンを表示
+                this.show_select_button = true;//画像を切り替えるボタンを表示
 
-            img_data[3] = this.$store.state.back_select_data[this.shift_num];//最初は0
+                img_data[3] = this.$store.state.back_select_data[this.shift_num];//最初は0
 
-        }
+            }
 
         
 
         //if(img_data.includes('http')) {//画像のときのみ代入
 
-            this.url = img_data[3];
+                this.url = img_data[3];
+                this.show_url = 'data:image/'+this.url;
 
+                if(img_data[4] === "nothing" || "word") {//画像以外のとき
+                    this.url = "notImg";
+                    this.show_url = "notImg";
+                }
         //} 
+
+        }
+
+        
 
 
     }
@@ -200,7 +212,7 @@ export default class edit extends Vue {
     async editPicture(e: Event) {
         this.show_select_button = false;
 
-        const  file = (<HTMLInputElement>e.target).files![0];
+        const file = (<HTMLInputElement>e.target).files![0];
  
         const options = {
             MAXSIZEMB: 1,
@@ -334,6 +346,10 @@ export default class edit extends Vue {
                 this.$router.push('/myaccount/mypage/album_select/choose_album');
 
                 //this.$router.push('/myaccount/mypage/' + name);
+            } else if(res.success === "update_true") {
+
+                this.$router.push('/myaccount/everyone_page/' + name);
+
             }
         })
     }
@@ -443,15 +459,22 @@ html {
             float: right;
             padding: 10px 20px 10px;
 
-            button[type="submit"] {
-                font-size: 30px;
-                padding: 3px 20px;
+            button {
                 background-color: white;
+
+                &[type="submit"] {
+                    font-size: 30px;
+                    padding: 3px 20px;
+                
                 
                 //float: left;
                 //transform: translateX(-50%);
                 
+                }
             }
+            
+
+            
 
         }
 
