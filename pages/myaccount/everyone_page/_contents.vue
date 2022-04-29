@@ -8,11 +8,15 @@
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
             <div class="see_and_edit" v-if="$route.params.contents !== 'everyone'">
+                
                 <p v-if="details_list.can_see === 1">
                    閲覧数:{{ view_point }}
                 </p>
                 <p v-else>no views</p>
-                <button @click="toEditPage">編集する</button>
+                <div class="edit_delate">
+                    <button @click="EditDelete('edit')">編集する</button>
+                    <button @click="EditDelete('delete')">削除する</button>
+                </div>
             </div>
             <div class="profile_detail detail" v-if="detail_contents === 'profile'">
                 <ul>
@@ -530,8 +534,50 @@ export default class everyone extends Vue {
         this.$router.push("/myaccount/everyone_page/" + this.username);
     }
 
-    toEditPage() {
-        this.$router.push("/myaccount/mypage/edit/" + this.details_list.id);
+    EditDelete(project: string) {
+
+        const id = this.details_list.id;
+
+        if(project === "edit") {
+
+            this.$router.push("/myaccount/mypage/edit/" + id);
+
+        } else if(project === "delete") {
+
+            const go_delete = (delete_id: number) => {
+
+                this.$axios.delete("edit_del/" + delete_id)
+                .then((response) => {
+
+                    
+                    //this.pictureData = response.data
+                    const can_delete = response.data.can_delete
+                    console.log(can_delete);
+
+                    if(can_delete) {
+                        console.log('success');
+
+                        location.reload();
+
+                    }
+                    
+                })
+                .catch((response) => {
+                    
+                    console.log(response);
+
+                })
+
+                
+
+            }
+
+            if(confirm('削除しますか?')) {
+                go_delete(id);
+            }
+
+        }
+        
     }
 
 }
@@ -581,14 +627,22 @@ export default class everyone extends Vue {
             } 
 
             .see_and_edit {
-                button {
+
+                .edit_delate {
                     float: right;
-                    font-size: 25px;
-                    padding: 10px 20px;
-                    margin-top: 5px;
-                    margin-right: 20px;
-                    background-color: rgba(255, 255, 255, 0.8);
+                    margin-top: -70px;
+
+                    button {
+                        display: block;
+                        font-size: 25px;
+                        padding: 10px 20px;
+                        margin: 10px 0;
+                        margin-right: 20px;
+                        background-color: rgba(255, 255, 255, 0.8);
+                    }
+
                 }
+                
             }
 
             .detail {
