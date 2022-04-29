@@ -89,10 +89,11 @@ export default class edit extends Vue {
 
             this.button_name = "投稿";
 
-             let img_data = this.$store.state.back_data;
+            let img_data = this.$store.state.back_data;
+            const plan = this.$store.state.select_plan;
 
                 
-            if(img_data[3] === "" && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
+            if(plan !== "free" && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
 
             
                 this.show_select_button = true;//画像を切り替えるボタンを表示
@@ -104,9 +105,10 @@ export default class edit extends Vue {
             this.url = img_data[3];
             this.show_url = 'data:image/'+this.url;
 
-            if(img_data[4] === "nothing" || "word") {//画像以外のとき
+            if(img_data[4] === "nothing" || img_data[4] === "word") {//画像以外のとき
                 this.url = "notImg";
                 this.show_url = "notImg";
+                
             }
 
 
@@ -181,17 +183,21 @@ export default class edit extends Vue {
     imgSelect(num: number) {
         console.log(num);
 
+        const img_data = this.$store.state.back_data;
+        const plan = this.$store.state.select_plan;
 
-            switch(num) {
 
-                case 0:
+            if(num === 0) {
                     this.select_img_chosen = true;
+
+                if(img_data[4] !== "nothing" && plan !== "free") {
                     this.show_select_button = true;//◀▶
-                break;
-                case 1:
-                    this.select_img_chosen = false;
-                    this.show_select_button = false;//◀▶
-                break;
+                }
+
+            } else if(num === 1) {
+
+                this.select_img_chosen = false;
+                this.show_select_button = false;//◀▶
 
             }
         
