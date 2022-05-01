@@ -9,7 +9,7 @@
             <p v-if="not_success">パスワードが違います。</p>
         </div>
         <div class="contents">
-            <div class="account_info">
+            <div class="account_info" v-if="show_info[0]">
                 <ul v-for="account in accounts" :key="account.title">
                     <li>{{ account.title }}</li>
                     <li>{{ account.info }}</li>
@@ -35,7 +35,8 @@ export default class optionMyData extends Vue {
     option_contents: string[] = ['アカウント情報', 'パスワード変更', 'リマインダー設定', 'ログアウト'];
     accounts: { title: string, info: string}[]
      = [{ title: '登録メールアドレス', info: ''},{ title: 'ユーザー名', info: ''}];
-    contents_show: boolean = false;
+    show_info: boolean[] = [false, false, false, false]; 
+    contents_show: boolean = true;
     password_data: string = "";
     not_success: boolean = false;
 
@@ -65,23 +66,15 @@ export default class optionMyData extends Vue {
     showContent(show_num: number) {
 
         const name = this.$store.state.username;
-        let num = 0;
-        
 
-        switch(show_num) {
+        this.show_info.splice(0, 4, false);//クリックしたコンテンツの初期化
 
-            case 1:
-                num = 1
-            break;
-            case 2:
-                num = 2
-            break;
-
-        }
+        this.show_info.splice(show_num, 1, true);//クリックしたコンテンツの表示
+        console.log(show_num)
 
         const set_data = {
             username: name,
-            clicked_num: num,
+            clicked_num: show_num,
         }
         
 
@@ -95,7 +88,17 @@ export default class optionMyData extends Vue {
         this.$axios(method_url)
         .then((response) => {
 
-            console.log(response);
+            if(show_num === 0) {
+                
+                console.log(response.data.get_contents);
+
+                const address = response.data.get_contents;
+
+                this.accounts.splice(0, 2, { title: '登録メールアドレス', info: address},{ title: 'ユーザー名', info: name});
+                
+
+            }
+            
         })
 
     }
