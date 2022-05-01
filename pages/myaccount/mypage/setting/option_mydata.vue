@@ -19,8 +19,8 @@
         <div class="contents_list" v-if="contents_show">
             <h1>設定</h1>
             <div class="all_option">
-                <ul v-for="option_content in option_contents" :key="option_content">
-                    <li>{{ option_content }}</li>
+                <ul v-for="(option_content, index) in option_contents" :key="index">
+                    <li @click="showContent(index)">{{ option_content }}</li>
                 </ul>
             </div>
         </div>
@@ -28,6 +28,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { AxiosRequestConfig } from 'axios';
 
 @Component
 export default class optionMyData extends Vue {
@@ -57,6 +58,44 @@ export default class optionMyData extends Vue {
                 console.log("not_success");
                 this.not_success = true;
             }
+        })
+
+    }
+
+    showContent(show_num: number) {
+
+        const name = this.$store.state.username;
+        let num = 0;
+        
+
+        switch(show_num) {
+
+            case 1:
+                num = 1
+            break;
+            case 2:
+                num = 2
+            break;
+
+        }
+
+        const set_data = {
+            username: name,
+            clicked_num: num,
+        }
+        
+
+        const method_url: AxiosRequestConfig = { //編集
+            method: 'get',
+            url: 'get_information',
+            params: set_data
+        }
+            
+
+        this.$axios(method_url)
+        .then((response) => {
+
+            console.log(response);
         })
 
     }
