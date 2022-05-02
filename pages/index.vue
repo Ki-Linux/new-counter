@@ -61,9 +61,9 @@
       </main>
       <footer>
         <ul>
-          <li><nuxt-link class="next" to="">利用規約</nuxt-link></li>
-          <li><nuxt-link class="next" to="">プライバシーポリシー</nuxt-link></li>
-          <li><nuxt-link class="next" to="">お問い合わせ</nuxt-link></li>
+          <li><nuxt-link class="next" to="/under_contents/terms_of_use">利用規約</nuxt-link></li>
+          <li><nuxt-link class="next" to="/under_contents/privacy_policy">プライバシーポリシー</nuxt-link></li>
+          <li><nuxt-link class="next" to="/under_contents/contact">お問い合わせ</nuxt-link></li>
         </ul>
       </footer>
     </div>

@@ -26,7 +26,7 @@
                 <li>{{ rule_fifth }}</li>
             </ul>
         </div>
-        <div class="privacy_policy" v-if="$route.params.rule === 'privacy_policy'">
+        <div class="privacy_policy" v-else-if="$route.params.rule === 'privacy_policy'">
             <h1>プライバシーポリシー</h1>
             <ul v-for="privacy_policy in privacy_policies" :key="privacy_policy">
                 <li>{{ privacy_policy }}</li>
@@ -126,7 +126,7 @@ export default class Rule extends Vue {
 
     .privacy_policy {
         h1 {
-            padding-left: 50px;
+            padding-left: 10px;
         }
 
         ul li {
