@@ -189,7 +189,7 @@ export default class change_profile extends Vue {
         console.log(change_content)
 
 
-            this.$axios.put('account_update/' + this.send_userId, {
+        this.$axios.put('account_update/' + this.send_userId, {
             changeContent: change_content, 
             judgeNumber: judge_number,
         })

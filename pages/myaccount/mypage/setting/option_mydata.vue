@@ -26,6 +26,15 @@
             </form>
             <p v-else>パスワードを変更いたしました。</p>
             </div>
+            <div class="reminder_option"  v-else-if="show_info[2]">
+                <p>いいねやコメントのリマインダー(お知らせ)を許可しますか?</p>
+                <label>
+                    <input type="radio" name="reminder_yes" value="はい" @click="checkReminder(1)" :checked="required_num === 1">はい
+                </label>
+                <label>
+                    <input type="radio" name="reminder_no" value="いいえ" @click="checkReminder(0)" :checked="required_num === 0">いいえ
+                </label> 
+            </div>
         </div>
         <div class="contents_list" v-if="contents_show">
             <h1>設定</h1>
@@ -43,6 +52,7 @@ import { AxiosRequestConfig } from 'axios';
 
 @Component
 export default class optionMyData extends Vue {
+    user_id_name: [number, string] = [0, ''];//ユーザーid, name
     option_contents: string[] = ['アカウント情報', 'パスワード変更', 'リマインダー設定', 'ログアウト'];
     accounts: { title: string, info: string}[]
      = [{ title: '登録メールアドレス', info: ''},{ title: 'ユーザー名', info: ''}];
@@ -54,14 +64,30 @@ export default class optionMyData extends Vue {
     not_success: boolean = false;
     inconsistency: boolean = false;
     success_change_password: boolean = false;
+    now_num: number = 4;//現在の番号
+    required_num: number = 0;//リマインダーするかしないか(defaultはしない)
+
+    mounted() {
+
+        this.user_id_name[1] = this.$store.state.username;
+
+        this.$axios.get('get_id', {
+            params: {
+                username: this.user_id_name[1],
+            }
+        })
+        .then((response) => {
+            console.log(response.data)
+            this.user_id_name[0] = response.data;
+        })
+
+    }
     
 
     CheckChangePassword(which: string) {
 
-        const name = this.$store.state.username;
-
         let set_data = {
-            username: name,
+            username: this.user_id_name[1],
             password: this.password_data,
         }
         
@@ -82,13 +108,13 @@ export default class optionMyData extends Vue {
             }
 
             set_data = {
-                username: name,
+                username: this.user_id_name[1],
                 password: this.new_password,
             }
 
             method_url = { //編集
                 method: 'put',
-                url: 'check_change_password/1',
+                url: 'check_change_password/' + this.user_id_name[0],
                 params: set_data
             }
 
@@ -132,55 +158,105 @@ export default class optionMyData extends Vue {
 
     }
 
+    checkReminder(yes_or_no: number) {
+
+        if(this.required_num === yes_or_no) {//同じだったら送信しない
+
+            return;
+        }
+
+
+        this.$axios.put('post_reminder_update/' + this.user_id_name[0], {
+            username: this.user_id_name[1],
+            yes_no: yes_or_no,
+        })
+        .then((response) => {
+            
+            const reminder = response.data.update_reminder;
+
+            console.log(reminder)
+            if(reminder) {
+
+                if(this.required_num === 0) {
+
+                    this.required_num = 1;
+
+                } else if(this.required_num === 1) {
+
+                    this.required_num = 0;
+
+                }
+
+            }
+        })
+
+    }
+
     showContent(show_num: number) {
+
+        if(this.now_num === show_num) {
+            return;
+        }
 
         const reset_data = () => {
 
             this.inconsistency = false;
             this.new_password = "";
             this.confirm_password = "";
+            this.show_info.splice(this.now_num, 1, false); //クリックしたコンテンツの初期化
 
         }
-
-        const name = this.$store.state.username;
 
         this.success_change_password = false;
         
         reset_data();//データリセット
 
-        this.show_info.splice(0, 4, false);//クリックしたコンテンツの初期化
+        this.now_num = show_num;//現在クリックしている値を入れる
 
-        this.show_info.splice(show_num, 1, true);//クリックしたコンテンツの表示
-        console.log(show_num)
+        this.show_info.splice(this.now_num, 1, true);//クリックしたコンテンツの表示
+        console.log(this.show_info)
 
-        const set_data = {
-            username: name,
-            clicked_num: show_num,
-        }
+        const api_data = (num: number) => {
+
+            const set_data = {
+                username: this.user_id_name[1],
+                clicked_num: num,
+            }
         
 
-        const method_url: AxiosRequestConfig = { //編集
-            method: 'get',
-            url: 'get_information',
-            params: set_data
-        }
-            
-
-        this.$axios(method_url)
-        .then((response) => {
-
-            if(show_num === 0) {
-                
-                console.log(response.data.get_contents);
-
-                const address = response.data.get_contents;
-
-                this.accounts.splice(0, 2, { title: '登録メールアドレス', info: address},{ title: 'ユーザー名', info: name});
-                
-
+            const method_url: AxiosRequestConfig = { //編集
+                method: 'get',
+                url: 'get_information',
+                params: set_data
             }
             
-        })
+
+            this.$axios(method_url)
+            .then((response) => {
+
+                console.log(response.data.get_contents);
+
+                const address_or_post_reminder = response.data.get_contents;
+
+                if(num === 0) {
+
+                    this.accounts.splice(0, 2, { title: '登録メールアドレス', info: address_or_post_reminder},{ title: 'ユーザー名', info: this.user_id_name[1]});
+                
+                } else if(num === 2) {
+                
+                    this.required_num = address_or_post_reminder;
+
+                }
+            
+            })
+
+        }
+
+        
+
+        if(this.now_num === 0 || this.now_num === 2) {
+            api_data(this.now_num);//api実行
+        }
 
     }
 
@@ -223,6 +299,13 @@ export default class optionMyData extends Vue {
 
             
         }
+    }
+
+    .reminder_option {
+        font-size: 20px;
+        padding-top: 40px;
+        text-align: center;
+
     }
 
     
