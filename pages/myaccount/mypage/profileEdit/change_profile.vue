@@ -6,7 +6,7 @@
                 <input type="file" name="change_image" ref="preview" @change="changeIcon">
             </div>
             <div v-if="change_data[1].show_data" class="center">
-                <input type="text" v-model="change_data[1].img_name_comment">
+                <input type="text" v-model="change_data[1].img_name_comment" maxlength="5">
                 <p>{{ cannot_name }}</p>
             </div>
             <div class="center" v-if="change_data[2].show_data">

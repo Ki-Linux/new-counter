@@ -9,8 +9,8 @@
                 <p><input type="email" v-model="mail" name="mail" required></p>   
             </div>
             <div class="label_height">
-                <label for="name">ユーザーネーム</label>
-                 <p><input type="text" v-model="username" name="username" maxlength="15" required></p> 
+                <label for="name">ユーザーネーム(5文字まで)</label>
+                 <p><input type="text" v-model="username" name="username" maxlength="5" required></p> 
             </div>
             <div class="label_height">
                 <label for="password">パスワード<br/><span>7~14文字</span></label>
