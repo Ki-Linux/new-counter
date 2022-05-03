@@ -28,12 +28,15 @@
             </div>
             <div class="reminder_option"  v-else-if="show_info[2]">
                 <p>いいねやコメントのリマインダー(お知らせ)を許可しますか?</p>
-                <label>
-                    <input type="radio" name="reminder_yes" value="はい" @click="checkReminder(1)" :checked="required_num === 1">はい
-                </label>
-                <label>
-                    <input type="radio" name="reminder_no" value="いいえ" @click="checkReminder(0)" :checked="required_num === 0">いいえ
-                </label> 
+                <div v-for="(good_or_comment, index) in good_or_comments" :key="good_or_comment">
+                    <p>{{ good_or_comment }}</p>
+                    <label>
+                        <input type="radio" :name="index" value="はい" @click="checkReminder(index, 1)" :checked="required_num[index] === 1">はい
+                    </label>
+                    <label>
+                        <input type="radio" :name="index" value="いいえ" @click="checkReminder(index, 0)" :checked="required_num[index] === 0">いいえ
+                    </label> 
+                </div>
             </div>
         </div>
         <div class="contents_list" v-if="contents_show">
@@ -61,6 +64,7 @@ import backButton from '../../../../components/back_button/back.vue';
 })
 export default class optionMyData extends Vue {
     user_id_name: [number, string] = [0, ''];//ユーザーid, name
+    good_or_comments: string[] = ['いいね', 'コメント'];//いいね、コメント
     option_contents: string[] = ['アカウント情報', 'パスワード変更', 'リマインダー設定', 'ログアウト'];
     accounts: { title: string, info: string}[]
      = [{ title: '登録メールアドレス', info: ''},{ title: 'ユーザー名', info: ''}];
@@ -73,7 +77,7 @@ export default class optionMyData extends Vue {
     inconsistency: boolean = false;
     success_change_password: boolean = false;
     now_num: number = 4;//現在の番号
-    required_num: number = 0;//リマインダーするかしないか(defaultはしない)
+    required_num: number[] = [2, 2];//リマインダーするかしないか(defaultはする)
 
     mounted() {
 
@@ -166,9 +170,9 @@ export default class optionMyData extends Vue {
 
     }
 
-    checkReminder(yes_or_no: number) {
+    checkReminder(index_num: number, yes_or_no: number) {
 
-        if(this.required_num === yes_or_no) {//同じだったら送信しない
+        if(this.required_num[index_num] === yes_or_no) {//同じだったら送信しない
 
             return;
         }
@@ -177,6 +181,7 @@ export default class optionMyData extends Vue {
         this.$axios.put('post_reminder_update/' + this.user_id_name[0], {
             username: this.user_id_name[1],
             yes_no: yes_or_no,
+            good_or_comment: index_num,
         })
         .then((response) => {
             
@@ -185,13 +190,13 @@ export default class optionMyData extends Vue {
             console.log(reminder)
             if(reminder) {
 
-                if(this.required_num === 0) {
+                if(this.required_num[index_num] === 0) {
 
-                    this.required_num = 1;
+                    this.required_num[index_num] = 1;
 
-                } else if(this.required_num === 1) {
+                } else if(this.required_num[index_num] === 1) {
 
-                    this.required_num = 0;
+                    this.required_num[index_num] = 0;
 
                 }
 
@@ -251,8 +256,14 @@ export default class optionMyData extends Vue {
                     this.accounts.splice(0, 2, { title: '登録メールアドレス', info: address_or_post_reminder},{ title: 'ユーザー名', info: this.user_id_name[1]});
                 
                 } else if(num === 2) {
+
+                    for(let i=0; i < 2; i++) {
+                        this.required_num.splice(i, 1, address_or_post_reminder[i].can_report)
+                    }
                 
-                    this.required_num = address_or_post_reminder;
+                   // this.required_num[0] = 1//address_or_post_reminder[0].can_report;
+                   // this.required_num[1] = 1//address_or_post_reminder[1].can_report;
+                    console.log(address_or_post_reminder[1].can_report)
 
                 }
             
