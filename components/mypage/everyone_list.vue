@@ -167,6 +167,7 @@ export default class everyone_list extends Vue {
                         display: inline-block;
                         width: 280px;
                         background-color: white;
+                        word-break: break-all;
                     }
 
                     &:nth-of-type(3) {
