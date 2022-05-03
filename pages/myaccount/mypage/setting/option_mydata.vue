@@ -43,14 +43,22 @@
                     <li @click="showContent(index)">{{ option_content }}</li>
                 </ul>
             </div>
+            <div class="back_button">
+                <back_button where_go="account"/>
+            </div>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { AxiosRequestConfig } from 'axios';
+import backButton from '../../../../components/back_button/back.vue';
 
-@Component
+@Component({
+    components: {
+        'back_button': backButton,
+    }
+})
 export default class optionMyData extends Vue {
     user_id_name: [number, string] = [0, ''];//ユーザーid, name
     option_contents: string[] = ['アカウント情報', 'パスワード変更', 'リマインダー設定', 'ログアウト'];
@@ -340,6 +348,13 @@ export default class optionMyData extends Vue {
                 li {
                     margin-top: 30px;
                 }   
+            }
+        }
+
+        .back_button {
+            margin-left: 40px;
+            button {
+                font-size: 15px;
             }
         }
 

@@ -1,5 +1,8 @@
 <template>
     <div id="myname">
+        <div class="instruct_incline" v-if="show_phone_desc">
+            <phone_description @ok_click="OKClick"/>
+        </div>
         <reminder_name/>
         <profile_name/>
         <div class="to_album">
@@ -21,20 +24,23 @@
         <div class="option">
             <ul>
                 <li><nuxt-link class="editor" to="/myaccount/mypage/profileEdit/change_profile">プロフィール編集</nuxt-link></li>
-                <li><nuxt-link class="editor" to="">設定</nuxt-link></li>
+                <li><nuxt-link class="editor" to="/myaccount/mypage/setting/option_mydata">設定</nuxt-link></li>
             </ul>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import phoneDescription from '../../../components/phone/description.vue';
 import profileName from '../../../components/mypage/profile.vue';
 import reminderName from '../../../components/mypage/reminder.vue';
 import backHome from '../../../components/back_button/back.vue';
 import popUp from '../../../components/pop_up/pop_up_two.vue';
 
+
 @Component({
     components: {
+        'phone_description': phoneDescription,
         'profile_name': profileName,
         'reminder_name': reminderName,
         'back_home': backHome,
@@ -43,12 +49,18 @@ import popUp from '../../../components/pop_up/pop_up_two.vue';
 })
 export default class myname extends Vue {
   show_pop: boolean = false;
+  show_phone_desc: boolean = true;
 
   mounted() {
     //localStorageのデータを削除
       
     const account_name = this.$route.params.myname;
     this.$store.dispatch("planSelect_arrayDelete", account_name);
+  }
+
+  OKClick(ok_click: boolean) {
+    this.show_phone_desc = ok_click;
+    console.log(ok_click)
   }
 
   popShow(value: boolean) {

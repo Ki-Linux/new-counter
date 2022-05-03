@@ -1,5 +1,5 @@
 <template>
-    <div class="description">
+    <div id="phone_desc">
         <p>スマホ・タブレットをお使いの場合は横向きにしてください</p>
         <img src="../../static/phone/phone_200.png" alt="phone_img">
         <button @click="OkClick">OK</button>
@@ -18,7 +18,7 @@ export default class description extends Vue {
 }
 </script>
 <style lang="scss">
-.description {
+#phone_desc {
             width: 100vw;
             height: 100vh;
             background-color: rgba(255, 255, 255, 0.9);
@@ -37,6 +37,8 @@ export default class description extends Vue {
             }
 
             button {
+                font-size: 20px;
+                padding: 0 10px;
                 background-color: azure;
             }
         }
