@@ -1,5 +1,8 @@
 <template>
     <div id="login_select">
+        <div class="instruct_incline" v-if="show_phone_desc">
+            <phone_description @ok_click="OKClick"/>
+        </div>
         <div class="select_button" :class="{ styleClass: index === 0, styleClassBottom: index == 1 }" v-for="(selector, index) in selectors" :key="selector.description">
             <p>{{ selector.description }}</p>
             <button @click="toPage(index)">{{ selector.url_button }}</button>
@@ -8,8 +11,15 @@
 </template>
 <script lang="ts">
     import { Vue, Component } from 'vue-property-decorator';
-    @Component
+    import phoneDescription from '../../components/phone/description.vue';
+
+    @Component({
+        components: {
+            'phone_description': phoneDescription
+        }
+    })
     export default class loginSelect extends Vue {
+        show_phone_desc: boolean = true;
         selectors: { description: string; url_button: string; } [] =  [
             {
                 description: "マイページからカウントや投稿ができます。",
@@ -20,6 +30,13 @@
                 url_button: "フリーカウント",
             }
         ];
+
+        OKClick(ok_click: boolean) {
+            this.show_phone_desc = ok_click;
+            console.log(ok_click)
+        }
+
+
         toPage(index: number) {
             const to_url = (url: string) => {
                 this.$router.push(url);
@@ -37,14 +54,13 @@
 </script>
 <style lang="scss">
     #login_select {
-        margin-top: 120px;
-        padding: 40px 0;
+        padding-top: 100px;
     }
+
     .select_button {
         font-size: 20px;
         padding: 40px 20px;
         text-align: center;
-
         
         button {
             margin-top: 30px;
@@ -55,7 +71,7 @@
     }
     .styleClass {/*上*/
         background-color: rgba(200, 255, 0, 0.5);
-        margin-bottom: 50px;
+        margin-bottom: 100px;
                 
     }
     .styleClassBottom {/*下*/
