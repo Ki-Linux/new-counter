@@ -23,6 +23,7 @@
                     <li>{{ detail_profile.username }}</li>
                     <li><img :src="detail_profile.user_icon" alt="img"></li>
                     <li v-if="detail_profile.user_comment !== 'コメントはありません。'">{{ detail_profile.user_comment }}</li>
+
                 </ul>
             </div>
             <div class="list_detail detail" v-else>
@@ -32,9 +33,8 @@
                     <li v-else><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'">{{ icon_point.my_icon }}</li>
                     <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'"><img :src="icon_point.my_icon" alt="not_img"></li>
-                   
+                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'">{{ icon_point.my_icon }}</li>
                 </ul>
                 <ul class="good_and_comment">
                     <li v-show="show_heart" @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
@@ -347,7 +347,7 @@ export default class everyone extends Vue {
         }
 
 
-        if(this.heart === false) {
+        if(this.username !== this.details_list.username && this.heart === false) {//nameが同じ時はいいねできない
             this.heart = true;
             plus_one(this.details_list.id)
         }
