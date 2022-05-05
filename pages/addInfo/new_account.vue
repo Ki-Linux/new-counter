@@ -50,6 +50,8 @@ export default class newAccount extends Vue {
             password: this.password,
         })
         .then((response) => {
+
+            console.log(response.data);
             
             const next_go: string = response.data.next_go;
 

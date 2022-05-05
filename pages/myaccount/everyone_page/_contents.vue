@@ -32,7 +32,9 @@
                     <li v-else><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
+                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'">{{ icon_point.my_icon }}</li>
                     <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'"><img :src="icon_point.my_icon" alt="not_img"></li>
+                   
                 </ul>
                 <ul class="good_and_comment">
                     <li v-show="show_heart" @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
@@ -312,6 +314,7 @@ export default class everyone extends Vue {
             const icon_good_comment = response.data;
 
             this.icon_point.my_icon = icon_good_comment.icon_data[0].icon;
+            console.log(this.icon_point.my_icon)
 
             this.view_point = icon_good_comment.view_data;
 
