@@ -7,8 +7,7 @@
             </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
-            <div class="see_and_edit" v-if="$route.params.contents !== 'everyone'">
-                
+            <div class="see_and_edit" v-if="username === details_list.username">
                 <p v-if="details_list.can_see === 1">
                    閲覧数:{{ view_point }}
                 </p>
@@ -23,7 +22,7 @@
                     <li>{{ detail_profile.username }}</li>
                     <li><img :src="detail_profile.user_icon" alt="img"></li>
                     <li v-if="detail_profile.user_comment !== 'コメントはありません。'">{{ detail_profile.user_comment }}</li>
-
+                    <li @click="toOneAccountListPage(detail_profile.username)"><button>投稿</button></li>
                 </ul>
             </div>
             <div class="list_detail detail" v-else>
@@ -58,7 +57,7 @@
         <div class="everyone_list_my_name"  v-show="!show_detail" v-if="$route.params.contents === 'everyone'">
             <div class="profile_list my_profile">
                 <profile_data :can_click="true" :from_contents="true" @send_data="detailData('me')" @to_contents_img="contentsImg"/>
-                <button @click="toMyPage">マイ投稿</button>
+                <button @click="toOneAccountListPage(username)">マイ投稿</button>
                 <back_account where_go="account"/>
             </div>
             <div class="profile_list everyone">
@@ -66,7 +65,7 @@
             </div>
         </div>        
         <div v-else  v-show="!show_detail">
-            <my_list @detail_data_show="listDetail"/>
+            <my_list :list_username="$route.params.contents" @detail_data_show="listDetail"/>
         </div>
     </div>
 </template>
@@ -533,8 +532,10 @@ export default class everyone extends Vue {
         
     }
 
-    toMyPage() {
-        this.$router.push("/myaccount/everyone_page/" + this.username);
+    toOneAccountListPage(one_list_name: string) {//その人のアカウントの投稿ページへ
+
+        this.$router.push("/myaccount/everyone_page/" + one_list_name);
+
     }
 
     EditDelete(project: string) {
@@ -688,6 +689,11 @@ export default class everyone extends Vue {
                         &:nth-of-type(3) {
                             margin-top: 20px;
                             background-color: azure;
+                        }
+
+                        &:nth-of-type(4) button {
+                            margin-top: 70px;
+                            background-color: aliceblue;
                         }
                     }
                     

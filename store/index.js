@@ -254,7 +254,7 @@ export const mutations = {
 
         state.back_select_data = content;
 
-    }
+    },
 
 
 };
@@ -330,7 +330,8 @@ export const actions = {
 
         context.commit("inSelectData", send_array);
 
-    }
+    },
+
 
 }
 

@@ -14,20 +14,20 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class myList extends Vue {
     picturesData: { id: number; my_comment: string; picture: string|number|ArrayBuffer; can_see: number; created_at: string }[] = [];
-    my_name: string = "";
+
+    @Prop()
+    public list_username!: string;
 
     mounted() {//データを表示する
 
-        this.my_name = this.$store.state.username;
-
         this.$axios.get("edit_show", {
             params: {
-                username: this.my_name,
+                username: this.list_username,
                 target: 'list',
             }
         })
@@ -59,7 +59,7 @@ export default class myList extends Vue {
         const send_day = content.created_at;
         const send_see = content.can_see;
 
-        send_data = { id: send_id, picture: 'data:image/'+send_picture, my_comment: send_comment, username: this.my_name, updated_at: send_day, can_see: send_see};
+        send_data = { id: send_id, picture: 'data:image/'+send_picture, my_comment: send_comment, username: this.list_username, updated_at: send_day, can_see: send_see};
 
         this.$emit('detail_data_show', [true, send_data]);
     }
