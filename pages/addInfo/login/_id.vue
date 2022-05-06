@@ -49,17 +49,24 @@ export default class login extends Vue {
 
             const res = response.data;
 
-            const token = res.token;
+            console.log(res)
+
+            const divided_data = res.divided_data;
             const username = res.username;
             //console.log(response);
-            if(token === 'nothing') {
+            if(divided_data === 'nothing') {
 
                 this.no_content="メールアドレスまたはパスワードが違います。";
 
             } else {
 
-                this.$store.dispatch("loginTokenName", [token, username]);
-                this.$cookies.set('key', token);
+                this.$store.dispatch("loginTokenName", [divided_data, username]);
+
+                let expire = new Date();
+
+                expire.setTime(expire.getTime() + (24 * 60 * 60 * 1000));
+
+                this.$cookies.set('key', divided_data + '; expires' + expire.toUTCString());
 
                 if(this.$store.state.username !== "") {
 
