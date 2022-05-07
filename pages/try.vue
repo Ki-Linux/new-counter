@@ -1,24 +1,23 @@
-export default function(context) {
+<template>
+    <div>
+        <p>i</p>
+    </div>
+</template>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 
-    if(!context.store.getters.isAuthenticated) {
-        context.redirect('/addInfo/login')
-    }
+@Component
+export default class Try extends Vue {
+    
+    mounted() {
+        const name = this.$store.state.username;
 
-}
-
-
-
-/*export default function (it, username) {
-
-
-        const name = username;
-
-        const cookie = it;
+        const cookie = document.cookie;
 
         const only_first = cookie.split('%');
 
 
-        axios.get('confirm_token', {
+        this.$axios.get('confirm_token', {
             params: {
                 username: name,
                 divided_back: only_first[0],
@@ -33,9 +32,7 @@ export default function(context) {
                 console.log('yes');
             }
         })
+    }
+}
 
-    
-    /*if(context.store.getters.isAuthenticated) {
-        context.redirect('/addInfo/login')
-    }*/
-//}
+</script>

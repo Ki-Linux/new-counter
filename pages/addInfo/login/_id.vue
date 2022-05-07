@@ -60,14 +60,17 @@ export default class login extends Vue {
 
             } else {
 
-                this.$store.dispatch("loginTokenName", [divided_data, username]);
+                
 
                 let expire = new Date();
 
                 expire.setTime(expire.getTime() + (24 * 60 * 60 * 1000));
 
                 this.$cookies.set('key', divided_data + '; expires' + expire.toUTCString());
+                const set_cookie_data = divided_data + '; expires' + expire.toUTCString();
 
+                this.$store.dispatch("loginTokenName", [set_cookie_data, username]);
+                
                 if(this.$store.state.username !== "") {
 
                     let param_url: string = '/myaccount/mypage/' + username;

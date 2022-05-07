@@ -6,7 +6,7 @@ import * as Cookies from 'js-cookie'
 Vue.use(Vuex)
 
 export const state = () => ({
-    back_data: [],//["", 目標値, 現在値, "", "imgorword"],
+    back_data: [],//["", 目標値, 現在値, "", "img_or_word"],
     back_select_data: [],
     show_data: [],//[現在表示されている文字や画像の数, 文字や画像(freeは同じものが繰り返されるから１つだけ)の代数]
     show_select: false,//選択を表示するかどうか
@@ -14,7 +14,7 @@ export const state = () => ({
     username: "",
     canClick: true,
     select_plan: "",
-    
+
     /*plugins: [
         createPersistedState({
             storage: {
@@ -275,7 +275,12 @@ export const getters = {
         return state.show_data[1];
     },
     isAuthenticated(state) {
-        return state.token != null
+        if(state.token == null || state.token == 'auth.strategy=local') {
+            return false
+        }
+
+        return true
+        
     }
 
 }
@@ -334,6 +339,23 @@ export const actions = {
 
 
 }
+
+/*export const modules = {
+    token,
+}
+
+export const plugins = {
+    createpersistedstate({
+        paths: ['token'],
+        storage: {
+            getState: (key) => Cookies.getJSON(key),
+            setState: (key, state) => Cookies.set(key, state.token, { expires: 3, secure: true })
+        }
+        
+    })
+
+}*/
+
 
 
 
