@@ -56,8 +56,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { AxiosRequestConfig } from 'axios';
 import backButton from '../../../../components/back_button/back.vue';
+import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
+    middleware: 'reject',
     components: {
         'back_button': backButton,
     }
@@ -79,9 +81,18 @@ export default class optionMyData extends Vue {
     now_num: number = 4;//現在の番号
     required_num: number[] = [2, 2];//リマインダーするかしないか(defaultはする)
 
-    mounted() {
-
+    beforeMount() {
+        
+        console.log('go mount')
         this.user_id_name[1] = this.$store.state.username;
+        confirm(this.user_id_name[1]);
+
+        //fetchUid(document.cookie, username);
+        
+    }
+
+    mounted() {
+        
 
         this.$axios.get('get_id', {
             params: {

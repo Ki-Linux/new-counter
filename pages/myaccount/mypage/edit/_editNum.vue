@@ -54,8 +54,11 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { AxiosRequestConfig } from 'axios';
 import imageCompression from 'browser-image-compression';
+import { confirm } from '@/components/confirmation/confirm_person';
 
-@Component
+@Component({
+    middleware: 'reject'
+})
 export default class edit extends Vue {
     url: string|ArrayBuffer|null = "notImg";//送るurl
     show_url: string|ArrayBuffer|null = require("../../../../static/edit/hatena.png");//示すurl
@@ -80,6 +83,16 @@ export default class edit extends Vue {
     shift_num: number = 0;
     select_img_chosen: boolean  = true;
     show_select_button: boolean = false;//画像切り替えボタンを表示する
+
+    beforeMount() {
+        
+        console.log('go mount')
+        const username = this.$store.state.username;
+        confirm(username);
+
+        //fetchUid(document.cookie, username);
+        
+    }
 
     mounted() {
 
@@ -247,7 +260,7 @@ export default class edit extends Vue {
 
         if(editNum === 'new_post') {//post
 
-            if(confirm('本当にやめますか?')) {
+            if(window.confirm('本当にやめますか?')) {
                 this.$router.push('/myaccount/mypage/album_select/choose_album');
             }
 

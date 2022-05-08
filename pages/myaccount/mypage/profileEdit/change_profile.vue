@@ -35,8 +35,10 @@ import { Vue, Component } from 'vue-property-decorator';
 import profileData from '../../../../components/mypage/profile.vue';
 import backButton from '../../../../components/back_button/back.vue';
 import imageCompression from 'browser-image-compression';
+import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
+    middleware: 'reject',
     components: {
         'profile_data': profileData,
         'back_button': backButton,
@@ -64,6 +66,16 @@ export default class change_profile extends Vue {
             judge_number: 3
         },
     ];
+
+    beforeMount() {
+        
+        console.log('go mount')
+        const username = this.change_data[1].img_name_comment;
+        confirm(username);
+
+        //fetchUid(document.cookie, username);
+        
+    }
  
 
     sendData(value: string) {

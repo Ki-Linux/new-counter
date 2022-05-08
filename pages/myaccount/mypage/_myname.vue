@@ -36,9 +36,11 @@ import profileName from '../../../components/mypage/profile.vue';
 import reminderName from '../../../components/mypage/reminder.vue';
 import backHome from '../../../components/back_button/back.vue';
 import popUp from '../../../components/pop_up/pop_up_two.vue';
+import { confirm } from '@/components/confirmation/confirm_person';
 
 
 @Component({
+    middleware: 'reject',
     components: {
         'phone_description': phoneDescription,
         'profile_name': profileName,
@@ -51,11 +53,17 @@ export default class myname extends Vue {
   show_pop: boolean = false;
   show_phone_desc: boolean = true;
 
-  mounted() {
-    //localStorageのデータを削除
-      
+  beforeMount() {
+        
+    console.log('go mount')
     const account_name = this.$route.params.myname;
+    //localStorageのデータを削除
     this.$store.dispatch("planSelect_arrayDelete", account_name);
+
+    confirm(account_name);
+
+    //fetchUid(document.cookie, username);
+        
   }
 
   OKClick(ok_click: boolean) {

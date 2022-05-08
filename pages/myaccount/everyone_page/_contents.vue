@@ -76,8 +76,10 @@ import myList from '../../../components/mypage/my_list.vue';
 import profileData from '../../../components/mypage/profile.vue';
 import backAccount from '../../../components/back_button/back.vue';
 import { AxiosRequestConfig } from 'axios';
+import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
+    middleware: 'reject',
     components: {
         'everyone_list': everyoneList,
         'profile_data': profileData,
@@ -105,10 +107,19 @@ export default class everyone extends Vue {
     get_click_num_delete_report: number = 0;//クリックしているコメント番号を取得する
     post_report: boolean = false;//trueのとき投稿を通報する
     
-
-    mounted() {
+    beforeMount() {
+        
+        console.log('go mount')
         this.username = this.$store.state.username;
+        confirm(this.username);
+
+        //fetchUid(document.cookie, username);
+        
     }
+
+    /*mounted() {
+        this.username = this.$store.state.username;
+    }*/
 
     deleteReport(which_contents: string) {
 
@@ -576,7 +587,7 @@ export default class everyone extends Vue {
 
             }
 
-            if(confirm('削除しますか?')) {
+            if(window.confirm('削除しますか?')) {
                 go_delete(id);
             }
 

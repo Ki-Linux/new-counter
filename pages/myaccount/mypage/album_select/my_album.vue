@@ -30,8 +30,10 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import backData from '../../../../components/back_button/back.vue';
+import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
+    middleware: 'reject',
     components: {
         'back_data': backData
     }
@@ -45,14 +47,23 @@ export default class my_album extends Vue {
         target: string; 
         present: string; 
     }[] = [];
+    username: string = "";
+
+    beforeMount() {
+        
+        console.log('go mount')
+        this.username = this.$store.state.username;
+        confirm(this.username);
+
+        //fetchUid(document.cookie, username);
+        
+    }
 
     mounted() {
 
-        const name = this.$store.state.username;
-
         this.$axios.get('my_album_data_get', {
             params: {
-                username: name
+                username: this.username
             }
         })
         .then((response) => {
@@ -107,7 +118,7 @@ export default class my_album extends Vue {
 
         }
 
-        if(confirm('この記録を削除しますか?')) {
+        if(window.confirm('この記録を削除しますか?')) {
             can_delete_data(delete_id);
         }
 

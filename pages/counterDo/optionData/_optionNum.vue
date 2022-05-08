@@ -68,8 +68,11 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import imageCompression from 'browser-image-compression';
+import { confirm } from '@/components/confirmation/confirm_person';
 
-@Component
+@Component({
+    middleware: 'reject'
+})
 export default class Option extends Vue {
     target_presents: string[] = ["目標値", "現在値"];
     select_numbers: {target: number, present: number}[] = [{target: 0, present: 0}];
@@ -95,6 +98,17 @@ export default class Option extends Vue {
             
         } 
     };
+
+beforeMount() {
+        
+    console.log('go mount')
+    const username = this.$store.state.username;
+    confirm(username);
+
+     //fetchUid(document.cookie, username);
+        
+}
+
 created(): void{//選択の数字
     this.doArray(200); 
 

@@ -38,8 +38,11 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import imageCompression from 'browser-image-compression';
+import { confirm } from '@/components/confirmation/confirm_person';
 
-@Component
+@Component({
+    middleware: 'reject'
+})
 export default class chooseAlbum extends Vue {
     img_data: any/*string | ArrayBuffer | null*/ = require('../../../../static/edit/hatena.png');
     img_num: number = 0;
@@ -47,6 +50,16 @@ export default class chooseAlbum extends Vue {
     written_name: string = "";
     attention: string = "";
     show_next_img: boolean = true;
+
+    beforeMount() {
+        
+        console.log('go mount')
+        const username = this.$store.state.username;
+        confirm(username);
+
+        //fetchUid(document.cookie, username);
+        
+    }
 
     mounted() {
 

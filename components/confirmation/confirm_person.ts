@@ -21,7 +21,9 @@ export function confirm (name: string) {
             console.log(response.data);
             const which_num = response.data;
 
-            if(which_num === 1) {
+            console.log('yes');
+
+            if(which_num === 0) {
                 console.log('yes');
                 location.href='/addInfo/login';
             }
