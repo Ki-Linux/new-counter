@@ -7,7 +7,7 @@
       </nav>
       <header>
         <transition-group name="slide-fade">
-            <div v-show="show_section" class="show_login" v-for="login in logins" v-bind:key="login">
+            <div v-show="show_section" class="show_login" v-for="login in logins" :key="login.showed_data">
               <nuxt-link class="link" :to="login.to_url">{{ login.showed_data }}</nuxt-link>
             </div> 
         </transition-group>
@@ -51,8 +51,9 @@
           <table>
             <caption>みんなの投稿一覧</caption>
             <tbody>
-            <tr v-for="show_every_data in showEveryData" :key="show_every_data.picture">
-              <th><img :src="'data:image/'+show_every_data.picture" alt="picture"></th>
+            <tr v-for="(show_every_data, index) in showEveryData" :key="index">
+              <th v-if="show_every_data.picture === 'data:image/notImg'">画像なし</th>
+              <th v-else><img :src="show_every_data.picture" alt="picture"></th>
               <td>{{ show_every_data.my_comment }}</td>
             </tr>
             </tbody>
@@ -82,11 +83,8 @@ export default class Home extends Vue{
   url_change: string = require("../static/Home/selector_box.png");
   change_box: boolean = true;//urlの変更
   show_section: boolean = false; //ログイン欄の表示(true==表示,false==非表示)
-  showEveryData: { picture: string; my_comment: string; }[]
-                = [{
-                  picture: "",
-                  my_comment: ""
-                }]
+  showEveryData: { picture: string|ArrayBuffer|null, my_comment: string }[]
+                = []
     
     created() {
 
@@ -94,8 +92,18 @@ export default class Home extends Vue{
 
       this.$axios.get('only_top')
       .then((response) => {
-        console.log(response.data.topData);
-        this.showEveryData = response.data.topData;
+        console.log(response.data.topData);//'data:image/'+
+
+        const topData = response.data.topData;
+
+        for(let i=0; i < topData.length; i++) {
+
+          const push_data = {picture: 'data:image/'+topData[i].picture, my_comment: topData[i].my_comment};
+
+          this.showEveryData.splice(i, 1, push_data);
+        }
+
+        
         
 
       })
@@ -333,6 +341,10 @@ export default class Home extends Vue{
      }
      th {
        width: 40%;
+       img {
+         width: 80%;
+         margin-left: 10%;
+       }
        
      }
      td {

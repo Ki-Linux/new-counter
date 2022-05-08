@@ -101,6 +101,7 @@ export default class popUpFree extends Vue {
 
     .merit {
          color: rgb(49, 49, 49);
+         
 
         p {
             font-size: 30px;
@@ -116,7 +117,7 @@ export default class popUpFree extends Vue {
         li{
             padding: 5px 0;
             font-size: 20px;
-        
+            margin-left: 100px;
         }
     } 
 

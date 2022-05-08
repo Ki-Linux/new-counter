@@ -70,9 +70,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import imageCompression from 'browser-image-compression';
 import { confirm } from '@/components/confirmation/confirm_person';
 
-@Component({
-    middleware: 'reject'
-})
+@Component
 export default class Option extends Vue {
     target_presents: string[] = ["目標値", "現在値"];
     select_numbers: {target: number, present: number}[] = [{target: 0, present: 0}];
@@ -101,11 +99,14 @@ export default class Option extends Vue {
 
 beforeMount() {
         
-    console.log('go mount')
-    const username = this.$store.state.username;
-    confirm(username);
+    if(this.$route.params.optionNum !== "free") {
 
-     //fetchUid(document.cookie, username);
+        console.log('go mount')
+        const username = this.$store.state.username;
+        confirm(username);
+
+    }
+    
         
 }
 
