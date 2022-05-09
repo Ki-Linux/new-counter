@@ -12,7 +12,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class profile extends Vue {
-    img_data = require("../../static/profile/default_img.png");
+    img_data = require("@/static/profile/default_img.png");
     send_username: string = this.$store.state.username;
 
     //@Prop()

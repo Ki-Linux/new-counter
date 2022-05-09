@@ -21,7 +21,7 @@
                 <ul>
                     <li>{{ detail_profile.username }}</li>
                     <li><img :src="detail_profile.user_icon" alt="img"></li>
-                    <li v-if="detail_profile.user_comment !== 'コメントはありません。'">{{ detail_profile.user_comment }}</li>
+                    <li v-show="detail_profile.user_comment !== 'コメントはありません。'">{{ detail_profile.user_comment }}</li>
                     <li @click="toOneAccountListPage(detail_profile.username)"><button>投稿</button></li>
                 </ul>
             </div>
@@ -32,7 +32,7 @@
                     <li v-else><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'"><img :src="icon_point.my_icon" alt="not_img"></li>
+                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone' && icon_point.my_icon !== 'not'"><img :src="icon_point.my_icon" alt="not_img"></li>
                     <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'">{{ icon_point.my_icon }}</li>
                 </ul>
                 <ul class="good_and_comment">
@@ -41,10 +41,12 @@
                 </ul>
                 <div class="comment" v-if="show_comment_list">
                     <ul class="comment_contents" v-for="(comment_list, index) in comment_lists" :key="index">
-                        <li @click="detailData('other_with_comment', index)"><img :src="comment_list.user_icon" alt="icon_img"></li>
+                        <li @click="detailData('other_with_comment', index)">
+                            <img :src="comment_list.user_icon" alt="icon_img">
+                        </li>
                         <li @click="deleteOrTell(index)">…</li>
                         <li>{{ comment_list.date }}</li>
-                       <li>{{ comment_list.user_comment }}</li>   
+                        <li>{{ comment_list.user_comment }}</li>   
                     </ul>
                     <form @submit.prevent="addComment">
                         <!--<input type="text" v-model="comment_add">-->
@@ -107,7 +109,7 @@ export default class everyone extends Vue {
     get_click_num_delete_report: number = 0;//クリックしているコメント番号を取得する
     post_report: boolean = false;//trueのとき投稿を通報する
     
-    beforeMount() {
+    beforeMount() {//data:image/
         
         console.log('go mount')
         this.username = this.$store.state.username;
@@ -256,6 +258,7 @@ export default class everyone extends Vue {
         this.detail_profile.username = this.username;
         this.detail_profile.user_icon = value;//表示される自分のアイコン
         this.my_icon = value;//保存される不変のアイコン(closeのとき用)
+        
     }
 
     
@@ -325,6 +328,8 @@ export default class everyone extends Vue {
 
             this.icon_point.my_icon = icon_good_comment.icon_data[0].icon;
             console.log(this.icon_point.my_icon)
+
+
 
             this.view_point = icon_good_comment.view_data;
 
@@ -452,7 +457,13 @@ export default class everyone extends Vue {
                 hour = hour_split.splice(0, 1);//時
                 minute = written_time[0].split(/:/).splice(1, 1);//分
 
-                this.comment_lists.splice(i, 1, { username: comment_name_icon[i].username, user_icon: 'data:image/'+comment_name_icon[i].icon, user_comment: comment_name_icon[i].other_comment, date: written_date[0] + " " + hour + ":" + minute});
+                let icon_comment = 'data:image/' + comment_name_icon[i].icon;
+
+                if(comment_name_icon[i].icon === "not") {
+                    icon_comment = require("@/static/profile/default_img.png");
+                }
+
+                this.comment_lists.splice(i, 1, { username: comment_name_icon[i].username, user_icon: icon_comment, user_comment: comment_name_icon[i].other_comment, date: written_date[0] + " " + hour + ":" + minute});
             }
 
             
@@ -496,6 +507,9 @@ export default class everyone extends Vue {
 
         const time = Year + "-" + array_day[0] + "-" + array_day[1] + " " + array_day[2] + ":" + array_day[3];
 
+        if(!this.detail_profile.user_icon) {
+            this.detail_profile.user_icon = require("@/static/profile/default_img.png");
+        }
 
         //UIに表示
         this.comment_lists.push({ username: this.username, user_icon: this.detail_profile.user_icon, user_comment: this.comment_add, date: time });
@@ -695,6 +709,11 @@ export default class everyone extends Vue {
                             background-color: rgba(78, 78, 78, 0.3);
                             display: inline-block;
                             padding: 20px;
+
+                            img {
+                                max-width: 70%;
+                                max-height: 60%;
+                            }
                         }
 
                         &:nth-of-type(3) {
@@ -832,11 +851,13 @@ export default class everyone extends Vue {
                                     
                                     //background-color: aqua;
                                     //padding-left: 80px;
-
+                                    
+                                    
                                     
                                     img {
-                                    float: left;
+                                    
                                     //margin-top: 80px;
+                                    float: left;
                                     width: 70px;
                                     height: 70px;
                                     border-radius: 50%;
