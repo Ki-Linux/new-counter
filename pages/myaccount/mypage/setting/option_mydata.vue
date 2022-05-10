@@ -38,6 +38,10 @@
                     </label> 
                 </div>
             </div>
+            <div class="logout"  v-else-if="show_info[3]">
+                <h1>ログアウトしますか?</h1>
+                <button @click="logout">はい</button>
+            </div>
         </div>
         <div class="contents_list" v-if="contents_show">
             <h1>設定</h1>
@@ -290,6 +294,24 @@ export default class optionMyData extends Vue {
 
     }
 
+    logout() {
+
+        console.log(this.user_id_name[0])
+
+        this.$axios.delete('logout/' + this.user_id_name[0])
+        .then((response) => {
+            console.log(response.data)
+            const red_data = response.data.logout;
+
+            if(red_data) {
+                console.log('success');
+                this.$router.push('/');
+            }
+        })
+
+
+    }
+
 
 }
 </script>
@@ -336,6 +358,16 @@ export default class optionMyData extends Vue {
         padding-top: 40px;
         text-align: center;
 
+    }
+
+    .logout {
+        text-align: center;
+        padding-top: 40px;
+        button {
+            font-size: 20px;
+            margin-top: 20px;
+            background-color: white;
+        }
     }
 
     
