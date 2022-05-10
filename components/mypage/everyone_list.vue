@@ -172,7 +172,7 @@ export default class everyone_list extends Vue {
 
                     &:nth-of-type(3) {
                         font-size: 17px;
-                        margin-left: 80%;
+                        margin-left: 55%;
                     }
                 }
 

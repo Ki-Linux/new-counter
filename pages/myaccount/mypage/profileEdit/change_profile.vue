@@ -1,12 +1,12 @@
 <template>
     <div id="change_profile"> 
-        <form class="edit_profile" v-if="edit_contents" @submit="goChange">
+        <form class="edit_profile" v-if="edit_contents" @submit.prevent="goChange">
             <div class="edit_image center" v-if="change_data[0].show_data">
                 <img :src="change_data[0].img_name_comment" alt="change_img">
                 <input type="file" name="change_image" ref="preview" @change="changeIcon">
             </div>
             <div v-if="change_data[1].show_data" class="center">
-                <input type="text" v-model="change_data[1].img_name_comment" maxlength="5">
+                <input type="text" v-model="change_data[1].img_name_comment" maxlength="9">
                 <p>{{ cannot_name }}</p>
             </div>
             <div class="center" v-if="change_data[2].show_data">
@@ -100,8 +100,10 @@ export default class change_profile extends Vue {
     }
 
     emitId(value:{ id: number, icon: string, comment: string }) {
-        console.log(value.id);
-        console.log(value.icon)
+        console.log(value);
+
+        console.log(value.id + 'ui');
+        //console.log(value.icon)
         this.send_userId = value.id;
 
         if(value.icon !== "not") {
@@ -133,7 +135,7 @@ export default class change_profile extends Vue {
         reader.addEventListener('load', () => {
 
             
-            this.change_data[0].img_name_comment = 'data:image/'+reader.result
+            this.change_data[0].img_name_comment = reader.result //'data:image/'
             console.log(this.change_data[0])
         })
 
@@ -198,7 +200,8 @@ export default class change_profile extends Vue {
         }
 
 
-        console.log(change_content)
+        console.log(this.send_userId)
+
 
 
         this.$axios.put('account_update/' + this.send_userId, {
@@ -206,15 +209,19 @@ export default class change_profile extends Vue {
             judgeNumber: judge_number,
         })
         .then((response) => {
-            console.log(response.data.judge_success);
+            console.log(response.data);
 
             const judge_data = response.data.judge_success;
+
+            console.log(judge_data)
 
             if(judge_data) {
 
                 if(judge_number === 1) {
 
                     this.$store.dispatch("loginName", change_content);//ユーザーネームはvuex
+
+                    location.reload();
                     
 
                 }

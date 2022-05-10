@@ -7,7 +7,7 @@
             </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
-            <div class="see_and_edit" v-if="username === details_list.username">
+            <div class="see_and_edit" v-if="username === details_list.username && show_edit">
                 <p v-if="details_list.can_see === 1">
                    閲覧数:{{ view_point }}
                 </p>
@@ -22,7 +22,7 @@
                     <li>{{ detail_profile.username }}</li>
                     <li><img :src="detail_profile.user_icon" alt="img"></li>
                     <li v-show="detail_profile.user_comment !== 'コメントはありません。'">{{ detail_profile.user_comment }}</li>
-                    <li @click="toOneAccountListPage(detail_profile.username)"><button>投稿</button></li>
+                    <li v-if="username !== details_list.username" @click="toOneAccountListPage(detail_profile.username)"><button>投稿</button></li>
                 </ul>
             </div>
             <div class="list_detail detail" v-else>
@@ -108,6 +108,7 @@ export default class everyone extends Vue {
     deleteMyComment: boolean = false;//自分の名前と違ったときはfalse
     get_click_num_delete_report: number = 0;//クリックしているコメント番号を取得する
     post_report: boolean = false;//trueのとき投稿を通報する
+    show_edit: boolean = true;
     
     beforeMount() {//data:image/
         
@@ -235,6 +236,7 @@ export default class everyone extends Vue {
 
     closePop() {
         this.show_detail = false;
+        this.show_edit = true;
 
         this.detail_profile.user_comment = "";
 
@@ -273,14 +275,19 @@ export default class everyone extends Vue {
         let name = this.username;
 
         if(who_icon === "other") {
+            this.show_edit = true;
             name = this.details_list.username;
             this.detail_profile.username = name;
             this.detail_profile.user_icon = this.icon_point.my_icon;
             
         } else if(who_icon === "other_with_comment") {
+            this.show_edit = true;
             name = this.comment_lists[icon_num].username;
             this.detail_profile.username = name;
             this.detail_profile.user_icon = this.comment_lists[icon_num].user_icon;
+
+        }else if(who_icon === "me") {
+            this.show_edit = false;
         }
 
         this.$axios.get('get_comment', {

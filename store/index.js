@@ -223,6 +223,7 @@ export const mutations = {
 
     loginName(state, res) {//トークンとユーザーネームをstoreへ
         state.username = res;
+        state.select_plan = res;
         //this.$cookies.set("key", state.token, { expires: 7 });
     },
 

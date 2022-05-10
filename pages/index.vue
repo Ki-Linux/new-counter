@@ -78,7 +78,7 @@ export default class Home extends Vue{
   logins: { showed_data: string, to_url: string }[] = [ 
     { showed_data: "ログイン", to_url: "/addInfo/login/2" },
     { showed_data: "新規登録", to_url: "/addInfo/new_account" },
-    { showed_data: "ログアウト", to_url: "/addInfo/logout" },
+    { showed_data: "お問い合わせ", to_url: "/under_contents/contact" },
   ];
   url_change: string = require("../static/Home/selector_box.png");
   change_box: boolean = true;//urlの変更
@@ -349,7 +349,7 @@ export default class Home extends Vue{
      }
      td {
      
-       word-break: break-all;
+       word-break: normal;
        width: 60%;
        //text-overflow: ellipsis;
      }

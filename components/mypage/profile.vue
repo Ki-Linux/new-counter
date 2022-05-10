@@ -13,7 +13,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class profile extends Vue {
     img_data = require("@/static/profile/default_img.png");
-    send_username: string = this.$store.state.username;
+    send_username: string = "";
 
     //@Prop()
     //public img_data!: string;
@@ -30,7 +30,7 @@ export default class profile extends Vue {
 
 
         //const 
-        //this.send_username = this.$store.state.username;
+        this.send_username = this.$store.state.username;
     
     
         
@@ -49,14 +49,14 @@ export default class profile extends Vue {
             const pull_img = response.data.img_icon_data;
 
 
-            if(pull_img[0].icon !== "not") {
+            /*if(pull_img[0].icon !== "not") {
 
                 this.img_data = pull_img[0].icon;
 
-            }
+            }*/
             //this.img_data = pull_img[0].icon;
 
-                this.$emit('emit_id', pull_img[0]);
+                this.$emit('emit_id', pull_img[0]);//pull_img[0]);
 
                 if(this.from_contents) {//contentsデータのみに送信
                     this.$emit('to_contents_img', this.img_data);
@@ -128,7 +128,7 @@ export default class profile extends Vue {
             }
 
             p:nth-of-type(2) {
-                font-size: 40px;
+                font-size: 2vw;//40px;
                 text-align: center;
                 background-color: white;
             }

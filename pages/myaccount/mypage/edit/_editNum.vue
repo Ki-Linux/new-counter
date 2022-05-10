@@ -328,25 +328,74 @@ export default class edit extends Vue {
         const editNum = this.$route.params.editNum;
         const name = this.$store.state.username;
 
-        const set_data = {
-            username: name,
-            image: this.url,
-            comment: this.my_comment,
-            can_list: this.array_check[0],
-            show_good: this.array_check[1],
-            others_comment: this.array_check[2],
-            can_see: this.array_check[3],
-            to_top: this.array_check[4],
-        }
-        
-        //console.log(this.array_check);
-        let method_url: AxiosRequestConfig = { //編集
-            method: 'put',
-            url: 'edit_update/' + editNum,
-            params: set_data
-        }
 
         if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
+            //console.log(this.array_check);
+
+            this.$axios.post('edit', {
+                username: name,
+                image: this.url,
+                comment: this.my_comment,
+                can_list: this.array_check[0],
+                show_good: this.array_check[1],
+                others_comment: this.array_check[2],
+                can_see: this.array_check[3],
+                to_top: this.array_check[4],
+            })
+            .then((response) => {
+                console.log(response);
+
+                const res = response.data;
+
+                if(res.success === "store_true") {
+                    console.log("success");
+                    this.$router.push('/myaccount/mypage/album_select/choose_album');
+
+                    //this.$router.push('/myaccount/mypage/' + name);
+                }/* else if(res.success === "update_true") {
+
+                this.$router.push('/myaccount/everyone_page/' + name);
+
+            }*/
+            })
+        } else {
+
+
+            const set_data = {
+                username: name,
+                image: this.url,
+                comment: this.my_comment,
+                can_list: this.array_check[0],
+                show_good: this.array_check[1],
+                others_comment: this.array_check[2],
+                can_see: this.array_check[3],
+                to_top: this.array_check[4],
+            }
+
+            const method_url: AxiosRequestConfig = { //編集
+                method: 'put',
+                url: 'edit_update/' + editNum,
+                params: set_data
+            }
+
+            this.$axios(method_url)
+            .then((response) => {
+                console.log(response);
+
+                const res = response.data;
+
+                if(res.success === "update_true") {
+
+                    this.$router.push('/myaccount/everyone_page/' + name);
+
+                }
+            })
+
+        }
+        
+        
+        
+        /*if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
 
             method_url = {
                 method: 'post',
@@ -355,25 +404,9 @@ export default class edit extends Vue {
             }
             
 
-        } 
+        } */
 
-        this.$axios(method_url)
-        .then((response) => {
-            console.log(response);
-
-            const res = response.data;
-
-            if(res.success === "store_true") {
-                console.log("success");
-                this.$router.push('/myaccount/mypage/album_select/choose_album');
-
-                //this.$router.push('/myaccount/mypage/' + name);
-            } else if(res.success === "update_true") {
-
-                this.$router.push('/myaccount/everyone_page/' + name);
-
-            }
-        })
+        
     }
 
 }
