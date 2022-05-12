@@ -136,7 +136,29 @@ export default class Home extends Vue{
   
 }
 </script>    
-<style lang="scss">
+<style scoped lang="scss">
+  /*$breakpoint: (
+    sp: 'screen and (max-width: 480px)',
+  );*/
+
+  @mixin sp {
+    @media (max-width: 560px) {
+      @content;
+    }
+  }
+
+  @mixin tb {
+    @media (min-width: 561px) {
+      @content;
+    }
+  }
+
+  @mixin pc {
+    @media (min-width: 750px) {
+      @content;
+    }
+  }
+  
 
   #home {/*最初の画面にでてくるところの全体*/
     padding-top: 0;
@@ -215,8 +237,11 @@ export default class Home extends Vue{
       margin-top: 100px;
 
       h1 {
-        font-size: 60px;
+        font-size: 55px;
         color: rgba(48, 48, 48, 0.9);
+        @include sp {
+          font-size: 40px;
+        }
 
         span:first-of-type {
           color: rgba(255, 41, 41, 0.8);
@@ -227,13 +252,21 @@ export default class Home extends Vue{
         }
       }
 
+
       .description {
         margin: 110px;
         border: 3px double #ddd;
         padding: 20px;
 
+        
+
         h2 {
           font-size: 30px;
+
+          @include sp {
+            font-size: 20px;
+          
+          }
 
         }
 
@@ -241,13 +274,18 @@ export default class Home extends Vue{
           margin-top: 20px;
           font-size: 25px;
           color: rgba(172, 0, 0, 0.8);
+
+          @include sp {
+            font-size: 20px;
+          
+          }
         }
 
         ul {
 
           list-style: none;
           font-size: 20px;
-          padding-right: 1rem;
+          padding-right: 40px;
 
           li {
             padding: 10px 0;
@@ -312,6 +350,12 @@ export default class Home extends Vue{
           width: 50%;
           padding-bottom: 30px;
           font-size: 30px;
+
+          @include sp {
+            font-size: 15px;
+          
+          }
+
         }
       }
     }
@@ -323,6 +367,16 @@ export default class Home extends Vue{
        height: 40vh;
       overflow-x: hidden;
       overflow-y: scroll;
+
+      @include sp {
+        width: 70%;
+          
+      }
+
+          @include tb {
+            width: 70%;
+          
+          }
       //margin-bottom: 40px;
      //table {
        //width: 50px;
@@ -365,8 +419,18 @@ export default class Home extends Vue{
     ul {
         cursor: default;
         padding: 30px;
-        float: right;
+        
         font-size: 20px;
+
+      @include sp {
+        text-align: center;
+          
+      }
+
+      @include tb {
+        float: right;
+      }
+
       li {
 
         padding: 10px 0;
