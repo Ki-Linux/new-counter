@@ -54,7 +54,7 @@
 </script>
 <style lang="scss">
     #login_select {
-        padding-top: 100px;
+        padding: 100px 0;
     }
 
     .select_button {

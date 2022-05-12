@@ -66,12 +66,16 @@ export default class popUpFree extends Vue {
             font-size: 40px;
         }
 
+        
+
         .canDesc {
             margin-right: 30px;
 
             ul {
                 font-size: 25px;
                 li {
+                    list-style: none;
+                    
                     &:first-of-type {
                         padding-bottom: 10px;
                     }

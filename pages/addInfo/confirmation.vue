@@ -48,7 +48,7 @@ export default class confirmation extends Vue {
         font-size: 20px;
         p input[type="mail"] {
             padding: 5px;
-            width: 20vw;
+            width: 300px;
         }
 
         p:nth-of-type(2) {

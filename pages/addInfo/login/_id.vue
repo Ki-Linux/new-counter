@@ -131,7 +131,7 @@ export default class login extends Vue {
         margin: 30px 0;
         p input {
             padding: 6px;
-            width: 30vw;
+            width: 300px;
         }
 
         .forget_password {

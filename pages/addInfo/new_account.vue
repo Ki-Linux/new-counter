@@ -104,7 +104,7 @@ export default class newAccount extends Vue {
         margin: 30px;
         
         p input {
-            width: 30vw;
+            width: 300px;
             padding: 5px;
         }
 

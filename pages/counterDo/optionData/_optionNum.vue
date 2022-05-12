@@ -22,7 +22,7 @@
                 <li v-for="target_present in target_presents" :key="target_present">{{ target_present }}</li>
             </ul>
             <ul class="contents desc_about_meter">
-                <li class="title">※目標値<span>{{ sign }}</span>現在値となるようにしてください</li>
+                <li class="title">※目標値<span>{{ sign }}</span>現在値</li>
                 <li>
                     <select name="select_target" @change="doTargetPresent($event, 1)">
                         <option v-for="select_number in select_numbers" :value="select_number.target" :key="select_number.target">{{ select_number.target }}</option>
@@ -528,9 +528,9 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 height: 40px;
                 font-size: 20px;
             }
-            &:nth-of-type(3) {
-                margin-right: $em_size * 5;
-            }
+            /*&:nth-of-type(3) {
+                //margin-right: $em_size * 1;
+            }*/
         }
         
         .to_left {
