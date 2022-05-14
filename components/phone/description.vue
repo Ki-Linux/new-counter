@@ -12,6 +12,11 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class description extends Vue {
 
     OkClick() {
+
+        if(this.$store.state.show_phone) {
+            this.$store.dispatch("change_phone");
+        }
+        
         this.$emit('ok_click', false);
     }
 

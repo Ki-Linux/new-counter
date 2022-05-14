@@ -1,7 +1,7 @@
 <template>
     <div id="pop_up_one" v-if="!$store.state.canClick">
-        <pop_up_free v-if="$store.state.select_plan === 'free' && $store.state.username === ''"/>
-        <pop_up_name v-else/>
+        <pop_up_free class="free" v-if="$store.state.select_plan === 'free' && $store.state.username === ''"/>
+        <pop_up_name class="name" v-else/>
     </div>
 </template>
 <script lang="ts">
@@ -27,11 +27,16 @@ export default class popUp extends Vue {
  width: 80%;
  position: absolute;
 background-color: rgb(255, 195, 223);
-margin: 300px 0;
-top: 50%;
+margin: 250px 0;
+top: 30%;
 left: 50%;
 transform: translate(-50%, -50%);
 padding: 30px;
+
+/*.free {
+    
+}*/
+
 
  
 }

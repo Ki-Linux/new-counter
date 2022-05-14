@@ -1,15 +1,15 @@
 <template>
     <div id="myname">
-        <div class="instruct_incline" v-if="show_phone_desc">
+        <div class="instruct_incline" v-if="show_phone_desc && $store.state.show_phone">
             <phone_description @ok_click="OKClick"/>
+        </div>
+        <div class="pop_up" v-if="show_pop">
+           <pop_up v-if="show_pop" @pop_up_show="popShow"/>
         </div>
         <reminder_name/>
         <profile_name/>
         <div class="to_album">
             <button @click="toAlbum">マイアルバム</button>
-        </div>
-        <div class="pop_up" v-if="show_pop">
-           <pop_up v-if="show_pop" @pop_up_show="popShow"/>
         </div>
         <div class="up_down_button">
             <button @click="toSelectPage">カウントする</button>      

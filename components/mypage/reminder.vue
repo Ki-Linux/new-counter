@@ -257,7 +257,7 @@ export default class reminder extends Vue {
     }
 
     .reminder_list {
-            position: fixed;
+            position: absolute;
             margin: 70px 20px;
             right: 0;
             font-size: 20px;

@@ -43,11 +43,12 @@ export default class popUpTwo extends Vue {
 </script>
 <style lang="scss">
 #pop_up_two {
-    position: fixed;
+    position: absolute;
     background-color: rgb(177, 255, 167);
     font-size: 25px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     text-align: center;
     padding: 20px 30px 30px 30px;
 

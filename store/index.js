@@ -14,7 +14,7 @@ export const state = () => ({
     username: "",
     canClick: true,
     select_plan: "",
-
+    show_phone: false,
     /*plugins: [
         createPersistedState({
             storage: {
@@ -218,6 +218,7 @@ export const mutations = {
     loginTokenName(state, res) {//トークンとユーザーネームをstoreへ
         state.token = res[0];
         state.username = res[1];
+        state.show_phone = true;
         //this.$cookies.set("key", state.token, { expires: 7 });
     },
 
@@ -256,6 +257,10 @@ export const mutations = {
         state.back_select_data = content;
 
     },
+
+    changePhone(state) {
+        state.show_phone = false;
+    }
 
 
 };
@@ -337,6 +342,10 @@ export const actions = {
         context.commit("inSelectData", send_array);
 
     },
+
+    change_phone(context) {
+        context.commit("changePhone");
+    }
 
 
 }
