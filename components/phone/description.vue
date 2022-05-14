@@ -1,6 +1,6 @@
 <template>
     <div id="phone_desc">
-        <p>スマホ・タブレットをお使いの場合は横向きにしてください</p>
+        <p>スマホをお使いの場合は横向きにしてください</p>
         <img src="../../static/phone/phone_200.png" alt="phone_img">
         <button @click="OkClick">OK</button>
     </div>

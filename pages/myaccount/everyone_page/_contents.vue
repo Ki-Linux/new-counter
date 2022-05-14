@@ -750,6 +750,7 @@ export default class everyone extends Vue {
 
 
                 .post_contents {
+                    
                     font-size: 30px;
                     background-color: bisque;
                     padding: 40px 0;
@@ -758,10 +759,17 @@ export default class everyone extends Vue {
                         padding: 0 20px;
 
                         &:first-of-type {
+                            display: inline-block;
+                            //margin: 40px 0 0 0;
                             
                             img {
-                                width:250px;//290px;
-                                max-height: 27vh;
+                                //background-color: aqua;
+                                //width: 40px;
+                                max-width: 190px;
+                                max-height: 190px;//27vh;
+                               //width: 70px;
+                                //height: 70px;
+
                             }
                         }
 

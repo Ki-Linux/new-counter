@@ -212,7 +212,7 @@ export default class chooseAlbum extends Vue {
 <style lang="scss">
 #all_select_img {
     text-align: center;
-    padding-top: 50px;
+    padding: 50px 0;
 
     .to_next {
         
