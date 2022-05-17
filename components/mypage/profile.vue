@@ -49,11 +49,13 @@ export default class profile extends Vue {
             const pull_img = response.data.img_icon_data;
 
 
-            /*if(pull_img[0].icon !== "not") {
+            if(pull_img[0].icon !== "not") {
 
-                this.img_data = pull_img[0].icon;
+                const base_url = process.env.SERVER_URL;
 
-            }*/
+                this.img_data = base_url + pull_img[0].icon;
+
+            }
             //this.img_data = pull_img[0].icon;
 
                 this.$emit('emit_id', pull_img[0]);//pull_img[0]);

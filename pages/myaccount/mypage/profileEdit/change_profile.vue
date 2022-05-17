@@ -49,10 +49,11 @@ export default class change_profile extends Vue {
     edit_contents: boolean = false;
     send_userId: number = 0;
     cannot_name: string = "";
+    send_icon: any;
     change_data = [
         { 
             show_data: false,//img
-            img_name_comment: require("../../../../static/profile/default_img.png"),  
+            img_name_comment: require("@/static/profile/default_img.png"),  
             judge_number: 1
         },
         {
@@ -66,6 +67,25 @@ export default class change_profile extends Vue {
             judge_number: 3
         },
     ];
+    send_image() {
+
+        const formData = new FormData();
+
+        formData.append('file', this.send_icon);
+        formData.append('userId', String(this.send_userId));
+
+        this.$axios.post('img_account_post', formData)
+        .then((response) => {
+            console.log(response.data);
+
+            const judge_data = response.data.judge_success;
+
+            if(judge_data) {
+                location.reload();
+            }
+        })
+
+    }
 
     beforeMount() {
         
@@ -107,8 +127,11 @@ export default class change_profile extends Vue {
         this.send_userId = value.id;
 
         if(value.icon !== "not") {
+            console.log(value.icon)
 
-            this.change_data[0].img_name_comment = value.icon;
+            const base_url = process.env.SERVER_URL;
+
+            this.change_data[0].img_name_comment = base_url + value.icon;
 
         }
         
@@ -120,14 +143,15 @@ export default class change_profile extends Vue {
         //const file_url = URL.createObjectURL(file);
         //this.change_data[0].img_name_comment = file_url;
 
-        const  file = (<HTMLInputElement>e.target).files![0];
+        const file = (<HTMLInputElement>e.target).files![0];
 
-        const options = {
+        this.send_icon = file;
+        /*const options = {
             //MAXSIZEMB: 10,
             maxWidthOrHeight: 120, //OrHeight
             //maxHeight: 500
         }
-        const compression_file = await imageCompression(file, options);
+        const compression_file = await imageCompression(file, options);*/
 
 
         const reader = new FileReader();
@@ -140,7 +164,7 @@ export default class change_profile extends Vue {
         })
 
         
-        reader.readAsDataURL(compression_file);
+        reader.readAsDataURL(file);
 
     }
 
@@ -176,6 +200,11 @@ export default class change_profile extends Vue {
 
                 change_content = this.change_data[i].img_name_comment
                 judge_number = i
+
+                if(judge_number === 0) {
+                    this.send_image();
+                    return;
+                }
 
             }
 
