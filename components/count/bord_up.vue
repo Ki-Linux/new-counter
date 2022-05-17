@@ -1,7 +1,7 @@
 <template>
     <div id="bord_up">
         <div class="contents_item" v-for="(show_word_img, img_Index) in showWordImg" :key="img_Index">
-            <img v-if="$store.state.back_data[4] === 'img'" :src="'data:image/'+show_word_img" alt="select_img">
+            <img v-if="$store.state.back_data[4] === 'img'" :src="show_word_img" alt="select_img">
             <p v-else>{{ show_word_img }}</p>
         </div>
         <div class="leftover">
@@ -55,7 +55,11 @@
                     into_data = this.$store.state.show_data[i + 1];//freeプラン以外のときは違うデータを代入する
                 }
 
-                arrayWordImg.splice(i, 0, into_data);
+
+                //サーバーからの画像
+                const image = process.env.SERVER_URL + 'storage/account/' + into_data;
+
+                arrayWordImg.splice(i, 0, image);
 
             }
 

@@ -79,6 +79,7 @@ export default class Option extends Vue {
     show_select_word: boolean = false;//文字の記入
     written: string = "";//画面に表示する文字
     imgs_data: (string | ArrayBuffer | null)[] = [require("../../../static/edit/hatena.png")];
+    post_image: any[] = [];
     words_data: string[] = [];
     word_position: number = 0;
     count_num: number = 0;
@@ -159,15 +160,16 @@ async selectPicture(e: Event){//写真
         const  file = (<HTMLInputElement>e.target).files![0];
         //const file_url = URL.createObjectURL(file);
 
+
     //data:image/png;base64,
 
 
         
-        const options = {
+        /*const options = {
             //MAXSIZEMB: 10,
             maxWidthOrHeight: 120
         }
-        const compression_file = await imageCompression(file, options);
+        const compression_file = await imageCompression(file, options);*/
 
         const selector_img_data = (img: (string | ArrayBuffer | null)) => {//画像データの扱いを実行(ここから)
 
@@ -184,8 +186,9 @@ async selectPicture(e: Event){//写真
                 this.count_num = 0;
                 this.imgs_data.splice(1, 1);//はてなを削除
 
+
                 //console.log(this.img_picture)
-                this.doSplice(3, 1, img);
+                this.doSplice(3, 1, file.name);
             
 
             } else {//free以外のとき
@@ -224,6 +227,7 @@ async selectPicture(e: Event){//写真
             }
 
             this.imgs_data.splice(this.count_num, change_num, img);//配列を変える
+            this.post_image.splice(this.count_num, change_num, file);
             this.count_num++;//配列の順番を+1
 
         }
@@ -252,7 +256,7 @@ async selectPicture(e: Event){//写真
         })
 
         
-        reader.readAsDataURL(compression_file);//URL作成
+        reader.readAsDataURL(file);//URL作成
 
 
 
@@ -335,6 +339,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
     toNext(row: [string, number, number, string]): void {
     //console.log(this.save_storage);//保存[不等号,目標値,現在値,写真]
         
+        console.log(this.post_image[0].name);
 
         const send_data_go = () => {//実行
 
@@ -435,6 +440,29 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 
             //データをVuexへ
             const url_name =  this.$route.params.optionNum;
+
+
+
+
+            //画像データをサーバーへ
+            ///const show_data = this.$store.state.show_data;
+            //const only_img = show_data.splice(0, 1);
+            console.log(this.post_image);
+            const formData = new FormData();
+
+            for(let key=0; key < this.post_image.length; key++) {
+                formData.append(String(key), this.post_image[key]);
+            }
+
+            formData.append('data_length', String(this.post_image.length));
+
+            console.log(formData);
+
+            this.$axios.post('counter_image', formData)
+            .then((response) => {
+                console.log(response.data);
+
+            })
 
             //if(url_name === "free") {//freeのときにvuexに入れるデータ
 

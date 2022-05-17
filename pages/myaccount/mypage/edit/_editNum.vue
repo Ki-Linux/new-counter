@@ -116,7 +116,7 @@ export default class edit extends Vue {
             }
 
             this.url = img_data[3];
-            this.show_url = 'data:image/'+this.url;
+            this.show_url = process.env.SERVER_URL+'storage/counter/'+this.url;
 
             if(img_data[4] === "nothing" || img_data[4] === "word") {//画像以外のとき
                 this.url = "notImg";
