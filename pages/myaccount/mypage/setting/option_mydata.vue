@@ -75,7 +75,7 @@ export default class optionMyData extends Vue {
     accounts: { title: string, info: string}[]
      = [{ title: '登録メールアドレス', info: ''},{ title: 'ユーザー名', info: ''}];
     show_info: boolean[] = [false, false, false, false]; 
-    contents_show: boolean = true;
+    contents_show: boolean = false;
     password_data: string = "";
     new_password: string = "";
     confirm_password: string = "";
@@ -153,8 +153,10 @@ export default class optionMyData extends Vue {
 
             //console.log(response.data);
             const res = response.data;
+
+            console.log(res)
             
-            if(which === "click") {
+            if(which === "check") {
 
                 if(res === 1) {//パスワード照会成功
                     console.log("success");
@@ -165,7 +167,7 @@ export default class optionMyData extends Vue {
                 }
 
             } else {
-                
+
                 const res_success = res.change_password_success;
                 console.log(res_success);
                 if(res_success) {//パスワード変更成功

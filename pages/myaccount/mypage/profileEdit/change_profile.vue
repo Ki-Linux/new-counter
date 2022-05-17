@@ -250,10 +250,11 @@ export default class change_profile extends Vue {
 
                     this.$store.dispatch("loginName", change_content);//ユーザーネームはvuex
 
-                    location.reload();
+                    
                     
 
                 }
+                location.reload();
                 return;
 
             } 
