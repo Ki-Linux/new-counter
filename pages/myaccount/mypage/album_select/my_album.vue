@@ -17,7 +17,7 @@
                     <p class="selector">{{ album_data.selector }}</p>
                     <p class="title">{{ album_data.title }}</p>
                     <div class="img_box">
-                        <img :src="'data:image/'+album_data.image" alt="not_image">
+                        <img :src="album_data.image" alt="not_image">
                     </div>
                     <div class="target_present">
                         <p><span>{{ album_data.present }}</span>から<span>{{ album_data.target }}</span>達成!!</p>
@@ -61,6 +61,8 @@ export default class my_album extends Vue {
 
     mounted() {
 
+        const base_url = process.env.SERVER_URL;
+
         this.$axios.get('my_album_data_get', {
             params: {
                 username: this.username
@@ -85,6 +87,7 @@ export default class my_album extends Vue {
                 }
 
                // album_content[i].image = album_content[i].image);
+                album_content[i].image = base_url + 'storage/album/' + album_content[i].image;
 
                 this.albums_data.splice(i, 0, album_content[i]);
 
