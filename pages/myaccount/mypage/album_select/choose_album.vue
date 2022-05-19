@@ -15,7 +15,7 @@
             <div class="show_img">
                 <img :src="img_data" alt="select_img">
             </div>
-            <div class="select_img" v-if="$store.state.select_plan !== 'free' && $store.state.back_data[4] === 'img' && show_next_img">
+            <div class="select_img" v-if="$store.state.back_select_data.length > 1 && $store.state.back_data[4] === 'img' && show_next_img">
                 <p v-for="(next_img, index_num) in next_imgs" :key="index_num">
                     <button type="button" :class="{right_button: index_num === 0}" @click="nextImg(index_num)">{{ next_img }}</button>
                 </p>
@@ -71,16 +71,22 @@ export default class chooseAlbum extends Vue {
 
         if(back_data[4] === "img") {
 
+            const server = process.env.SERVER_URL;
+
+            const url = server + 'storage/counter/';
+
             if(store.select_plan === "free"){
 
-                this.img_data = process.env.SERVER_URL + 'storage/counter/' + back_data[3];
+                this.img_data = url + back_data[3];
                 this.send_image = [back_data[3], false];
                 this.send_sql_image = back_data[3];
 
             } else {
 
-                this.img_data = store.back_select_data[0];
-                
+                const data = store.back_select_data[0];
+                this.img_data = url + data;
+                this.send_image = [data, false];
+                this.send_sql_image = data;
             }
         } 
     
@@ -92,6 +98,9 @@ export default class chooseAlbum extends Vue {
         /*if(num === 0) {
             [require('../../../../static/edit/hatena.png')]
         }*/
+        const server = process.env.SERVER_URL;
+
+        const url = server + 'storage/counter/';
 
         const select_data = this.$store.state.back_select_data;
         const last_data = select_data.length - 1;
@@ -100,7 +109,7 @@ export default class chooseAlbum extends Vue {
 
             this.img_num -=1;
 
-            if(this.img_data === select_data[0]) {//最初のデータで左を押したときに一番最後のデータを表示する
+            if(this.img_data === url + select_data[0]) {//最初のデータで左を押したときに一番最後のデータを表示する
 
                 this.img_num = last_data;
 
@@ -112,15 +121,17 @@ export default class chooseAlbum extends Vue {
 
             this.img_num++;
             
-            if(this.img_data === select_data[last_data]) {//最後のデータで右を押したときに一番最初のデータを表示する
+            if(this.img_data === url + select_data[last_data]) {//最後のデータで右を押したときに一番最初のデータを表示する
                 this.img_num = 0;
             }
 
             
         }
 
-
-        this.img_data = select_data[this.img_num];
+        const image = select_data[this.img_num];
+        this.send_image = [image, false];
+        this.send_sql_image = image;
+        this.img_data = url + this.send_sql_image;
 
     }
 
@@ -208,7 +219,6 @@ export default class chooseAlbum extends Vue {
             formData.append('default_or_selected', this.send_image[1]);
 
             console.log(formData);
-            console.log(this.send_image[0]);
 
             this.$axios.post('album_image', formData)
             .then((response) => {
@@ -240,14 +250,16 @@ export default class chooseAlbum extends Vue {
             title: this.written_name,
         })
         .then((response)=> {
-            console.log(response)
+            console.log(response.data)
 
-            const album = response.data.album
+            const album = response.data;
             
-            if(album) {
+            if(album === 1) {
 
                 album_image_send();
                 
+            } else {
+                console.log("no");
             }
 
         })

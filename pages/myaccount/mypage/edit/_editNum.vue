@@ -60,7 +60,8 @@ import { confirm } from '@/components/confirmation/confirm_person';
     middleware: 'reject'
 })
 export default class edit extends Vue {
-    url: string|ArrayBuffer|null = "notImg";//送るurl
+    url: string = "notImg";//データベースへ送るURL
+    storage_image: any;//storageへ送るURL
     show_url: string|ArrayBuffer|null = require("../../../../static/edit/hatena.png");//示すurl
     str_url: string = "";
     my_comment = "";
@@ -83,6 +84,7 @@ export default class edit extends Vue {
     shift_num: number = 0;
     select_img_chosen: boolean  = true;
     show_select_button: boolean = false;//画像切り替えボタンを表示する
+    select_image: boolean = false;
 
     beforeMount() {
         
@@ -102,22 +104,26 @@ export default class edit extends Vue {
 
             this.button_name = "投稿";
 
-            let img_data = this.$store.state.back_data;
-            const plan = this.$store.state.select_plan;
+            const store = this.$store.state;
+
+            let img_data = store.back_data;
+            const plan = store.select_plan;
+            const back_data = store.back_select_data;
 
             this.my_comment = img_data[2] + "から" + img_data[1] + "まで達成!!";
 
                 
-            if(plan !== "free" && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
+            if(back_data.length > 1 && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
 
             
                 this.show_select_button = true;//画像を切り替えるボタンを表示
 
-                img_data[3] = this.$store.state.back_select_data[this.shift_num];//最初は0
+                img_data[3] = store.back_select_data[this.shift_num];//最初は0
 
             }
 
             this.url = img_data[3];
+            this.storage_image = [this.url, false];
             this.show_url = process.env.SERVER_URL+'storage/counter/'+this.url;
 
             if(img_data[4] === "nothing" || img_data[4] === "word") {//画像以外のとき
@@ -140,7 +146,7 @@ export default class edit extends Vue {
             .then((response) => {
                 const res = response.data.contents[0];
                 this.url = res.picture;
-                this.show_url = 'data:image/'+this.url;
+                this.show_url = this.url;
                 this.my_comment = res.my_comment;
                 this.array_check.splice(0, 5, res.can_list , res.can_good, res.can_comment, res.can_see, res.can_top);
                 this.show_checked = true;
@@ -158,6 +164,9 @@ export default class edit extends Vue {
 
         const select_data = this.$store.state.back_select_data;
         const last_data = select_data.length - 1;
+
+        const base_url = process.env.SERVER_URL;
+        const url = base_url + 'storage/counter/';
 
         if(img_num === 0) {//-1
 
@@ -184,8 +193,8 @@ export default class edit extends Vue {
 
 
         this.url = select_data[this.shift_num];
-
-        this.show_url = 'data:image/'+this.url;
+        this.storage_image = [this.url, false];
+        this.show_url = url + this.url;
         //const img_data = this.$store.state.back_select_data[1];
 
         //if(img_data.includes('http')) {//画像のときのみ代入
@@ -198,14 +207,17 @@ export default class edit extends Vue {
     imgSelect(num: number) {
         console.log(num);
 
-        const img_data = this.$store.state.back_data;
-        const plan = this.$store.state.select_plan;
+        const store = this.$store.state;
+
+        const img_data = store.back_data;
+        const plan = store.select_plan;
+        const back_data = store.back_select_data;
 
 
             if(num === 0) {
                     this.select_img_chosen = true;
 
-                if(img_data[4] !== "nothing" && plan !== "free") {
+                if(img_data[4] !== "nothing" && back_data.length > 1 && !this.select_image) {
                     this.show_select_button = true;//◀▶
                 }
 
@@ -221,14 +233,18 @@ export default class edit extends Vue {
     
     async editPicture(e: Event) {
         this.show_select_button = false;
+        this.select_image = true;
 
         const file = (<HTMLInputElement>e.target).files![0];
+
+        this.storage_image = [file, true];
+        this.url = file.name;
  
-        const options = {
+        /*const options = {
             MAXSIZEMB: 1,
             maxWidthOrHeight: 80
         }
-        const compression_file = await imageCompression(file, options);
+        const compression_file = await imageCompression(file, options);*/
 
 
         const reader = new FileReader();
@@ -241,18 +257,18 @@ export default class edit extends Vue {
 
            // this.url = result;//画像データの扱いを実行
 
-            if(typeof(result) === "string") {
+            /*if(typeof(result) === "string") {
                 
                 this.url = result.replace('data:image/', '');
                 //console.log(option_url)
-            }
+            }*/
                 
             
 
         })
 
         
-        reader.readAsDataURL(compression_file);
+        reader.readAsDataURL(file);
 
     }
 
@@ -334,6 +350,24 @@ export default class edit extends Vue {
         if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
             //console.log(this.array_check);
 
+            const post_image = () => {
+
+                const formData = new FormData();
+
+                formData.append('file', this.storage_image[0]);
+                formData.append('default_or_selected', this.storage_image[1]);
+
+                console.log(formData);
+                console.log(this.storage_image[0]);
+
+                this.$axios.post('post_image', formData)
+                .then((response) => {
+                    console.log(response);
+                    this.$router.push('/myaccount/mypage/album_select/choose_album');
+                })
+
+            }
+
             this.$axios.post('edit', {
                 username: name,
                 image: this.url,
@@ -351,7 +385,10 @@ export default class edit extends Vue {
 
                 if(res.success === "store_true") {
                     console.log("success");
-                    this.$router.push('/myaccount/mypage/album_select/choose_album');
+
+                    post_image();
+
+                    
 
                     //this.$router.push('/myaccount/mypage/' + name);
                 }/* else if(res.success === "update_true") {

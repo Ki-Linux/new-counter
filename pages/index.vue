@@ -98,7 +98,9 @@ export default class Home extends Vue{
 
         for(let i=0; i < topData.length; i++) {
 
-          const push_data = {picture: 'data:image/'+topData[i].picture, my_comment: topData[i].my_comment};
+          const image = process.env.SERVER_URL + 'storage/post/' + topData[i].picture
+
+          const push_data = {picture: image, my_comment: topData[i].my_comment};
 
           this.showEveryData.splice(i, 1, push_data);
         }

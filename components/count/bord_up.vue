@@ -11,7 +11,7 @@
         <transition name="slide">
             <div class="select_bord" v-if="$store.state.select_plan !== 'free' && showSelect">
                 <ul v-for="(select_data, index) in back_select_data" :key="select_data">
-                    <li v-if="$store.state.back_data[4] === 'img'" @click="chooseData(index)"><img :src="'data:image/'+select_data" alt="select_data"></li>
+                    <li v-if="$store.state.back_data[4] === 'img'" @click="chooseData(index)"><img :src="base_url+'storage/counter/'+select_data" alt="select_data"></li>
                     <li v-else @click="chooseData(index)">{{ select_data }}</li> 
                 </ul>  
             </div>
@@ -23,10 +23,19 @@
     @Component
     export default class bord extends Vue {
         back_select_data: string[] = [];
+        base_url: string|undefined = "";
 
         mounted() {
 
-            this.back_select_data = this.$store.state.back_select_data;
+            this.base_url = process.env.SERVER_URL;
+
+            const image_data = this.$store.state.back_select_data;
+
+            for(let i=0; i < image_data.length; i++) {
+                
+                this.back_select_data.splice(i, 0, image_data[i]);
+            }
+            
         };
 
         get showData() {//free planのときのみ
@@ -57,7 +66,12 @@
 
 
                 //サーバーからの画像
-                const image = process.env.SERVER_URL + 'storage/counter/' + into_data;
+                let image = into_data;
+
+                if(this.$store.state.back_data[4] === "img") {
+                    image = process.env.SERVER_URL + 'storage/counter/' + into_data;
+                }
+                
 
                 arrayWordImg.splice(i, 0, image);
 

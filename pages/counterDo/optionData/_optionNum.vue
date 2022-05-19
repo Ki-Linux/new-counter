@@ -48,7 +48,7 @@
                 </div>
                 <div class="picture_show" v-if="show_select_picture">
                     <ul v-for="img_data in imgs_data" :key="img_data">
-                        <li><img :src="'data:image/' + img_data" alt="選択した画像"></li>
+                        <li><img :src="img_data" alt="選択した画像"></li>
                     </ul>
                 </div>
                 <div class="text_write_in button_select" v-if="show_select_word">
@@ -243,13 +243,13 @@ async selectPicture(e: Event){//写真
 
             
 
-            if(typeof(result) === "string") {
+            /*if(typeof(result) === "string") {
                 
                 const option_url = result.replace('data:image/', '');
-                console.log(option_url)
+                console.log(option_url)*/
             
-                selector_img_data(option_url);//画像データの扱いを実行
-            }
+                selector_img_data(result);//画像データの扱いを実行
+            //}
 
             
  
@@ -339,7 +339,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
     toNext(row: [string, number, number, string]): void {
     //console.log(this.save_storage);//保存[不等号,目標値,現在値,写真]
         
-        console.log(this.post_image[0].name);
+        //console.log(this.post_image[0].name);
 
         const send_data_go = () => {//実行
 
@@ -350,7 +350,10 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
 
                 if(this.show_select_picture) {//写真のデータを送る
 
-                    send_array = this.imgs_data;
+                    for(let i=0; i < this.post_image.length; i++) {
+                        send_array.splice(i, 1, this.post_image[i].name);
+                    }
+                    
 
                 }
 

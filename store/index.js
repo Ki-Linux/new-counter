@@ -79,6 +79,8 @@ export const mutations = {
 
             const delete_length = state.back_data[2];
 
+            const now_data = show_data;
+
             show_data.splice(0, 1, delete_length);//数字を初期化
 
            /* if(state.select_plan === "free") {//freeプラン
@@ -88,12 +90,15 @@ export const mutations = {
 
             if(state.select_plan !== "free" && state.back_data[4] !== "nothing") {//freeプランかつなし以外
 
-                show_data.splice(1, show_data.length - 1);//一回、画像データをすべて削除する
+                show_data.splice(1, now_data.length - 1);//一回、画像データをすべて削除する
 
                 const select_data = state.back_select_data;//登録したデータすべて1種類ずつ
 
     //free以外のときに文字や画像を入れる(入れる個数)
-    let time = 0;
+
+    if(show_data[0] !== 0) {
+
+        let time = 0;
 
 
         while(time <= show_data[0]) {//回数
@@ -108,6 +113,9 @@ export const mutations = {
    
             }
         }
+
+    }
+    
 
                 /*let time = 0;
 
