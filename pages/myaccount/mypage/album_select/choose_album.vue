@@ -1,7 +1,7 @@
 <template>
     <div id="all_select_img">
         <div class="to_next">
-            <nuxt-link class="not_album" :to="'/myaccount/mypage/' + $store.state.username">アルバムに追加しない</nuxt-link>
+            <nuxt-link class="not_album" @click.native="deleteGo" :to="'/myaccount/mypage/' + $store.state.username">アルバムに追加しない</nuxt-link>
         </div>
         <div class="title_desc">
             <h1>アルバム追加</h1>
@@ -52,6 +52,31 @@ export default class chooseAlbum extends Vue {
     written_name: string = "";
     attention: string = "";
     show_next_img: boolean = true;
+    delete_data = () => {
+
+        const array_image = [];
+        const store = this.$store.state;
+
+        if(store.select_plan === "free") {
+            array_image.push(store.back_data[3]);
+        } else {
+
+            for(let i=0; i < store.back_select_data.length; i++) {
+                array_image.push(store.back_select_data[i]);
+            }
+
+        }
+
+        const formData = new FormData();
+
+        formData.append('delete_image', String(array_image));
+
+        this.$axios.post('storage_counter_delete', formData)
+        .then((response) => {
+            console.log(response.data);
+        })
+
+    };
 
     beforeMount() {
         
@@ -90,6 +115,12 @@ export default class chooseAlbum extends Vue {
             }
         } 
     
+    }
+
+    deleteGo() {
+        console.log('oi');
+
+        this.delete_data();
     }
 
     nextImg(num: number) {
@@ -228,6 +259,7 @@ export default class chooseAlbum extends Vue {
                 console.log(data);
 
                 if(data == 1) {
+                    this.delete_data();
                     this.$router.push('/myaccount/mypage/' + store_data.username);
                 }
 
