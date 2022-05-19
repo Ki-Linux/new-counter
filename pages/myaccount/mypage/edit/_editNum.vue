@@ -105,6 +105,8 @@ export default class edit extends Vue {
             let img_data = this.$store.state.back_data;
             const plan = this.$store.state.select_plan;
 
+            this.my_comment = img_data[2] + "から" + img_data[1] + "まで達成!!";
+
                 
             if(plan !== "free" && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
 

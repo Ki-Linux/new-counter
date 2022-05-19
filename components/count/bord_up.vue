@@ -57,7 +57,7 @@
 
 
                 //サーバーからの画像
-                const image = process.env.SERVER_URL + 'storage/account/' + into_data;
+                const image = process.env.SERVER_URL + 'storage/counter/' + into_data;
 
                 arrayWordImg.splice(i, 0, image);
 
