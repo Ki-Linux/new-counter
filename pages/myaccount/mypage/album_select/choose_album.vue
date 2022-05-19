@@ -13,7 +13,7 @@
         </div>
         <div class="img_box">
             <div class="show_img">
-                <img :src="'data:image/'+img_data" alt="select_img">
+                <img :src="img_data" alt="select_img">
             </div>
             <div class="select_img" v-if="$store.state.select_plan !== 'free' && $store.state.back_data[4] === 'img' && show_next_img">
                 <p v-for="(next_img, index_num) in next_imgs" :key="index_num">
@@ -45,6 +45,8 @@ import { confirm } from '@/components/confirmation/confirm_person';
 })
 export default class chooseAlbum extends Vue {
     img_data: any/*string | ArrayBuffer | null*/ = require('../../../../static/edit/hatena.png');
+    send_image: any;
+    send_sql_image: string = "";
     img_num: number = 0;
     next_imgs: string[] = ["◀", "▶"];
     written_name: string = "";
@@ -71,7 +73,9 @@ export default class chooseAlbum extends Vue {
 
             if(store.select_plan === "free"){
 
-                this.img_data = back_data[3];
+                this.img_data = process.env.SERVER_URL + 'storage/counter/' + back_data[3];
+                this.send_image = [back_data[3], false];
+                this.send_sql_image = back_data[3];
 
             } else {
 
@@ -127,12 +131,14 @@ export default class chooseAlbum extends Vue {
        // const file = document.querySelector('input[type=file]').files![0];
         const  file = (<HTMLInputElement>e.target).files![0];
 
+        this.send_image = [file, true];
+        this.send_sql_image = file.name;
         
-        const options = {
+       /* const options = {
             //MAXSIZEMB: 10,
             maxWidthOrHeight: 120
         }
-        const compression_file = await imageCompression(file, options);
+        const compression_file = await imageCompression(file, options);*/
 
 
         const reader = new FileReader();
@@ -141,20 +147,20 @@ export default class chooseAlbum extends Vue {
 
             const result = reader.result;
 
-            if(typeof(result) === "string") {
+            /*if(typeof(result) === "string") {
                 
-                const option_url = result.replace('data:image/', '');
+                const option_url = result.replace('data:image/', '');*/
                 //console.log(option_url)
             
-                this.img_data = option_url;//画像データの扱いを実行
-            }
+                this.img_data = result;//画像データの扱いを実行
+            //}
 
             console.log(this.img_data)
 
         })
 
         
-        reader.readAsDataURL(compression_file);
+        reader.readAsDataURL(file);
         
         
         //console.log(this.img_data)
@@ -176,13 +182,58 @@ export default class chooseAlbum extends Vue {
 
         const store_data = this.$store.state
 
-        const str = String(this.img_data);
-        console.log(this.img_data)
+        const str = "io";
+        /*console.log(this.send_image)
+
+            const formData = new FormData();
+
+            formData.append('file', this.send_image);
+
+            console.log(formData);
+
+            this.$axios.post('album_image', formData)
+            .then((response) => {
+                console.log(response.data);
+
+            })
+
+
+        return;*/
+
+        const album_image_send = () => {
+
+            const formData = new FormData();
+
+            formData.append('file', this.send_image[0]);
+            formData.append('default_or_selected', this.send_image[1]);
+
+            console.log(formData);
+            console.log(this.send_image[0]);
+
+            this.$axios.post('album_image', formData)
+            .then((response) => {
+
+                const data = response.data;
+                console.log(data);
+
+                if(data == 1) {
+                    this.$router.push('/myaccount/mypage/' + store_data.username);
+                }
+
+                //this.$router.push('/myaccount/mypage/' + store_data.username);
+
+            })
+
+        }
+
         
+
+
+
 
         this.$axios.post('album_data', {
             username: store_data.username,
-            image: str,
+            image: this.send_sql_image,
             selector: store_data.back_data[0],
             target: store_data.back_data[1],
             present: store_data.back_data[2],
@@ -192,9 +243,11 @@ export default class chooseAlbum extends Vue {
             console.log(response)
 
             const album = response.data.album
-
+            
             if(album) {
-                this.$router.push('/myaccount/mypage/' + store_data.username);
+
+                album_image_send();
+                
             }
 
         })
