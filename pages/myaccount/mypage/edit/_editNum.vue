@@ -118,8 +118,12 @@ export default class edit extends Vue {
             
                 this.show_select_button = true;//画像を切り替えるボタンを表示
 
-                img_data[3] = store.back_select_data[this.shift_num];//最初は0
+                
 
+            }
+
+            if(plan !== "free") {
+                img_data[3] = store.back_select_data[this.shift_num];//最初は0
             }
 
             this.url = img_data[3];
@@ -356,11 +360,12 @@ export default class edit extends Vue {
 
                 formData.append('file', this.storage_image[0]);
                 formData.append('default_or_selected', this.storage_image[1]);
+                formData.append('album_or_post', '/post/');
 
                 console.log(formData);
                 console.log(this.storage_image[0]);
 
-                this.$axios.post('post_image', formData)
+                this.$axios.post('album_post_image', formData)
                 .then((response) => {
                     console.log(response);
                     this.$router.push('/myaccount/mypage/album_select/choose_album');

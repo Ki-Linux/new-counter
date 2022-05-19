@@ -217,10 +217,11 @@ export default class chooseAlbum extends Vue {
 
             formData.append('file', this.send_image[0]);
             formData.append('default_or_selected', this.send_image[1]);
+            formData.append('album_or_post', '/album/');
 
             console.log(formData);
 
-            this.$axios.post('album_image', formData)
+            this.$axios.post('album_post_image', formData)
             .then((response) => {
 
                 const data = response.data;
@@ -238,7 +239,7 @@ export default class chooseAlbum extends Vue {
 
         
 
-
+        console.log(this.send_sql_image)
 
 
         this.$axios.post('album_data', {
