@@ -40,13 +40,17 @@ export default class everyone_list extends Vue {
             const last_judge = response.data.last_number;
             this.delete_back_button.splice(0, 1, last_judge);
 
+            const base_url = process.env.SERVER_URL;
+
 
             for(let i=0; i < all_data.length; i++) {
 
                 //日付だけ表示
                 const new_date = all_data[i].updated_at.split('T').splice(0, 1);
 
-                let push_item = { id: all_data[i].id, picture: 'data:image/'+all_data[i].picture,  my_comment: all_data[i].my_comment,  username: all_data[i].username, updated_at: new_date[0], can_see: 0};
+                const image = base_url + 'storage/post/' + all_data[i].picture
+
+                let push_item = { id: all_data[i].id, picture: image, my_comment: all_data[i].my_comment,  username: all_data[i].username, updated_at: new_date[0], can_see: 0};
 
                 this.contents_array.push(push_item);
 

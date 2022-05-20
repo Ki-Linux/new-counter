@@ -6,7 +6,7 @@
         <div class="list">
             <ul @click="detailShow(index)" v-for="(picture_data, index) in picturesData" :key="index">
                 <li v-if="picture_data.picture === 'notImg'"></li>
-                <li v-else><img :src="'data:image/'+picture_data.picture" alt="写真"></li>
+                <li v-else><img :src="picture_data.picture" alt="写真"></li>
                 <li>{{ picture_data.my_comment }}</li>
                 <li>{{ picture_data.created_at }}</li>
             </ul>  
@@ -41,6 +41,11 @@ export default class myList extends Vue {
                 const new_date = data[i].created_at.split('T').splice(0, 1);//日にちだけの表示
                 data[i].created_at = new_date[0];
 
+                const base_url = process.env.SERVER_URL;
+                const url = base_url + 'storage/post/';
+
+                data[i].picture = url + data[i].picture;
+
                 this.picturesData.splice(i, 1, data[i]);
             }
             
@@ -59,7 +64,11 @@ export default class myList extends Vue {
         const send_day = content.created_at;
         const send_see = content.can_see;
 
-        send_data = { id: send_id, picture: 'data:image/'+send_picture, my_comment: send_comment, username: this.list_username, updated_at: send_day, can_see: send_see};
+        /*const base_url = process.env.SERVER_URL;
+        const url = base_url + 'storage/post/';
+        const image = url + send_picture;*/
+
+        send_data = { id: send_id, picture: send_picture, my_comment: send_comment, username: this.list_username, updated_at: send_day, can_see: send_see};
 
         this.$emit('detail_data_show', [true, send_data]);
     }

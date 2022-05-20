@@ -150,7 +150,10 @@ export default class edit extends Vue {
             .then((response) => {
                 const res = response.data.contents[0];
                 this.url = res.picture;
-                this.show_url = this.url;
+
+                const server_storage_url = process.env.SERVER_URL + 'storage/post/';
+                this.show_url = server_storage_url + this.url;
+                
                 this.my_comment = res.my_comment;
                 this.array_check.splice(0, 5, res.can_list , res.can_good, res.can_comment, res.can_see, res.can_top);
                 this.show_checked = true;

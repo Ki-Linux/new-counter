@@ -28,7 +28,7 @@
             <div class="list_detail detail" v-else>
                 <p @click="deleteOrTell('post_report')" v-if="$route.params.contents === 'everyone'">…</p>
                 <ul class="post_contents">
-                    <li v-if="details_list.picture === 'data:image/notImg'">写真はありません</li>
+                    <li v-if="details_list.picture === 'notImg'">写真はありません</li>
                     <li v-else><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
@@ -333,7 +333,10 @@ export default class everyone extends Vue {
 
             const icon_good_comment = response.data;
 
-            this.icon_point.my_icon = icon_good_comment.icon_data[0].icon;
+            const base_url = process.env.SERVER_URL;
+            const url = base_url + 'storage/account/'; 
+
+            this.icon_point.my_icon = url + icon_good_comment.icon_data[0].icon;
             console.log(this.icon_point.my_icon)
 
 
@@ -464,7 +467,10 @@ export default class everyone extends Vue {
                 hour = hour_split.splice(0, 1);//時
                 minute = written_time[0].split(/:/).splice(1, 1);//分
 
-                let icon_comment = 'data:image/' + comment_name_icon[i].icon;
+                const base_url = process.env.SERVER_URL;
+                const url = base_url + 'storage/account/';
+
+                let icon_comment = url + comment_name_icon[i].icon;
 
                 if(comment_name_icon[i].icon === "not") {
                     icon_comment = require("@/static/profile/default_img.png");
