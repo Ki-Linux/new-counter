@@ -131,7 +131,7 @@ export default class change_profile extends Vue {
 
             const base_url = process.env.SERVER_URL;
 
-            this.change_data[0].img_name_comment = base_url + value.icon;
+            this.change_data[0].img_name_comment = base_url + 'storage/account/' + value.icon;
 
         }
         
