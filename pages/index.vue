@@ -208,7 +208,7 @@ export default class Home extends Vue{
     opacity: 0;
   } 
   header {
-      position: fixed;
+      position: absolute;//fixed;
       right: 0;
     .show_login {
       background-color: rgba(6, 66, 77, 0.514);

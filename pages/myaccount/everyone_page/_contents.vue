@@ -32,8 +32,9 @@
                     <li v-else><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone' && icon_point.my_icon !== 'not'"><img :src="icon_point.my_icon" alt="not_img"></li>
-                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'">{{ icon_point.my_icon }}</li>
+                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone' && icon_point.my_icon !== 'not'">
+                        <img :src="icon_point.my_icon" alt="not_img">
+                    </li>
                 </ul>
                 <ul class="good_and_comment">
                     <li v-show="show_heart" @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
@@ -724,8 +725,8 @@ export default class everyone extends Vue {
                             padding: 20px;
 
                             img {
-                                max-width: 70%;
-                                max-height: 60%;
+                                max-width: 30%;
+                                max-height: 30%;
                             }
                         }
 
@@ -771,8 +772,8 @@ export default class everyone extends Vue {
                             img {
                                 //background-color: aqua;
                                 //width: 40px;
-                                max-width: 190px;
-                                max-height: 190px;//27vh;
+                                max-width: 150px;
+                                max-height: 150px;//27vh;
                                //width: 70px;
                                 //height: 70px;
 
