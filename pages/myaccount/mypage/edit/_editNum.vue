@@ -368,11 +368,14 @@ export default class edit extends Vue {
                 .then((response) => {
                     console.log(response);
 
+                    let url;
                     if(num_edit === 'new_post') {
-                        this.$router.push('/myaccount/mypage/album_select/choose_album');
+                        url = ('/myaccount/mypage/album_select/choose_album');
                     } else {
-                        this.$router.push('/myaccount/everyone_page/' + name);
+                        url = ('/myaccount/everyone_page/' + name);
                     }
+
+                    this.$router.push(url);
                     
                 })
 
