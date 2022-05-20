@@ -11,7 +11,7 @@
                 <p v-if="details_list.can_see === 1">
                    閲覧数:{{ view_point }}
                 </p>
-                <p v-else>no views</p>
+                <p v-else>閲覧数:/</p>
                 <div class="edit_delate">
                     <button @click="EditDelete('edit')">編集する</button>
                     <button @click="EditDelete('delete')">削除する</button>
@@ -104,7 +104,7 @@ export default class everyone extends Vue {
     heart: boolean = false;//ハートを色つける
     comment_lists: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string, date: string }[] = [];
     comment_add: string = "";
-    show_comment: boolean  = false;//そもそもコメントを表示するかしないか
+    show_comment: boolean  = true;//そもそもコメントを表示するかしないか
     show_comment_list: boolean  = false;//コメントリストを表示する
     show_select_del_or_tell: boolean = false;
     deleteMyComment: boolean = false;//自分の名前と違ったときはfalse
@@ -128,6 +128,21 @@ export default class everyone extends Vue {
         //this.username = this.$store.state.username;
         const base_url = process.env.SERVER_URL;
         this.url = base_url + 'storage/account/';
+
+        if(this.$route.params.contents !== "everyone") {
+            this.$axios.get('account', {
+                params: {
+                    accountName: this.username
+                }
+            })
+            .then((response) => {
+                const res_data = response.data.img_icon_data;
+                const image_data = res_data[0].icon;
+                console.log(image_data)
+                this.my_icon = image_data;
+
+            })
+        }
     }
 
     deleteReport(which_contents: string) {
@@ -249,7 +264,7 @@ export default class everyone extends Vue {
         this.comment_lists = [];
         this.show_heart = true;
         this.heart = false;
-        this.show_comment = false;//そもそもコメントを表示するかしないか
+        this.show_comment = true;//そもそもコメントを表示するかしないか
         this.show_comment_list = false;//コメントリストを表示する
         this.detail_profile.username = this.username;//name自分
         this.detail_profile.user_icon = this.my_icon;//icon自分
@@ -358,8 +373,8 @@ export default class everyone extends Vue {
 
             const which_comment = icon_good_comment.which_comment[0].can_comment;
 
-            if(which_comment === 1) {
-                this.show_comment = true;
+            if(which_comment === 0) {
+                this.show_comment = false;
             }
         })
     }
@@ -526,6 +541,12 @@ export default class everyone extends Vue {
 
         const time = Year + "-" + array_day[0] + "-" + array_day[1] + " " + array_day[2] + ":" + array_day[3];
 
+        
+        if(this.$route.params.contents !== "everyone" && this.my_icon !== 'not') {
+            this.detail_profile.user_icon = process.env.SERVER_URL + 'storage/account/' + this.my_icon;
+        }
+
+        console.log(this.detail_profile.user_icon)
         if(!this.detail_profile.user_icon) {
             this.detail_profile.user_icon = require("@/static/profile/default_img.png");
         }
@@ -664,7 +685,7 @@ export default class everyone extends Vue {
             transform: translateX(-50%);
             background-color: rgb(193, 255, 234);
             width: 700px;
-            //height: 500px;
+            height: 750px;
 
             p {
 

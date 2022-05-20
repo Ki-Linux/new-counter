@@ -85,6 +85,7 @@ export default class edit extends Vue {
     select_img_chosen: boolean  = true;
     show_select_button: boolean = false;//画像切り替えボタンを表示する
     select_image: boolean = false;
+    add_edit: boolean = false;
 
     beforeMount() {
         
@@ -240,6 +241,7 @@ export default class edit extends Vue {
     async editPicture(e: Event) {
         this.show_select_button = false;
         this.select_image = true;
+        
 
         const file = (<HTMLInputElement>e.target).files![0];
 
@@ -260,6 +262,8 @@ export default class edit extends Vue {
             const result = reader.result;
 
             this.show_url = result;
+
+            this.add_edit = true;
 
            // this.url = result;//画像データの扱いを実行
 
@@ -455,12 +459,14 @@ export default class edit extends Vue {
 
                 const res = response.data;
 
-                if(res.success === "update_true") {
+                if(res.success === "update_true" && this.add_edit) {
 
                     post_image(editNum);
-                    
+                    return;
 
                 }
+
+                this.$router.push('/myaccount/everyone_page/' + name);
             })
 
         }
