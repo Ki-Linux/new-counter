@@ -52,7 +52,7 @@
             <caption>みんなの投稿一覧</caption>
             <tbody>
             <tr v-for="(show_every_data, index) in showEveryData" :key="index">
-              <th v-if="show_every_data.picture === 'data:image/notImg'">画像なし</th>
+              <th v-if="show_every_data.picture === 'notImg'">画像なし</th>
               <th v-else><img :src="show_every_data.picture" alt="picture"></th>
               <td>{{ show_every_data.my_comment }}</td>
             </tr>

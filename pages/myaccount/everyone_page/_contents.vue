@@ -32,7 +32,7 @@
                     <li v-else><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone' && icon_point.my_icon !== 'not'">
+                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone' && icon_point.my_icon !== url+'not'">
                         <img :src="icon_point.my_icon" alt="not_img">
                     </li>
                 </ul>
@@ -61,7 +61,7 @@
             <div class="profile_list my_profile">
                 <profile_data :can_click="true" :from_contents="true" @send_data="detailData('me')" @to_contents_img="contentsImg"/>
                 <button @click="toOneAccountListPage(username)">マイ投稿</button>
-                <back_account where_go="account"/>
+                <back_account class="back_button" where_go="account"/>
             </div>
             <div class="profile_list everyone">
                 <everyone_list @detail_data_show="listDetail"/>
@@ -91,6 +91,7 @@ import { confirm } from '@/components/confirmation/confirm_person';
     }
 })
 export default class everyone extends Vue {
+    url: string = "";
     detail_profile: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string }= { username: '', user_icon: '', user_comment: '' };
     details_list: { id: number, picture: string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string, can_see: number } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '', can_see: 0 };
     my_icon: string|ArrayBuffer|null = "";//自分のアイコン画像
@@ -117,13 +118,17 @@ export default class everyone extends Vue {
         this.username = this.$store.state.username;
         confirm(this.username);
 
+        
+
         //fetchUid(document.cookie, username);
         
     }
 
-    /*mounted() {
-        this.username = this.$store.state.username;
-    }*/
+    mounted() {
+        //this.username = this.$store.state.username;
+        const base_url = process.env.SERVER_URL;
+        this.url = base_url + 'storage/account/';
+    }
 
     deleteReport(which_contents: string) {
 
@@ -334,10 +339,10 @@ export default class everyone extends Vue {
 
             const icon_good_comment = response.data;
 
-            const base_url = process.env.SERVER_URL;
-            const url = base_url + 'storage/account/'; 
+            /*const base_url = process.env.SERVER_URL;
+            const url = base_url + 'storage/account/'; *////
 
-            this.icon_point.my_icon = url + icon_good_comment.icon_data[0].icon;
+            this.icon_point.my_icon = this.url + icon_good_comment.icon_data[0].icon;
             console.log(this.icon_point.my_icon)
 
 
@@ -468,10 +473,10 @@ export default class everyone extends Vue {
                 hour = hour_split.splice(0, 1);//時
                 minute = written_time[0].split(/:/).splice(1, 1);//分
 
-                const base_url = process.env.SERVER_URL;
-                const url = base_url + 'storage/account/';
+                /*const base_url = process.env.SERVER_URL;
+                const url = base_url + 'storage/account/';*/
 
-                let icon_comment = url + comment_name_icon[i].icon;
+                let icon_comment = this.url + comment_name_icon[i].icon;
 
                 if(comment_name_icon[i].icon === "not") {
                     icon_comment = require("@/static/profile/default_img.png");
@@ -970,6 +975,10 @@ export default class everyone extends Vue {
                 margin-top: 20px;
                 background-color: rgba(255, 213, 158, 0.4);
                 padding: 30px 40px 0 0;
+
+                .back_button {
+                    margin-bottom: 20px;
+                }
 
                 button {
                     font-size: 20px;

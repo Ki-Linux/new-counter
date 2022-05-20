@@ -153,7 +153,7 @@ export default class edit extends Vue {
 
                 const server_storage_url = process.env.SERVER_URL + 'storage/post/';
                 this.show_url = server_storage_url + this.url;
-                
+
                 this.my_comment = res.my_comment;
                 this.array_check.splice(0, 5, res.can_list , res.can_good, res.can_comment, res.can_see, res.can_top);
                 this.show_checked = true;
@@ -217,7 +217,6 @@ export default class edit extends Vue {
         const store = this.$store.state;
 
         const img_data = store.back_data;
-        const plan = store.select_plan;
         const back_data = store.back_select_data;
 
 
@@ -354,10 +353,7 @@ export default class edit extends Vue {
         const name = this.$store.state.username;
 
 
-        if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
-            //console.log(this.array_check);
-
-            const post_image = () => {
+        const post_image = (num_edit: string) => {
 
                 const formData = new FormData();
 
@@ -371,10 +367,22 @@ export default class edit extends Vue {
                 this.$axios.post('album_post_image', formData)
                 .then((response) => {
                     console.log(response);
-                    this.$router.push('/myaccount/mypage/album_select/choose_album');
+
+                    if(num_edit === 'new_post') {
+                        this.$router.push('/myaccount/mypage/album_select/choose_album');
+                    } else {
+                        this.$router.push('/myaccount/everyone_page/' + name);
+                    }
+                    
                 })
 
-            }
+        }
+
+
+        if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
+            //console.log(this.array_check);
+
+            
 
             this.$axios.post('edit', {
                 username: name,
@@ -394,7 +402,7 @@ export default class edit extends Vue {
                 if(res.success === "store_true") {
                     console.log("success");
 
-                    post_image();
+                    post_image(editNum);
 
                     
 
@@ -406,6 +414,19 @@ export default class edit extends Vue {
             }*/
             })
         } else {
+
+            /*const formData = new FormData();
+
+            formData.append('file', this.storage_image[0]);
+            formData.append('default_or_selected', this.storage_image[1]);
+            formData.append('album_or_post', 'post');
+
+            console.log(formData);
+
+            this.$axios.post('post_delete_image', formData)
+            .then((response) => {
+                console.log(response);
+            });*/
 
 
             const set_data = {
@@ -433,7 +454,8 @@ export default class edit extends Vue {
 
                 if(res.success === "update_true") {
 
-                    this.$router.push('/myaccount/everyone_page/' + name);
+                    post_image(editNum);
+                    
 
                 }
             })
