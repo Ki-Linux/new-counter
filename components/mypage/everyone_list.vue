@@ -4,7 +4,7 @@
         <button @click="nextContents('front')" v-if="contents_num !== 0">◀</button>
         <div id="show_list" v-for="(content_array, index) in contents_array" :key="index">
             <ul @click="detailDataShow(index)">
-                <li v-if="content_array.picture === 'notImg'"></li>
+                <li v-if="content_array.picture === url+'notImg'"></li>
                 <li v-else><img :src="content_array.picture" alt="写真"></li>
                 <li>{{ content_array.my_comment }}</li>
                 <li>{{ content_array.username }}</li>
@@ -23,6 +23,21 @@ export default class everyone_list extends Vue {
 
     contents_num: number = 0;
     delete_back_button: boolean[] = [false];
+    url: string = "";
+
+    created() {
+
+        this.getContents(0);
+
+        console.log('in')
+
+    }
+
+    mounted() {
+        const base_url = process.env.SERVER_URL;
+        this.url = base_url + 'storage/post/';
+        console.log(this.url)
+    }
 
     public getContents = (num: number) => {
 
@@ -48,7 +63,7 @@ export default class everyone_list extends Vue {
                 //日付だけ表示
                 const new_date = all_data[i].updated_at.split('T').splice(0, 1);
 
-                const image = base_url + 'storage/post/' + all_data[i].picture
+                const image = base_url + 'storage/post/' + all_data[i].picture;
 
                 let push_item = { id: all_data[i].id, picture: image, my_comment: all_data[i].my_comment,  username: all_data[i].username, updated_at: new_date[0], can_see: 0};
 
@@ -66,13 +81,7 @@ export default class everyone_list extends Vue {
 
     }
 
-    created() {
-
-        this.getContents(0);
-
-        console.log('in')
-
-    }
+    
 
     nextContents(which_click: string) {
 
