@@ -7,8 +7,8 @@
             </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
-            <div class="see_and_edit" v-if="username === details_list.username && show_edit">
-                <p v-if="details_list.can_see === 1">
+            <div class="see_and_edit" v-if="username === details_list.username && show_edit && detail_contents === 'list'">
+                <p v-if="show_view"><!--<p v-if="details_list.can_see === 1">-->
                    閲覧数:{{ view_point }}
                 </p>
                 <p v-else>閲覧数:/</p>
@@ -71,7 +71,7 @@
             <my_list :list_username="$route.params.contents" @detail_data_show="listDetail"/>
         </div>
     </div>
-</template>
+</template> 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import everyoneList from '../../../components/mypage/everyone_list.vue';
@@ -102,6 +102,7 @@ export default class everyone extends Vue {
     icon_point: { my_icon: string, good_point: number } = { my_icon: '', good_point: 0 };
     view_point: number = 0;
     show_heart: boolean = true;//ハートを表示するかしないか
+    show_view: boolean = true;
     heart: boolean = false;//ハートを色つける
     comment_lists: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string, date: string }[] = [];
     comment_add: string = "";
@@ -266,6 +267,7 @@ export default class everyone extends Vue {
         this.comment_lists = [];
         this.show_heart = true;
         this.heart = false;
+        this.show_view = true;
         this.show_comment = true;//そもそもコメントを表示するかしないか
         this.show_comment_list = false;//コメントリストを表示する
         this.detail_profile.username = this.username;//name自分
@@ -377,6 +379,12 @@ export default class everyone extends Vue {
 
             if(which_comment === 0) {
                 this.show_comment = false;
+            }
+
+            const can_see = icon_good_comment.can_see;
+
+            if(can_see === 0) {
+                this.show_view = false;
             }
         })
     }

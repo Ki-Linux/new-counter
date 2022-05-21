@@ -1,6 +1,6 @@
 <template>
     <div id="login">
-            <p class="canSend" v-if="this.$route.params.id === '1'">
+            <p class="canSend" v-if="$route.params.id === '1'">
                 ご確認メールを送信しました。
             </p>
         <div class="title">
@@ -75,7 +75,7 @@ export default class login extends Vue {
 
                     let param_url: string = '/myaccount/mypage/' + username;
 
-                    if(this.$route.params.id === "toNextEdit") {
+                    if(this.$route.params.id === "1" && this.$store.state.back_data.length > 0) {
 
                         //param_url = '/myaccount/mypage/edit/new_post';
                         param_url = '/myaccount/mypage/edit/new_post';

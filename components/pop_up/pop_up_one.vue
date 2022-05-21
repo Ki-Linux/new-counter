@@ -27,7 +27,7 @@ export default class popUp extends Vue {
  width: 80%;
  position: absolute;
 background-color: rgb(255, 195, 223);
-margin: 250px 0;
+margin: 350px 0;
 top: 30%;
 left: 50%;
 transform: translate(-50%, -50%);
