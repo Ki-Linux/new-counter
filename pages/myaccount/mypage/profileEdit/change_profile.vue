@@ -34,7 +34,6 @@
 import { Vue, Component } from 'vue-property-decorator';
 import profileData from '../../../../components/mypage/profile.vue';
 import backButton from '../../../../components/back_button/back.vue';
-import imageCompression from 'browser-image-compression';
 import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
