@@ -22,6 +22,7 @@
                     <div class="target_present">
                         <p><span>{{ album_data.present }}</span>から<span>{{ album_data.target }}</span>達成!!</p>
                     </div>
+                    <p>{{ album_data.created_at }}</p>
                 </div>
             </div>
         </div>
@@ -46,6 +47,7 @@ export default class my_album extends Vue {
         selector: string;
         target: string; 
         present: string; 
+        created_at: string;
     }[] = [];
     username: string = "";
 
@@ -87,7 +89,12 @@ export default class my_album extends Vue {
                 }
 
                // album_content[i].image = album_content[i].image);
+                
                 album_content[i].image = base_url + 'storage/album/' + album_content[i].image;
+
+                //日付だけ表示
+                const create_array = album_content[i].created_at.split('T').splice(0, 1);
+                album_content[i].created_at = create_array[0];
 
                 this.albums_data.splice(i, 0, album_content[i]);
 
@@ -192,7 +199,7 @@ export default class my_album extends Vue {
                 transform: translateX(-50%);
                 img {
                     width: 200px;//60%;//200px
-                    
+                    max-height: 160px;
                     background-color: rgba(0, 0, 0, 0.1);
                 }
             }

@@ -406,19 +406,19 @@ export default class edit extends Vue {
 
                 const res = response.data;
 
-                if(res.success === "store_true") {
+                if(res.success === "store_true" && this.url !== "notImg") {
                     console.log("success");
 
                     post_image(editNum);
-
+                    return;
                     
 
                     //this.$router.push('/myaccount/mypage/' + name);
-                }/* else if(res.success === "update_true") {
+                }/* else if(res.success === "update_true") {*/
 
-                this.$router.push('/myaccount/everyone_page/' + name);
+                this.$router.push('/myaccount/mypage/album_select/choose_album');
 
-            }*/
+            //}
             })
         } else {
 
@@ -459,7 +459,7 @@ export default class edit extends Vue {
 
                 const res = response.data;
 
-                if(res.success === "update_true" && this.add_edit) {
+                if(res.success === "update_true" && this.add_edit && this.url !== "notImg") {
 
                     post_image(editNum);
                     return;

@@ -5,7 +5,7 @@
         </div>
         <div class="list">
             <ul @click="detailShow(index)" v-for="(picture_data, index) in picturesData" :key="index">
-                <li v-if="picture_data.picture === 'notImg'"></li>
+                <li v-if="picture_data.picture === post_url+'notImg'"></li>
                 <li v-else><img :src="picture_data.picture" alt="写真"></li>
                 <li>{{ picture_data.my_comment }}</li>
                 <li>{{ picture_data.created_at }}</li>
@@ -19,11 +19,15 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class myList extends Vue {
     picturesData: { id: number; my_comment: string; picture: string|number|ArrayBuffer; can_see: number; created_at: string }[] = [];
+    post_url: string = "";
 
     @Prop()
     public list_username!: string;
 
     mounted() {//データを表示する
+
+        const base_url = process.env.SERVER_URL;
+        this.post_url = base_url + 'storage/post/'; 
 
         this.$axios.get("edit_show", {
             params: {

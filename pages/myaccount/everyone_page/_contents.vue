@@ -28,7 +28,7 @@
             <div class="list_detail detail" v-else>
                 <p @click="deleteOrTell('post_report')" v-if="$route.params.contents === 'everyone'">…</p>
                 <ul class="post_contents">
-                    <li v-if="details_list.picture === 'notImg'">写真はありません</li>
+                    <li v-if="details_list.picture === post_url+'notImg'">写真はありません</li>
                     <li v-else><img :src="details_list.picture" alt="写真"></li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
@@ -92,6 +92,7 @@ import { confirm } from '@/components/confirmation/confirm_person';
 })
 export default class everyone extends Vue {
     url: string = "";
+    post_url: string = "";
     detail_profile: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string }= { username: '', user_icon: '', user_comment: '' };
     details_list: { id: number, picture: string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string, can_see: number } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '', can_see: 0 };
     my_icon: string|ArrayBuffer|null = "";//自分のアイコン画像
@@ -128,6 +129,7 @@ export default class everyone extends Vue {
         //this.username = this.$store.state.username;
         const base_url = process.env.SERVER_URL;
         this.url = base_url + 'storage/account/';
+        this.post_url = base_url + 'storage/post/';
 
         if(this.$route.params.contents !== "everyone") {
             this.$axios.get('account', {
