@@ -29,13 +29,7 @@
                     <textarea name="comment" id="" cols="30" rows="10" maxlength="200" placeholder="コメントを入力" v-model="my_comment"></textarea>
                 </div>         
             </div>
-            <div>
-                    
-                </div>
             <div class="right_position">
-                <div class="desc">
-                    <p>※選択しないところはデフォルトで【はい】として扱われます。</p>
-                </div>
                 <div class="content_data"  v-for="(content_data, index) in contentData" :key="content_data">
                     <p>{{ content_data }}</p>
                     <label>
@@ -560,10 +554,6 @@ html {
 
         }
 
-        .desc {
-            padding-bottom: 40px;
-            font-size: 20px;
-        }
 
         .right_position {
             text-align: center;

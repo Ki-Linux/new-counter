@@ -22,7 +22,9 @@
                     <li>{{ detail_profile.username }}</li>
                     <li><img :src="detail_profile.user_icon" alt="img"></li>
                     <li v-show="detail_profile.user_comment !== 'コメントはありません。'">{{ detail_profile.user_comment }}</li>
-                    <li v-if="username !== details_list.username" @click="toOneAccountListPage(detail_profile.username)"><button>投稿</button></li>
+                    <li v-if="username !== details_list.username" @click="toOneAccountListPage(detail_profile.username)">
+                        <button>投稿</button>
+                    </li>
                 </ul>
             </div>
             <div class="list_detail detail" v-else>
@@ -761,8 +763,11 @@ export default class everyone extends Vue {
                             padding: 20px;
 
                             img {
-                                max-width: 30%;
-                                max-height: 30%;
+                                //max-width: 30%;
+                               /// max-height: 30%;
+                               width: 130px;
+                               height: 130px;
+                                border-radius: 50%;
                             }
                         }
 
@@ -771,9 +776,14 @@ export default class everyone extends Vue {
                             background-color: azure;
                         }
 
-                        &:nth-of-type(4) button {
+                        &:nth-of-type(4)  {
+                            display: inline-block;
                             margin-top: 70px;
-                            background-color: aliceblue;
+
+                            button {
+                                background-color: aliceblue;
+                            }
+                            
                         }
                     }
                     

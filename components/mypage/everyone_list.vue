@@ -1,6 +1,6 @@
 <template>
     <div id="everyone_list">
-        <p>閲覧リスト</p>
+        <p>みんなの閲覧リスト</p>
         <button @click="nextContents('front')" v-if="contents_num !== 0">◀</button>
         <div id="show_list" v-for="(content_array, index) in contents_array" :key="index">
             <ul @click="detailDataShow(index)">
