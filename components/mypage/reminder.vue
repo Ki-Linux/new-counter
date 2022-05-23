@@ -174,6 +174,8 @@ export default class reminder extends Vue {
 
     doClosed() {
         this.show_detail = false;
+
+        //this.title_list.watched === 1
     }
 
 }

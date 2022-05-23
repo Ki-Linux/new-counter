@@ -22,7 +22,7 @@
                     <li>{{ detail_profile.username }}</li>
                     <li><img :src="detail_profile.user_icon" alt="img"></li>
                     <li v-show="detail_profile.user_comment !== 'コメントはありません。'">{{ detail_profile.user_comment }}</li>
-                    <li v-if="username !== details_list.username" @click="toOneAccountListPage(detail_profile.username)">
+                    <li @click="toOneAccountListPage(detail_profile.username)">
                         <button>投稿</button>
                     </li>
                 </ul>
@@ -120,6 +120,8 @@ export default class everyone extends Vue {
         
         console.log('go mount')
         this.username = this.$store.state.username;
+        //this.details_list.username = this.username;
+
         confirm(this.username);
 
         
