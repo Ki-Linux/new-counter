@@ -3,7 +3,7 @@
         <div class="delete_tell_pop" v-if="show_select_del_or_tell">
                 <p @click="closeSelect">✕閉じる</p>
                 <button @click="deleteReport('delete')" v-if="deleteMyComment">削除する</button>
-                <button @click="deleteReport('report')">報告する</button>
+                <button @click="deleteReport('report')" v-else>報告する</button>
             </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
@@ -239,6 +239,7 @@ export default class everyone extends Vue {
 
                 if(res_data === "can_delete") {//UI上で削除
                     this.comment_lists.splice(num, 1);
+                    this.deleteMyComment = false;
                 }
 
                 
@@ -589,7 +590,7 @@ export default class everyone extends Vue {
 
     deleteOrTell(num_str: string|number) {
 
-        
+        this.get_click_num_delete_report = Number(num_str);
 
         if(this.show_select_del_or_tell === false) {
 
@@ -603,7 +604,7 @@ export default class everyone extends Vue {
             if(this.comment_lists[Number(num_str)].username === this.username) {//自分の番号だけ
                 
                 this.deleteMyComment = true;//ボタンを表示する
-                this.get_click_num_delete_report = Number(num_str);
+                //this.get_click_num_delete_report = Number(num_str);
 
             }
 
@@ -820,8 +821,8 @@ export default class everyone extends Vue {
                             img {
                                 //background-color: aqua;
                                 //width: 40px;
-                                max-width: 150px;
-                                max-height: 150px;//27vh;
+                                max-width: 100px;
+                                max-height: 100px;//27vh;
                                //width: 70px;
                                 //height: 70px;
 
