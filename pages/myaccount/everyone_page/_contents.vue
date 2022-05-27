@@ -1,27 +1,41 @@
 <template>
     <div id="everyone">
         <div class="delete_tell_pop" v-if="show_select_del_or_tell">
-                <p @click="closeSelect">✕閉じる</p>
-                <button @click="deleteReport('delete')" v-if="deleteMyComment">削除する</button>
-                <button @click="deleteReport('report')" v-else>報告する</button>
-            </div>
+            <p @click="closeSelect">✕閉じる</p>
+            <button @click="deleteReport('delete')" v-if="deleteMyComment">
+                削除する
+            </button>
+            <button @click="deleteReport('report')" v-else>
+                報告する
+            </button>
+        </div>
         <div class="set_pop" v-show="show_detail">
             <p @click="closePop">✕</p>
             <div class="see_and_edit" v-if="username === details_list.username && show_edit && detail_contents === 'list'">
-                <p v-if="show_view"><!--<p v-if="details_list.can_see === 1">-->
+                <p v-if="show_view">
                    閲覧数:{{ view_point }}
                 </p>
                 <p v-else>閲覧数:/</p>
                 <div class="edit_delate">
-                    <button @click="EditDelete('edit')">編集する</button>
-                    <button @click="EditDelete('delete')">削除する</button>
+                    <button @click="EditDelete('edit')">
+                        編集する
+                    </button>
+                    <button @click="EditDelete('delete')">
+                        削除する
+                    </button>
                 </div>
             </div>
             <div class="profile_detail detail" v-if="detail_contents === 'profile'">
                 <ul>
-                    <li>{{ detail_profile.username }}</li>
-                    <li><img :src="detail_profile.user_icon" alt="img"></li>
-                    <li v-show="detail_profile.user_comment !== 'コメントはありません。'">{{ detail_profile.user_comment }}</li>
+                    <li>
+                        {{ detail_profile.username }}
+                    </li>
+                    <li>
+                        <img :src="detail_profile.user_icon" alt="img">
+                    </li>
+                    <li v-show="detail_profile.user_comment !== 'コメントはありません。'">
+                        {{ detail_profile.user_comment }}
+                    </li>
                     <li @click="toOneAccountListPage(detail_profile.username)">
                         <button>投稿</button>
                     </li>
@@ -30,8 +44,12 @@
             <div class="list_detail detail" v-else>
                 <p @click="deleteOrTell('post_report')" v-if="$route.params.contents === 'everyone'">…</p>
                 <ul class="post_contents">
-                    <li v-if="details_list.picture === post_url+'notImg'">写真はありません</li>
-                    <li v-else><img :src="details_list.picture" alt="写真"></li>
+                    <li v-if="details_list.picture === post_url+'notImg'">
+                        写真はありません
+                    </li>
+                    <li v-else>
+                        <img :src="details_list.picture" alt="写真">
+                    </li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
                     <li @click="detailData('other')" v-if="$route.params.contents === 'everyone' && icon_point.my_icon !== url+'not'">
@@ -39,8 +57,15 @@
                     </li>
                 </ul>
                 <ul class="good_and_comment">
-                    <li v-show="show_heart" @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }"><span>{{ icon_point.good_point }}</span></li>
-                    <li v-show="show_comment" @click="toCommentList"><span>↓</span>コメント</li>
+                    <li v-show="show_heart" @click="changeHeart" :class="{ change_heart_on:heart, change_heart_off:!heart }">
+                        <span>
+                            {{ icon_point.good_point }}
+                        </span>
+                    </li>
+                    <li v-show="show_comment" @click="toCommentList">
+                        <span>↓</span>
+                        コメント
+                    </li>
                 </ul>
                 <div class="comment" v-if="show_comment_list">
                     <ul class="comment_contents" v-for="(comment_list, index) in comment_lists" :key="index">
@@ -52,7 +77,6 @@
                         <li>{{ comment_list.user_comment }}</li>   
                     </ul>
                     <form @submit.prevent="addComment">
-                        <!--<input type="text" v-model="comment_add">-->
                         <textarea name="comment" id="" cols="30" rows="2" v-model="comment_add"></textarea>
                         <input type="submit">
                     </form>
@@ -76,10 +100,10 @@
 </template> 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import everyoneList from '../../../components/mypage/everyone_list.vue';
-import myList from '../../../components/mypage/my_list.vue';
-import profileData from '../../../components/mypage/profile.vue';
-import backAccount from '../../../components/back_button/back.vue';
+import everyoneList from '@/components/mypage/everyone_list.vue';
+import myList from '@/components/mypage/my_list.vue';
+import profileData from '@/components/mypage/profile.vue';
+import backAccount from '@/components/back_button/back.vue';
 import { AxiosRequestConfig } from 'axios';
 import { confirm } from '@/components/confirmation/confirm_person';
 
@@ -116,27 +140,23 @@ export default class everyone extends Vue {
     post_report: boolean = false;//trueのとき投稿を通報する
     show_edit: boolean = true;
     
-    beforeMount() {//data:image/
+    beforeMount() {
         
-        console.log('go mount')
+        console.log('go mount');
         this.username = this.$store.state.username;
-        //this.details_list.username = this.username;
 
         confirm(this.username);
-
-        
-
-        //fetchUid(document.cookie, username);
         
     }
 
     mounted() {
-        //this.username = this.$store.state.username;
+
         const base_url = process.env.SERVER_URL;
         this.url = base_url + 'storage/account/';
         this.post_url = base_url + 'storage/post/';
 
         if(this.$route.params.contents !== "everyone") {
+
             this.$axios.get('account', {
                 params: {
                     accountName: this.username
@@ -149,6 +169,10 @@ export default class everyone extends Vue {
                 this.my_icon = image_data;
 
             })
+            .catch((err) => {
+                console.log(err);
+            });
+
         }
     }
 
@@ -162,7 +186,7 @@ export default class everyone extends Vue {
 
             const edit_id = this.details_list.id;
 
-            let data_set
+            let data_set;
 
             if(delete_or_report === "delete") {
 
@@ -173,7 +197,6 @@ export default class everyone extends Vue {
 
             }
 
-                //console.log(this.array_check);
             let method_url: AxiosRequestConfig = { //delete
                 method: 'delete',
                 url: 'comment_delete/' + edit_id,
@@ -195,7 +218,7 @@ export default class everyone extends Vue {
 
                 } else {//コメントの通報
 
-                    post_or_comment = 'コメント'
+                    post_or_comment = 'コメント';
                     comment = list.user_comment;
                     username = list.username;
 
@@ -214,45 +237,35 @@ export default class everyone extends Vue {
                     url: 'comment_report',
                     params: reported_data
                 }
-
                 
             }
 
-       /*if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
-
-            method_url = {
-                method: 'post',
-                url: 'edit',
-                params: set_data
-            }
-            
-
-        } */
-
             this.$axios(method_url)
             .then((response) => {
+
                 console.log(response);
 
                 const res_data = response.data.can_delete_or_report;
 
-                console.log(res_data)
+                console.log(res_data);
 
                 if(res_data === "can_delete") {//UI上で削除
+
                     this.comment_lists.splice(num, 1);
                     this.deleteMyComment = false;
-                }
 
-                
+                }
 
         
             })
+            .catch((err) => {
+                console.log(err);
+            });
 
         }
-
      
-            delete_report(which_contents);
-            this.show_select_del_or_tell = false;
-        //}
+        delete_report(which_contents);
+        this.show_select_del_or_tell = false;
 
     }
 
@@ -264,6 +277,7 @@ export default class everyone extends Vue {
     }
 
     closePop() {
+
         this.show_detail = false;
         this.show_edit = true;
 
@@ -278,14 +292,11 @@ export default class everyone extends Vue {
         this.detail_profile.username = this.username;//name自分
         this.detail_profile.user_icon = this.my_icon;//icon自分
 
-        //location.reload();
-
     }
 
     contentsImg(value: string) {
-        console.log(value)
-        console.log('es')
 
+        console.log(value);
         
         this.detail_profile.username = this.username;
         this.detail_profile.user_icon = value;//表示される自分のアイコン
@@ -293,11 +304,8 @@ export default class everyone extends Vue {
         
     }
 
-    
-
-
     detailData(who_icon: string, icon_num: number) {
-        console.log('ui')
+
         this.detail_contents = "profile";
 
         this.show_detail = true;
@@ -305,19 +313,23 @@ export default class everyone extends Vue {
         let name = this.username;
 
         if(who_icon === "other") {
+
             this.show_edit = true;
             name = this.details_list.username;
             this.detail_profile.username = name;
             this.detail_profile.user_icon = this.icon_point.my_icon;
             
         } else if(who_icon === "other_with_comment") {
+
             this.show_edit = true;
             name = this.comment_lists[icon_num].username;
             this.detail_profile.username = name;
             this.detail_profile.user_icon = this.comment_lists[icon_num].user_icon;
 
         }else if(who_icon === "me") {
+
             this.show_edit = false;
+
         }
 
         this.$axios.get('get_comment', {
@@ -334,10 +346,13 @@ export default class everyone extends Vue {
                 my_comment = "コメントはありません。";
             }
 
-            console.log(my_comment)
+            console.log(my_comment);
 
             this.detail_profile.user_comment = my_comment;
 
+        })
+        .catch((err) => {
+            console.log(err);
         })
 
     }
@@ -363,13 +378,8 @@ export default class everyone extends Vue {
 
             const icon_good_comment = response.data;
 
-            /*const base_url = process.env.SERVER_URL;
-            const url = base_url + 'storage/account/'; *////
-
             this.icon_point.my_icon = this.url + icon_good_comment.icon_data[0].icon;
-            console.log(this.icon_point.my_icon)
-
-
+            console.log(this.icon_point.my_icon);
 
             this.view_point = icon_good_comment.view_data;
 
@@ -383,13 +393,17 @@ export default class everyone extends Vue {
             const which_comment = icon_good_comment.which_comment[0].can_comment;
 
             if(which_comment === 0) {
+
                 this.show_comment = false;
+
             }
 
             const can_see = icon_good_comment.can_see;
 
             if(can_see === 0) {
+
                 this.show_view = false;
+
             }
         })
     }
@@ -404,129 +418,104 @@ export default class everyone extends Vue {
             .then ((response) => {
                 console.log(response);
             })
+            .catch((err) => {
+                console.log(err);
+            })
 
         }
 
 
         if(this.username !== this.details_list.username && this.heart === false) {//nameが同じ時はいいねできない
+            
             this.heart = true;
-            plus_one(this.details_list.id)
+            plus_one(this.details_list.id);
+
         }
-        
-
-        
-
-
-        
 
     }
 
     toCommentList() {
-        //this.comment_lists.push({ user_icon:'ui', user_comment: 'io' });
-
-        /*if(this.show_comment_list === true) {
-            return;
-        } */
         
         const listShow = (id: number) => {
 
             this.$axios.get('get_comment_data', {
-            params: {
-                id_data: id,//どのデータか識別するため
-            }
-        })
-        .then((response) => {
-            console.log(response.data);
+                params: {
+                    id_data: id,//どのデータか識別するため
+                }
+            })
+            .then((response) => {
+                console.log(response.data);
 
-            const res = response.data;
+                const res = response.data;
 
-            if(res.name_comment.length === 0) {
-                return;
-            }
+                if(res.name_comment.length === 0) {
 
-            console.log(res);
+                    return;
+                }
 
-            /*for(let j=0; j < res.name_icon.length; j++) {
+                console.log(res);
 
-                res.name_icon[j].username = res.name_icon[j].icon;
+                let comment_name_icon = [{other_comment: '', username: '', icon: '', updated_at: '' }]
+
+                for(let i=0; i < res.name_icon.length; i++) {
             
-            }*/
-
-            let comment_name_icon = [{other_comment: '', username: '', icon: '', updated_at: '' }]
-
-            for(let i=0; i < res.name_icon.length; i++) {
-            
-                for(let j=0; j < res.name_comment.length; j++) {  
+                    for(let j=0; j < res.name_comment.length; j++) {  
                     
-                    comment_name_icon.splice(j, 1, res.name_comment[j]);
+                        comment_name_icon.splice(j, 1, res.name_comment[j]);
                     
-                    if(comment_name_icon[j].username === res.name_icon[i].username) {
-                        comment_name_icon[j].icon = res.name_icon[i].icon;
+                        if(comment_name_icon[j].username === res.name_icon[i].username) {
+                            
+                            comment_name_icon[j].icon = res.name_icon[i].icon;
                         
+                        }
+
+                    }
+                
+                }
+
+                let written_date
+                let written_time
+                let hour_split
+                let hour
+                let minute
+
+
+                for(let i=0; i < comment_name_icon.length; i++) {
+
+                    let T_split = comment_name_icon[i].updated_at.split(/T/);
+                
+                    //日付
+                    written_date = T_split.splice(0, 1);
+
+                    //時間
+                    written_time = comment_name_icon[i].updated_at.split(/T/).splice(1, 1);
+
+                    hour_split = written_time[0].split(/:/);
+
+                    hour = hour_split.splice(0, 1);//時
+                    minute = written_time[0].split(/:/).splice(1, 1);//分
+
+                    let icon_comment = this.url + comment_name_icon[i].icon;
+
+                    if(comment_name_icon[i].icon === "not") {
+
+                        icon_comment = require("@/static/profile/default_img.png");
+
                     }
 
-                
-                    
-                    /*if(res.name_comment[i].username === res.name_icon[j].username) {
-                        img_get = res.name_icon[j].icon;
-                    }*/
-
-                    //res.name_icon[j].username = res.name_icon[j].icon;
-
-                    //console.log(res.name_icon[j].username)
-                }
-                                                    /*this.detail_profile.user_icon*/
-               // this.comment_lists.push({ user_icon: img_get, user_comment: res.name_comment[i].other_comment });
-
-                
-            }
-
-            let written_date
-            let written_time
-            let hour_split
-            let hour
-            let minute
-
-
-            for(let i=0; i < comment_name_icon.length; i++) {
-
-                let T_split = comment_name_icon[i].updated_at.split(/T/)
-                
-                //日付
-                written_date = T_split.splice(0, 1);
-
-                //時間
-                written_time = comment_name_icon[i].updated_at.split(/T/).splice(1, 1);
-
-                hour_split = written_time[0].split(/:/)
-
-                hour = hour_split.splice(0, 1);//時
-                minute = written_time[0].split(/:/).splice(1, 1);//分
-
-                /*const base_url = process.env.SERVER_URL;
-                const url = base_url + 'storage/account/';*/
-
-                let icon_comment = this.url + comment_name_icon[i].icon;
-
-                if(comment_name_icon[i].icon === "not") {
-                    icon_comment = require("@/static/profile/default_img.png");
+                    this.comment_lists.splice(i, 1, { username: comment_name_icon[i].username, user_icon: icon_comment, user_comment: comment_name_icon[i].other_comment, date: written_date[0] + " " + hour + ":" + minute});
                 }
 
-                this.comment_lists.splice(i, 1, { username: comment_name_icon[i].username, user_icon: icon_comment, user_comment: comment_name_icon[i].other_comment, date: written_date[0] + " " + hour + ":" + minute});
-            }
-
             
-            console.log(this.comment_lists);
-            
+                console.log(this.comment_lists);
 
-           // console.log(this.comment_lists);
-        })
+            })
+            .catch((err) => {
+                console.log(err);
+            });
 
         }
         
-
-        
-
         if(this.show_comment_list === false) {
 
             this.show_comment_list = true;
@@ -536,6 +525,7 @@ export default class everyone extends Vue {
     }
 
     addComment() {
+
         const now = new Date();
 
         const Year = now.getFullYear();
@@ -549,7 +539,9 @@ export default class everyone extends Vue {
         for(let i=0; i < 4; i++) {
 
             if(array_day[i].length === 1) {
+
                 array_day[i] = "0" + array_day[i];
+
             }
             
         }
@@ -558,18 +550,21 @@ export default class everyone extends Vue {
 
         
         if(this.$route.params.contents !== "everyone" && this.my_icon !== 'not') {
+
             this.detail_profile.user_icon = process.env.SERVER_URL + 'storage/account/' + this.my_icon;
+
         }
 
-        console.log(this.detail_profile.user_icon)
+        console.log(this.detail_profile.user_icon);
+
         if(!this.detail_profile.user_icon) {
+
             this.detail_profile.user_icon = require("@/static/profile/default_img.png");
+
         }
 
         //UIに表示
         this.comment_lists.push({ username: this.username, user_icon: this.detail_profile.user_icon, user_comment: this.comment_add, date: time });
-
-        
 
         this.$axios.post('add_comment_data', {
 
@@ -580,12 +575,16 @@ export default class everyone extends Vue {
 
         })
         .then((response) => {
+
             console.log(response.data);
   
-            
+        })
+        .catch((err) => {
+            console.log(err);
         })
 
         this.comment_add = "";
+
     }
 
     deleteOrTell(num_str: string|number) {
@@ -604,7 +603,6 @@ export default class everyone extends Vue {
             if(this.comment_lists[Number(num_str)].username === this.username) {//自分の番号だけ
                 
                 this.deleteMyComment = true;//ボタンを表示する
-                //this.get_click_num_delete_report = Number(num_str);
 
             }
 
@@ -633,8 +631,6 @@ export default class everyone extends Vue {
                 this.$axios.delete("edit_del/" + delete_id)
                 .then((response) => {
 
-                    
-                    //this.pictureData = response.data
                     const can_delete = response.data.can_delete
                     console.log(can_delete);
 
@@ -646,14 +642,13 @@ export default class everyone extends Vue {
                     }
                     
                 })
-                .catch((response) => {
+                .catch((err) => {
                     
-                    console.log(response);
+                    console.log(err);
 
                 })
 
                 
-
             }
 
             if(window.confirm('削除しますか?')) {
@@ -668,6 +663,7 @@ export default class everyone extends Vue {
 </script>
 <style lang="scss">
     #everyone {
+
         padding: 20px 0;
 
         .delete_tell_pop {
@@ -694,7 +690,6 @@ export default class everyone extends Vue {
         }
 
         .set_pop {
-            //position: fixed;
  
             margin-left: 50%;
             transform: translateX(-50%);
@@ -730,14 +725,15 @@ export default class everyone extends Vue {
             }
 
             .detail {
+
                 text-align: center;
 
                 ul {
+
                     list-style: none;
+
                     li {
                         img {
-                            //width: 30%;
-                            //background-color: rgb(160, 255, 255);
                             margin-left: 50%;
                             transform: translateX(-50%);
                         }
@@ -748,6 +744,7 @@ export default class everyone extends Vue {
             }
 
             .profile_detail {
+
                 margin-right: 30px;
 
                 ul {
@@ -766,10 +763,8 @@ export default class everyone extends Vue {
                             padding: 20px;
 
                             img {
-                                //max-width: 30%;
-                               /// max-height: 30%;
-                               width: 130px;
-                               height: 130px;
+                                width: 130px;
+                                height: 130px;
                                 border-radius: 50%;
                             }
                         }
@@ -811,20 +806,19 @@ export default class everyone extends Vue {
                     background-color: bisque;
                     padding: 40px 0;
                     margin: 0 20px;
+
                     li {
+
                         padding: 0 20px;
 
                         &:first-of-type {
+
                             display: inline-block;
-                            //margin: 40px 0 0 0;
                             
                             img {
-                                //background-color: aqua;
-                                //width: 40px;
+
                                 max-width: 100px;
-                                max-height: 100px;//27vh;
-                               //width: 70px;
-                                //height: 70px;
+                                max-height: 100px;
 
                             }
                         }
@@ -864,27 +858,26 @@ export default class everyone extends Vue {
 
                 .good_and_comment {
                     .change_heart_on {
-                        background: url("../../../static/list_detail/heart_color.png") left center no-repeat;
+                        background: url("@/static/list_detail/heart_color.png") left center no-repeat;
                     }
 
                     .change_heart_off {
-                        background: url("../../../static/list_detail/heart_no_color.png") left center no-repeat;
+                        background: url("@/static/list_detail/heart_no_color.png") left center no-repeat;
                     }
 
                     li {
                         &:first-of-type {
                             
-                            //background: url("../../../static/list_detail/heart_no_color.png") left center no-repeat;
                             float: left;
                             margin-left: 100px;
+
                             span {
+
                                 font-size: 22px;
                                 margin-left: 35px;
                                 
                             }
                         }
-
-                        
 
                         &:last-of-type {
                             display: inline-block;
@@ -892,6 +885,7 @@ export default class everyone extends Vue {
                             margin: 80px 50px 0 0;
                             transform: translateX(-50%);
                         }
+
                     }
                 }
 
@@ -902,32 +896,15 @@ export default class everyone extends Vue {
                     padding: 30px 0;
 
                     .comment_contents {
-                        
-                        
-                            
-                            //@each $var in list {
-                                
-                            //}text-align: center;
-                            /*&:first-of-type {
-                                padding-top: 40px;
-                            }*/
-                            margin-right: 50%;
-                            
 
-                            li {
-                                
-                                //transform: translateX(-50%);
+                        margin-right: 50%;
+                            
+                        li {
                                
-                                &:first-of-type {
+                            &:first-of-type {
+
+                                img {
                                     
-                                    //background-color: aqua;
-                                    //padding-left: 80px;
-                                    
-                                    
-                                    
-                                    img {
-                                    
-                                    //margin-top: 80px;
                                     float: left;
                                     width: 70px;
                                     height: 70px;
@@ -935,50 +912,53 @@ export default class everyone extends Vue {
                                     z-index: 5;
                                     background-color: rgba(0, 0, 0, 0.4);
                                 
-                                    }
+                                }
                                 
-                                }
+                            }
 
-                                &:nth-of-type(4) {
-                                    font-size: 20px;
-                                    margin: 50px 0;
-                                    margin-left: 230px;
-                                    width: 320px;
-                                    background-color: azure;
-                                    padding: 20px 10px;
-                                    word-break: break-all;
-                                    
-                                }
+                            &:nth-of-type(2), &:nth-of-type(3) {
 
-                                &:nth-of-type(2), &:nth-of-type(3) {
-                                    position: fixed;
-                                    right: 110px;
-                                    font-size: 10px;
-                                }
-
-                                &:nth-of-type(2) {
-                                   
-                                    cursor: default;
-                                    font-size: 15px;
-                                    padding: 0 10px;
-                                    background-color: rgba(185, 185, 185, 0.7);
-   
-                                }
-
-                                &:nth-of-type(3) {
-                                
-                                    margin-top: 3px;
-                                    margin-right: 40px;
-                                }
+                                position: fixed;
+                                right: 110px;
+                                font-size: 10px;
 
                             }
 
-          
-                        
+                            &:nth-of-type(2) {
+                                   
+                                cursor: default;
+                                font-size: 15px;
+                                padding: 0 10px;
+                                background-color: rgba(185, 185, 185, 0.7);
+   
+                            }
+
+                            &:nth-of-type(3) {
+                                
+                                margin-top: 3px;
+                                margin-right: 40px;
+
+                            }
+
+                            &:nth-of-type(4) {
+
+                                font-size: 20px;
+                                margin: 50px 0;
+                                margin-left: 230px;
+                                width: 320px;
+                                background-color: azure;
+                                padding: 20px 10px;
+                                word-break: break-all;
+                                    
+                            }
+
+                        }
+
+   
                     }
 
-
                     form {
+
                         margin-bottom: 30px;
                         margin-left: 20px;
 
@@ -997,8 +977,6 @@ export default class everyone extends Vue {
                             font-size: 20px;
                         }
                             
-                        
-
                     }
 
                    
@@ -1009,26 +987,31 @@ export default class everyone extends Vue {
         }
 
         .everyone_list_my_name {
+
             display: flex;
             padding-top: 100px;
             margin-left: 50%;
             transform: translateX(-50%);
             
-
             .my_profile {
+
                 margin-top: 20px;
                 background-color: rgba(255, 213, 158, 0.4);
                 padding: 30px 40px 0 0;
 
                 .back_button {
+
                     margin-bottom: 20px;
+
                 }
 
                 button {
+
                     font-size: 20px;
                     margin: 20px 0 0 40px;
                     padding: 10px 22.5px;
                     background-color: rgb(255, 251, 241);
+                    
                 }
             }
         }

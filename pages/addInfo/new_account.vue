@@ -17,8 +17,11 @@
                  <p><input type="password" v-model="password" name="password" minlength="7" maxlength="14" required></p> 
             </div>
             <div class="label_height">
-                <label for="password_again">もう一度パスワード<br/><span>7~14文字</span></label>
-                 <p><input type="password" v-model="password_again" name="password_again" minlength="7" maxlength="14" required></p> 
+                <label for="password_again">
+                    もう一度パスワード<br/>
+                    <span>7~14文字</span>
+                </label>
+                <p><input type="password" v-model="password_again" name="password_again" minlength="7" maxlength="14" required></p> 
             </div>
             <div class="label_height">
                 <p>{{ warning }}</p>
@@ -29,7 +32,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import $cookies from 'cookie-universal-nuxt';
+//import $cookies from 'cookie-universal-nuxt';
 
 @Component
 export default class newAccount extends Vue {
@@ -38,74 +41,78 @@ export default class newAccount extends Vue {
     password: string = "";
     password_again: string = "";
     warning: string = "";
-    //loginId: number = 1;
 
     toNext():void {
 
         const can_save_data = () => {
 
-        this.$axios.post("saving", {
-            mail: this.mail,
-            username: this. username,
-            password: this.password,
-        })
-        .then((response) => {
+            this.$axios.post("saving", {
+                mail: this.mail,
+                username: this. username,
+                password: this.password,
+            })
+            .then((response) => {
 
-            console.log(response.data);
+                console.log(response.data);
             
-            const next_go: string = response.data.next_go;
+                const next_go: string = response.data.next_go;
 
-            if(next_go === "not_one") {
+                if(next_go === "not_one") {
 
-                this.warning = "このメールアドレスはすでにあります。";
+                    this.warning = "このメールアドレスはすでにあります。";
 
-            } else if(next_go === "not_two"){
+                } else if(next_go === "not_two"){
 
-                this.warning = "このユーザーネームはすでにあります。";
+                    this.warning = "このユーザーネームはすでにあります。";
 
-            } else {
+                } else {
 
-                this.$router.push('/addInfo/login/1');
+                    this.$router.push('/addInfo/login/1');
 
-            }
-        })
-       }
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
 
-       if(this.password === this.password_again) {
-           can_save_data();
-       } else {
-           this.warning = "パスワードが一致していません。";
-       }
+        }
 
+        if(this.password === this.password_again) {
+
+            can_save_data();
+
+        } else {
+
+            this.warning = "パスワードが一致していません。";
+
+        }
        
     }
-
-    /*logout(): void {
-        this.$cookies.remove('key');
-        //(this as any).$auth.loginWith();
-    }*/
 
 }
 </script>
 <style lang="scss">
 #new_account {
+
     margin-top: 30px;
     font-size: 30px;
+    text-align: center;
 
-    //.write_in p {
-        text-align: center;
+    .title {
 
-        .title {
-            margin-top: 30px;
-        }
-    //}
+        margin-top: 30px;
+
+    }
+
     .label_height {
 
         margin: 30px;
         
         p input {
+
             width: 300px;
             padding: 5px;
+
         }
 
         input[type="submit"] {
@@ -118,5 +125,4 @@ export default class newAccount extends Vue {
     }
 
 }
-
 </style>

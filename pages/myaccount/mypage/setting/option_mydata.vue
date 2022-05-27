@@ -31,10 +31,12 @@
                 <div v-for="(good_or_comment, index) in good_or_comments" :key="good_or_comment">
                     <p>{{ good_or_comment }}</p>
                     <label>
-                        <input type="radio" :name="index" value="はい" @click="checkReminder(index, 1)" :checked="required_num[index] === 1">はい
+                        <input type="radio" :name="index" value="はい" @click="checkReminder(index, 1)" :checked="required_num[index] === 1">
+                        はい
                     </label>
                     <label>
-                        <input type="radio" :name="index" value="いいえ" @click="checkReminder(index, 0)" :checked="required_num[index] === 0">いいえ
+                        <input type="radio" :name="index" value="いいえ" @click="checkReminder(index, 0)" :checked="required_num[index] === 0">
+                        いいえ
                     </label> 
                 </div>
             </div>
@@ -59,7 +61,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { AxiosRequestConfig } from 'axios';
-import backButton from '../../../../components/back_button/back.vue';
+import backButton from '@/components/back_button/back.vue';
 import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
@@ -69,6 +71,7 @@ import { confirm } from '@/components/confirmation/confirm_person';
     }
 })
 export default class optionMyData extends Vue {
+
     user_id_name: [number, string] = [0, ''];//ユーザーid, name
     good_or_comments: string[] = ['いいね', 'コメント'];//いいね、コメント
     option_contents: string[] = ['アカウント情報', 'パスワード変更', 'リマインダー設定', 'ログアウト'];
@@ -90,13 +93,10 @@ export default class optionMyData extends Vue {
         console.log('go mount')
         this.user_id_name[1] = this.$store.state.username;
         confirm(this.user_id_name[1]);
-
-        //fetchUid(document.cookie, username);
         
     }
 
-    mounted() {
-        
+    mounted() {    
 
         this.$axios.get('get_id', {
             params: {
@@ -106,6 +106,9 @@ export default class optionMyData extends Vue {
         .then((response) => {
             console.log(response.data)
             this.user_id_name[0] = response.data;
+        })
+        .catch((error) => {
+            console.log(error);
         })
 
     }
@@ -117,12 +120,11 @@ export default class optionMyData extends Vue {
             username: this.user_id_name[1],
             password: this.password_data,
         }
-        
 
         let method_url: AxiosRequestConfig = { //編集
             method: 'post',
             url: 'check_change_password',
-            params: set_data
+            params: set_data,
         }
 
         if(which==="change") {
@@ -142,7 +144,7 @@ export default class optionMyData extends Vue {
             method_url = { //編集
                 method: 'put',
                 url: 'check_change_password/' + this.user_id_name[0],
-                params: set_data
+                params: set_data,
             }
 
         }
@@ -151,19 +153,22 @@ export default class optionMyData extends Vue {
         this.$axios(method_url)
         .then((response) => {
 
-            //console.log(response.data);
             const res = response.data;
 
-            console.log(res)
+            console.log(res);
             
             if(which === "check") {
 
                 if(res === 1) {//パスワード照会成功
+
                     console.log("success");
                     this.contents_show = true;
+
                 } else {//パスワード照会失敗
+
                     console.log("not_success");
                     this.not_success = true;
+
                 }
 
             } else {
@@ -181,7 +186,9 @@ export default class optionMyData extends Vue {
                 }
             }
             
-            
+        })
+        .catch((err) => {
+            console.log(err);
         });
 
 
@@ -196,9 +203,11 @@ export default class optionMyData extends Vue {
 
 
         this.$axios.put('post_reminder_update/' + this.user_id_name[0], {
+
             username: this.user_id_name[1],
             yes_no: yes_or_no,
             good_or_comment: index_num,
+
         })
         .then((response) => {
             
@@ -219,12 +228,16 @@ export default class optionMyData extends Vue {
 
             }
         })
+        .catch((err) => {
+            console.log(err);
+        });
 
     }
 
     showContent(show_num: number) {
 
         if(this.now_num === show_num) {
+
             return;
         }
 
@@ -244,11 +257,12 @@ export default class optionMyData extends Vue {
         this.now_num = show_num;//現在クリックしている値を入れる
 
         this.show_info.splice(this.now_num, 1, true);//クリックしたコンテンツの表示
-        console.log(this.show_info)
+        console.log(this.show_info);
 
         const api_data = (num: number) => {
 
             const set_data = {
+
                 username: this.user_id_name[1],
                 clicked_num: num,
             }
@@ -275,22 +289,22 @@ export default class optionMyData extends Vue {
                 } else if(num === 2) {
 
                     for(let i=0; i < 2; i++) {
-                        this.required_num.splice(i, 1, address_or_post_reminder[i].can_report)
+                        this.required_num.splice(i, 1, address_or_post_reminder[i].can_report);
                     }
-                
-                   // this.required_num[0] = 1//address_or_post_reminder[0].can_report;
-                   // this.required_num[1] = 1//address_or_post_reminder[1].can_report;
-                    console.log(address_or_post_reminder[1].can_report)
+
+                    console.log(address_or_post_reminder[1].can_report);
 
                 }
             
             })
+            .catch((err) => {
+                console.log(err);
+            })
 
         }
 
-        
-
         if(this.now_num === 0 || this.now_num === 2) {
+
             api_data(this.now_num);//api実行
         }
 
@@ -298,7 +312,7 @@ export default class optionMyData extends Vue {
 
     logout() {
 
-        console.log(this.user_id_name[0])
+        console.log(this.user_id_name[0]);
 
         this.$axios.delete('logout/' + this.user_id_name[0])
         .then((response) => {
@@ -317,10 +331,11 @@ export default class optionMyData extends Vue {
                 this.$router.push('/');
             }
         })
-
+        .catch((err) => {
+            console.log(err);
+        })
 
     }
-
 
 }
 </script>
@@ -337,14 +352,15 @@ export default class optionMyData extends Vue {
     }
 
     .password_show, .new_password {
+
         font-size: 20px;
         padding-top: 40px;
         text-align: center;
 
         form {
+
             margin-top: 20px;
             
-
             input {
                 padding: 5px;
                 display: block;
@@ -356,8 +372,6 @@ export default class optionMyData extends Vue {
 
                 
             }
-            
-
             
         }
     }
@@ -372,6 +386,7 @@ export default class optionMyData extends Vue {
     .logout {
         text-align: center;
         padding-top: 40px;
+
         button {
             font-size: 20px;
             margin-top: 20px;
@@ -383,6 +398,7 @@ export default class optionMyData extends Vue {
     .contents {
         position: absolute;
         left: 300px;
+
         .account_info {
             text-align: center;
 
@@ -394,16 +410,17 @@ export default class optionMyData extends Vue {
 
     .contents_list {
 
-         padding-top: 40px;
-         background-color: rgba(255, 225, 205, 0.6);
-         width: 250px;
-         height: 100vh;
+        padding-top: 40px;
+        background-color: rgba(255, 225, 205, 0.6);
+        width: 250px;
+        height: 100vh;
 
         h1 {
             margin-left: 40px;
         }
 
         .all_option {
+
             ul {
                 
                 font-size: 20px;
@@ -415,7 +432,9 @@ export default class optionMyData extends Vue {
         }
 
         .back_button {
+
             margin-left: 40px;
+
             button {
                 font-size: 15px;
             }
@@ -427,6 +446,5 @@ export default class optionMyData extends Vue {
         list-style: none;
     }
 
-   
 }
 </style>

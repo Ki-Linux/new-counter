@@ -23,8 +23,6 @@ export default class popUpName extends Vue {
 
     noClick() {
         
-        //const name: string = this.$store.state.username;
-        //this.$router.push('/myaccount/mypage/' + name);
         this.$router.push('/myaccount/mypage/album_select/choose_album');
     }
 
@@ -32,15 +30,18 @@ export default class popUpName extends Vue {
 </script>
 <style lang="scss">
 .select_button {
+
     font-size: 30px;
     text-align: center;
     margin-top: 30px;
 
     button {
+
         padding: 10px 20px;
         background-color: rgb(199, 199, 255);
         
         &:first-of-type {
+
             margin-right: 15px;
             padding: 10px 30px;
             background-color:rgb(255, 154, 154);
@@ -48,5 +49,4 @@ export default class popUpName extends Vue {
         }
     }
 }
-
 </style>

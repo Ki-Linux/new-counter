@@ -7,14 +7,17 @@
             </div>
             <div class="img_selector">
                 <label v-for="(select_name, index) in select_names" :key="select_name">
-                    <input type="radio" name="index" :value="index" @click="imgSelect(index)" :checked="index === 0">{{ select_name }}
+                    <input type="radio" name="index" :value="index" @click="imgSelect(index)" :checked="index === 0">
+                    {{ select_name }}
                 </label>
             </div>
             <div class="post_data">
                 <div class="img_file">
                     <div v-if="show_select_button && $store.state.back_data[4] === 'img'">
                         <div class="shift_data" v-for="(shift_img, index) in shift_imgs" :key="index">
-                            <button type="button" @click="shiftImg(index)" :class="{second_button: index === 1}">{{ shift_img }}</button>
+                            <button type="button" @click="shiftImg(index)" :class="{second_button: index === 1}">
+                                {{ shift_img }}
+                            </button>
                         </div>
                     </div>
                     <div class="img_box">
@@ -33,34 +36,34 @@
                 <div class="content_data"  v-for="(content_data, index) in contentData" :key="content_data">
                     <p>{{ content_data }}</p>
                     <label>
-                        <input type="radio" :name="index" value="はい" @click="checkOn(index, 1)" :checked="array_check[index] === 1 && show_checked">はい
+                        <input type="radio" :name="index" value="はい" @click="checkOn(index, 1)" :checked="array_check[index] === 1 && show_checked">
+                        はい
                     </label>
                     <label>
-                        <input type="radio" :name="index" value="いいえ" @click="checkOn(index, 0)" :checked="array_check[index] === 0 && show_checked">いいえ
+                        <input type="radio" :name="index" value="いいえ" @click="checkOn(index, 0)" :checked="array_check[index] === 0 && show_checked">
+                        いいえ
                     </label> 
                 </div>
             </div>
-            
         </form>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { AxiosRequestConfig } from 'axios';
-import imageCompression from 'browser-image-compression';
 import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
     middleware: 'reject'
 })
 export default class edit extends Vue {
+
     url: string = "notImg";//データベースへ送るURL
     storage_image: any;//storageへ送るURL
-    show_url: string|ArrayBuffer|null = require("../../../../static/edit/hatena.png");//示すurl
+    show_url: string|ArrayBuffer|null = require("@/static/edit/hatena.png");//示すurl
     str_url: string = "";
     my_comment = "";
     array_check: number[] = [2, 2, 2, 2, 2];
-    //check: boolean = false;
     contentData: string[] = [
                             'みんなの閲覧リストに表示する',
                             '他の人がいいねできるようにする', 
@@ -83,11 +86,11 @@ export default class edit extends Vue {
 
     beforeMount() {
         
-        console.log('go mount')
-        const username = this.$store.state.username;
-        confirm(username);
+        console.log('go mount');
 
-        //fetchUid(document.cookie, username);
+        const username = this.$store.state.username;
+
+        confirm(username);
         
     }
 
@@ -110,15 +113,14 @@ export default class edit extends Vue {
                 
             if(back_data.length > 1 && img_data[4] !== "nothing") {//画像をたくさん選択しているとき　なし選択は除外
 
-            
                 this.show_select_button = true;//画像を切り替えるボタンを表示
-
-                
 
             }
 
             if(plan !== "free") {
+
                 img_data[3] = store.back_select_data[this.shift_num];//最初は0
+
             }
 
             this.url = img_data[3];
@@ -126,11 +128,11 @@ export default class edit extends Vue {
             this.show_url = process.env.SERVER_URL+'storage/counter/'+this.url;
 
             if(img_data[4] === "nothing" || img_data[4] === "word") {//画像以外のとき
+
                 this.url = "notImg";
                 this.show_url = "notImg";
                 
             }
-
 
         } else {//編集
 
@@ -153,12 +155,11 @@ export default class edit extends Vue {
                 this.array_check.splice(0, 5, res.can_list , res.can_good, res.can_comment, res.can_see, res.can_top);
                 this.show_checked = true;
             })
-
+            .catch((err) => {
+                console.log(err);
+            })
 
         }
-
-        
-
 
     }
 
@@ -189,24 +190,19 @@ export default class edit extends Vue {
             if(this.url === select_data[last_data]) {//最後のデータで右を押したときに一番最初のデータを表示する
                 this.shift_num = 0;
             }
-
             
         }
-
 
         this.url = select_data[this.shift_num];
         this.storage_image = [this.url, false];
         this.show_url = url + this.url;
-        //const img_data = this.$store.state.back_select_data[1];
 
-        //if(img_data.includes('http')) {//画像のときのみ代入
-
-        //this.url = img_data;
-        console.log(img_num)
+        console.log(img_num);
 
     }
 
     imgSelect(num: number) {
+
         console.log(num);
 
         const store = this.$store.state;
@@ -214,40 +210,34 @@ export default class edit extends Vue {
         const img_data = store.back_data;
         const back_data = store.back_select_data;
 
+        if(num === 0) {
 
-            if(num === 0) {
-                    this.select_img_chosen = true;
+            this.select_img_chosen = true;
 
-                if(img_data[4] !== "nothing" && back_data.length > 1 && !this.select_image) {
-                    this.show_select_button = true;//◀▶
-                }
+            if(img_data[4] !== "nothing" && back_data.length > 1 && !this.select_image) {
 
-            } else if(num === 1) {
-
-                this.select_img_chosen = false;
-                this.show_select_button = false;//◀▶
+                this.show_select_button = true;//◀▶
 
             }
-        
+
+        } else if(num === 1) {
+
+            this.select_img_chosen = false;
+            this.show_select_button = false;//◀▶
+
+        }
 
     }
     
-    async editPicture(e: Event) {
+    editPicture(e: Event) {
+
         this.show_select_button = false;
         this.select_image = true;
         
-
         const file = (<HTMLInputElement>e.target).files![0];
 
         this.storage_image = [file, true];
         this.url = file.name;
- 
-        /*const options = {
-            MAXSIZEMB: 1,
-            maxWidthOrHeight: 80
-        }
-        const compression_file = await imageCompression(file, options);*/
-
 
         const reader = new FileReader();
 
@@ -259,19 +249,8 @@ export default class edit extends Vue {
 
             this.add_edit = true;
 
-           // this.url = result;//画像データの扱いを実行
-
-            /*if(typeof(result) === "string") {
-                
-                this.url = result.replace('data:image/', '');
-                //console.log(option_url)
-            }*/
-                
-            
-
         })
 
-        
         reader.readAsDataURL(file);
 
     }
@@ -297,30 +276,22 @@ export default class edit extends Vue {
     }
 
     checkOn(index: number, select_num: number) {
-
-
        
-            for(let i: number=0; i < 5; i++) {//ボックス一覧の表示
+        for(let i: number=0; i < 5; i++) {//ボックス一覧の表示
 
-                switch(index) {//チェックしている番号の列
+            switch(index) {//チェックしている番号の列
 
                 case i:
-                    //if(this.array_check[i] === 1) {//チェックしていないとき
 
                     this.array_check[i] = select_num;
-                    
-
-             
+ 
                 break;
 
             }
-
-            //console.log(this.array_check)
             
         }
 
-        //return array_check;
-        console.log(this.array_check) 
+        console.log(this.array_check); 
 
     }
 
@@ -329,7 +300,6 @@ export default class edit extends Vue {
         if(this.array_check.includes(2)) {
 
             alert('選択していない場所があります。');
-
             return;
         }
 
@@ -345,45 +315,46 @@ export default class edit extends Vue {
 
         } 
 
-      
-
         const editNum = this.$route.params.editNum;
         const name = this.$store.state.username;
 
-
         const post_image = (num_edit: string) => {
 
-                const formData = new FormData();
+            const formData = new FormData();
 
-                formData.append('file', this.storage_image[0]);
-                formData.append('default_or_selected', this.storage_image[1]);
-                formData.append('album_or_post', '/post/');
+            formData.append('file', this.storage_image[0]);
+            formData.append('default_or_selected', this.storage_image[1]);
+            formData.append('album_or_post', '/post/');
 
-                console.log(formData);
-                console.log(this.storage_image[0]);
+            console.log(formData);
+            console.log(this.storage_image[0]);
 
-                this.$axios.post('album_post_image', formData)
-                .then((response) => {
-                    console.log(response);
+            this.$axios.post('album_post_image', formData)
+            .then((response) => {
 
-                    let url;
-                    if(num_edit === 'new_post') {
-                        url = ('/myaccount/mypage/album_select/choose_album');
-                    } else {
-                        url = ('/myaccount/everyone_page/' + name);
-                    }
+                console.log(response);
 
-                    this.$router.push(url);
+                let url;
+                if(num_edit === 'new_post') {
+
+                    url = ('/myaccount/mypage/album_select/choose_album');
+
+                } else {
+
+                    url = ('/myaccount/everyone_page/' + name);
+
+                }
+
+                this.$router.push(url);
                     
-                })
+            })
+            .catch((err) => {
+                console.log(err);
+            });
 
         }
 
-
         if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
-            //console.log(this.array_check);
-
-            
 
             this.$axios.post('edit', {
                 username: name,
@@ -406,29 +377,16 @@ export default class edit extends Vue {
                     post_image(editNum);
                     return;
                     
-
-                    //this.$router.push('/myaccount/mypage/' + name);
-                }/* else if(res.success === "update_true") {*/
+                }
 
                 this.$router.push('/myaccount/mypage/album_select/choose_album');
 
-            //}
             })
+            .catch((err) => {
+                console.log(err);
+            })
+
         } else {
-
-            /*const formData = new FormData();
-
-            formData.append('file', this.storage_image[0]);
-            formData.append('default_or_selected', this.storage_image[1]);
-            formData.append('album_or_post', 'post');
-
-            console.log(formData);
-
-            this.$axios.post('post_delete_image', formData)
-            .then((response) => {
-                console.log(response);
-            });*/
-
 
             const set_data = {
                 username: name,
@@ -444,7 +402,7 @@ export default class edit extends Vue {
             const method_url: AxiosRequestConfig = { //編集
                 method: 'put',
                 url: 'edit_update/' + editNum,
-                params: set_data
+                params: set_data,
             }
 
             this.$axios(method_url)
@@ -462,23 +420,12 @@ export default class edit extends Vue {
 
                 this.$router.push('/myaccount/everyone_page/' + name);
             })
+            .catch((err) => {
+                console.log(err);
+            });
 
         }
-        
-        
-        
-        /*if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
 
-            method_url = {
-                method: 'post',
-                url: 'edit',
-                params: set_data
-            }
-            
-
-        } */
-
-        
     }
 
 }
@@ -489,8 +436,6 @@ html {
 }
 #edit {
 
-    
-
     form {
 
         .img_selector {
@@ -498,8 +443,6 @@ html {
             font-size: 20px;
             
         }
-
-        
 
         .post_data {
             width: 40%;
@@ -520,26 +463,24 @@ html {
 
                .img_box {
 
-                   p img {
-                       width: 100%;
-                    background-color: rgba(187, 187, 187, 0.4);
+                    p img {
 
-                   }
-
-                    
+                        width: 100%;
+                        background-color: rgba(187, 187, 187, 0.4);
+                    }
 
                 } 
 
-           
-
                 input[type="file"] {
+
                     padding: 20px 0 40px;
+
                 }
 
-           }
-           
-              
+            }
+            
             .comment {
+
                 textarea {
 
                     display: block;
@@ -551,30 +492,24 @@ html {
 
             }
             
-
         }
 
 
         .right_position {
+
             text-align: center;
             float: right;
             font-size: 20px;
             padding: 80px;
             width: 60%;
             background-color: rgb(255, 249, 218);
-            
-
 
             .content_data {
-                
 
                 padding: 20px 0;
-                 
 
             }
 
-           
-            
         }
 
         .sub_button {
@@ -586,28 +521,17 @@ html {
                 background-color: white;
 
                 &[type="submit"] {
+
                     font-size: 30px;
                     padding: 3px 20px;
                 
-                
-                //float: left;
-                //transform: translateX(-50%);
-                
                 }
-            }
-            
 
-            
+            }
 
         }
-
-         
 
     } 
 
 }
-
-/*input {
-    display: block;
-}*/
 </style>

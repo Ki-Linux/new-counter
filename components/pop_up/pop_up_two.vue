@@ -2,11 +2,20 @@
     <div id="pop_up_two">
         <div class="desc_and_close">
             <p @click="closed">✕</p>
-            <p>ログインモードでは、カウントするごとに<br>画像を選択することもできます。</p>   
+            <p>
+                ログインモードでは、カウントするごとに
+                <br>画像を選択することもできます。
+            </p>   
         </div>
         <div class="select_button">
-            <button @click="nextGo('same')">毎回同じ画像</button>
-            <button @click="nextGo('difference')">カウントする<br>ごとに画像を<br>選択</button>
+            <button @click="nextGo('same')">
+                毎回同じ画像
+            </button>
+            <button @click="nextGo('difference')">
+                カウントする
+                <br>ごとに画像を
+                <br>選択
+            </button>
         </div>  
     </div>
 </template>
@@ -30,19 +39,18 @@ export default class popUpTwo extends Vue {
 
         } else {//diffeerenceのとき
 
-            const name = this.$store.state.username
+            const name = this.$store.state.username;
             this.$router.push('/counterDo/optionData/' + name);
 
         }
 
-        
     }
 
-    
 }
 </script>
 <style lang="scss">
 #pop_up_two {
+
     position: absolute;
     background-color: rgb(177, 255, 167);
     font-size: 25px;
@@ -53,7 +61,9 @@ export default class popUpTwo extends Vue {
     padding: 20px 30px 30px 30px;
 
     .desc_and_close {
+
         p {
+
             &:first-of-type {
                 float: right;
                 margin-left: 10px;
@@ -63,12 +73,17 @@ export default class popUpTwo extends Vue {
             &:nth-of-type(2) {
                 padding-top: 40px;
             }
+
         }
+
     }
 
     .select_button {
+
         margin-top: 30px;
+
         button {
+
             padding: 10px 40px;
             vertical-align: middle;
             
@@ -85,5 +100,4 @@ export default class popUpTwo extends Vue {
         }
     }
 }
-
 </style>

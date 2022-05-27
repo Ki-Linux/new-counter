@@ -32,8 +32,8 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import profileData from '../../../../components/mypage/profile.vue';
-import backButton from '../../../../components/back_button/back.vue';
+import profileData from '@/components/mypage/profile.vue';
+import backButton from '@/components/back_button/back.vue';
 import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
@@ -83,46 +83,47 @@ export default class change_profile extends Vue {
                 location.reload();
             }
         })
+        .catch((err) => {
+            console.log(err);
+        })
 
     }
 
     beforeMount() {
         
-        console.log('go mount')
-        const username = this.change_data[1].img_name_comment;
-        confirm(username);
+        console.log('go mount');
 
-        //fetchUid(document.cookie, username);
+        const username = this.change_data[1].img_name_comment;
+
+        confirm(username);
         
     }
  
-
     sendData(value: string) {
+
         console.log(value);
         this.edit_contents = true;
         this.change_data[2].show_data = false;
 
-       if(value === "img") {
+        if(value === "img") {
 
             this.change_data[0].show_data = true;
             this.change_data[1].show_data = false;
             
             return;
-       }
+        }
 
         this.change_data[1].show_data = true;
         this.change_data[0].show_data = false;
-
-
-
         
     }
 
     emitId(value:{ id: number, icon: string, comment: string }) {
+
         console.log(value);
 
         console.log(value.id + 'ui');
-        //console.log(value.icon)
+        
         this.send_userId = value.id;
 
         if(value.icon !== "not") {
@@ -137,32 +138,20 @@ export default class change_profile extends Vue {
         this.change_data[2].img_name_comment = value.comment;
     }
 
-    async changeIcon(e: Event) {
-        //const  file = (<HTMLInputElement>e.target).files![0];
-        //const file_url = URL.createObjectURL(file);
-        //this.change_data[0].img_name_comment = file_url;
+    changeIcon(e: Event) {
 
         const file = (<HTMLInputElement>e.target).files![0];
 
         this.send_icon = file;
-        /*const options = {
-            //MAXSIZEMB: 10,
-            maxWidthOrHeight: 120, //OrHeight
-            //maxHeight: 500
-        }
-        const compression_file = await imageCompression(file, options);*/
-
 
         const reader = new FileReader();
 
         reader.addEventListener('load', () => {
 
-            
-            this.change_data[0].img_name_comment = reader.result //'data:image/'
-            console.log(this.change_data[0])
+            this.change_data[0].img_name_comment = reader.result;
+            console.log(this.change_data[0]);
         })
 
-        
         reader.readAsDataURL(file);
 
     }
@@ -188,21 +177,21 @@ export default class change_profile extends Vue {
 
     goChange() {
 
-
         let change_content: string = "";//送るデータ
         let judge_number: number = 3;//送る番号
-
 
         for(let i=0; i < 3; i++) {
 
             if(this.change_data[i].show_data) {//送るデータを決める
 
-                change_content = this.change_data[i].img_name_comment
-                judge_number = i
+                change_content = this.change_data[i].img_name_comment;
+                judge_number = i;
 
                 if(judge_number === 0) {
+
                     this.send_image();
                     return;
+
                 }
 
             }
@@ -213,24 +202,19 @@ export default class change_profile extends Vue {
                 if(judge_number === 1) {
 
                     this.cannot_name = "名前が空欄です。";
-                    return;
-                }
-                if (judge_number === 2) {
+                    return;//ここで止める
 
-                    change_content = "コメントはありません。";
+                } else if(judge_number === 2) {
+
+                    change_content = "コメントはありません。";//止めない
 
                 }
 
             }
-            
-            
 
         }
 
-
-        console.log(this.send_userId)
-
-
+        console.log(this.send_userId);
 
         this.$axios.put('account_update/' + this.send_userId, {
             changeContent: change_content, 
@@ -241,7 +225,7 @@ export default class change_profile extends Vue {
 
             const judge_data = response.data.judge_success;
 
-            console.log(judge_data)
+            console.log(judge_data);
 
             if(judge_data) {
 
@@ -249,10 +233,8 @@ export default class change_profile extends Vue {
 
                     this.$store.dispatch("loginName", change_content);//ユーザーネームはvuex
 
-                    
-                    
-
                 }
+
                 location.reload();
                 return;
 
@@ -262,10 +244,9 @@ export default class change_profile extends Vue {
             
 
         })
-
-        
-
-
+        .catch((err) => {
+            console.log(err);
+        });
 
     }
 }
@@ -280,8 +261,6 @@ export default class change_profile extends Vue {
 
     .edit_profile {
 
-
-
         position: fixed;
         top: 50%;
         left: 50%;
@@ -289,8 +268,6 @@ export default class change_profile extends Vue {
         z-index: 5;
         background-color: rgba(66, 66, 66, 0.8);
         padding: 50px;
-        //width: 40vw;
-        //height: 40vh;
         text-align: center;
 
         img {
@@ -298,7 +275,6 @@ export default class change_profile extends Vue {
             width: 130px;
             height: 130px;
             border-radius: 50%;
-             
             margin: 30px auto;
         }
 
@@ -306,24 +282,16 @@ export default class change_profile extends Vue {
             
             margin-top: 20px;
 
-                input[type="text"] {
-                    padding: 5px;
-                    font-size: 30px;
-                }
-
-            
-                #message_add {
-                    padding: 5px;
-                    height: 7rem;
-                    font-size: 20px;
-                }
-
-
-            
-
-            
-
-            
+            input[type="text"] {
+                padding: 5px;
+                font-size: 30px;
+            }
+      
+            #message_add {
+                padding: 5px;
+                height: 7rem;
+                font-size: 20px;
+            }   
 
         }
 
@@ -336,64 +304,45 @@ export default class change_profile extends Vue {
 
         }
 
-        
-
     }
 
     .my_data_edit {
         
-
         .my_data {
 
-        display: inline-block;
-        margin-left: 50%;
-        transform: translateX(-50%);
-        background-color: rgb(255, 244, 206);
-        padding: 20px;
-        
-
-        
+            display: inline-block;
+            margin-left: 50%;
+            transform: translateX(-50%);
+            background-color: rgb(255, 244, 206);
+            padding: 20px;
 
 
+            .comment {
 
-        
-        
+                margin: 60px auto;
+                width: 300px;
+                height: 200px;
+                background-color: white;
+                overflow-Y: scroll;
 
-        .comment {
+                p {
+                    word-break: break-all;
+                    font-size: 20px;
+                    float: left;
+                    padding: 10px;
+  
+                }
 
-            margin: 60px auto;
-            width: 300px;
-            height: 200px;
-            background-color: white;
-            overflow-Y: scroll;
-            
-            
+            } 
 
-            p {
-                word-break: break-all;
-                font-size: 20px;
-                float: left;
-                padding: 10px;
-                
-                
-            }
+        }
 
-
-        } 
-
-        
-    }
-
-    .back_button {
-        margin: 40px;
-        text-align: center;
-    }
+        .back_button {
+            margin: 40px;
+            text-align: center;
+        }
 
     }
-
-
-    
-    
 
     #profile {
 
@@ -401,15 +350,8 @@ export default class change_profile extends Vue {
         transform: translateX(-50%);
         padding-top: 30px;
 
-        
-
-
     }
 
     
-
-    
-    
 }
-
 </style>

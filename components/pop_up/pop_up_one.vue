@@ -1,6 +1,6 @@
 <template>
     <div id="pop_up_one" v-if="!$store.state.canClick">
-        <pop_up_free class="free" v-if="$store.state.select_plan === 'free' && $store.state.username === ''"/>
+        <pop_up_free class="free" v-if="store.select_plan === 'free' && store.username === ''"/>
         <pop_up_name class="name" v-else/>
     </div>
 </template>
@@ -16,33 +16,29 @@ import popUpName from '../pop_up/complete_pop/pop_up_name.vue';
     }
 })
 export default class popUp extends Vue {
-    // v-if="$store.state.canClick === false"
-    //v-if="$store.state.select_plan === 'free'"
+
+    store: string = "";
+
+    mounted() {
+
+        this.store = this.$store.state;
+
+    }
 
     
 }
 </script>
 <style lang="scss">
 #pop_up_one {
- width: 80%;
- position: absolute;
-background-color: rgb(255, 195, 223);
-margin: 350px 0;
-top: 30%;
-left: 50%;
-transform: translate(-50%, -50%);
-padding: 30px;
 
-/*.free {
-    
-}*/
-
-
+    width: 80%;
+    position: absolute;
+    background-color: rgb(255, 195, 223);
+    margin: 350px 0;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
  
 }
-    
-
-    
-
-    
 </style>

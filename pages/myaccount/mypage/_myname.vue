@@ -14,8 +14,18 @@
         <div class="up_down_button">
             <button @click="toSelectPage">カウントする</button>      
             <ul>
-                <li><span>アップ</span>…目標値に向かってプラスのカウントを行う</li>
-                <li><span>ダウン</span>…現在値から0に向かってマイナスのカウントを行う</li>
+                <li>
+                  <span>
+                    アップ
+                  </span>
+                  …目標値に向かってプラスのカウントを行う
+                </li>
+                <li>
+                  <span>
+                    ダウン
+                  </span>
+                  …現在値から0に向かってマイナスのカウントを行う
+                </li>
             </ul>
         </div>
         <div class="back_home">
@@ -23,23 +33,31 @@
         </div>
         <div class="option">
             <ul>
-                <li><nuxt-link class="editor" to="/myaccount/mypage/profileEdit/change_profile">プロフィール編集</nuxt-link></li>
-                <li><nuxt-link class="editor" to="/myaccount/mypage/setting/option_mydata">設定</nuxt-link></li>
+                <li>
+                  <nuxt-link class="editor" to="/myaccount/mypage/profileEdit/change_profile">
+                    プロフィール編集
+                  </nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link class="editor" to="/myaccount/mypage/setting/option_mydata">
+                    設定
+                  </nuxt-link>
+                </li>
             </ul>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import phoneDescription from '../../../components/phone/description.vue';
-import profileName from '../../../components/mypage/profile.vue';
-import reminderName from '../../../components/mypage/reminder.vue';
-import backHome from '../../../components/back_button/back.vue';
-import popUp from '../../../components/pop_up/pop_up_two.vue';
+import phoneDescription from '@/components/phone/description.vue';
+import profileName from '@/components/mypage/profile.vue';
+import reminderName from '@/components/mypage/reminder.vue';
+import backHome from '@/components/back_button/back.vue';
+import popUp from '@/components/pop_up/pop_up_two.vue';
 import { confirm } from '@/components/confirmation/confirm_person';
 
 
-@Component({
+@Component({//middleware
     middleware: 'reject',
     components: {
         'phone_description': phoneDescription,
@@ -50,25 +68,27 @@ import { confirm } from '@/components/confirmation/confirm_person';
     }
 })
 export default class myname extends Vue {
+
   show_pop: boolean = false;
   show_phone_desc: boolean = true;
 
   beforeMount() {
         
-    console.log('go mount')
+    console.log('go mount');
     const account_name = this.$route.params.myname;
+
     //localStorageのデータを削除
     this.$store.dispatch("planSelect_arrayDelete", account_name);
 
     confirm(account_name);
-
-    //fetchUid(document.cookie, username);
         
   }
 
   OKClick(ok_click: boolean) {
+
     this.show_phone_desc = ok_click;
-    console.log(ok_click)
+    console.log(ok_click);
+
   }
 
   popShow(value: boolean) {
@@ -78,14 +98,15 @@ export default class myname extends Vue {
   }
 
 
-  toAlbum() {
+  toAlbum() {//アルバムへ
+
     this.$router.push('/myaccount/mypage/album_select/my_album');
   }
 
 
   toSelectPage() {
-    this.show_pop = true;
 
+    this.show_pop = true;
   }
 
   
@@ -93,8 +114,6 @@ export default class myname extends Vue {
 }
 </script>
 <style lang="scss">
-
-
 
 li {
     list-style: none;
@@ -127,7 +146,7 @@ li {
 
 
 .up_down_button {
-        //float: left;
+    
     text-align: center;
     font-size: 50px;
 
@@ -141,32 +160,32 @@ li {
 
 
     ul li {
+
       font-size: 30px;
-      
 
       &:first-of-type span {
 
         color: rgb(104, 0, 0);
-        font-weight:bold;
+        font-weight: bold;
 
       }
 
       &:last-of-type span {
+
         color: rgb(0, 0, 104);
-        font-weight:bold;
+        font-weight: bold;
+
       }
     }
-
-   
     
 }
 
 .back_home {
+
   float: right;
   padding: 30px;
+
 }
-
-
 
 /* Box sizing rules */
 *,

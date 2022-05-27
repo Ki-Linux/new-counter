@@ -23,12 +23,12 @@ export default class contract extends Vue {
         const content = this.content_address.content;
         const address = this.content_address.address;
 
-        if(content === "") {
+        if(content === "") {//不足
 
             this.attention = "中身が入力されていません。";
             return;
 
-        } else if(address === "") {
+        } else if(address === "") {//不足
 
             this.attention = "メールアドレスが入力されていません。";
             return;
@@ -55,15 +55,12 @@ export default class contract extends Vue {
             location.reload();
         })
 
-
-
-
-
     }
 }
 </script>
 <style lang="scss">
 #contact {
+
     font-size: 20px;
     text-align: center;
     padding-top: 30px;

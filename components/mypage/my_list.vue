@@ -1,7 +1,9 @@
 <template>
     <div id="my_list">
         <div class="toeveryone">
-            <nuxt-link class="everyone_page" to="/myaccount/everyone_page/everyone">←みんなの投稿へ</nuxt-link>
+            <nuxt-link class="everyone_page" to="/myaccount/everyone_page/everyone">
+                ←みんなの投稿へ
+            </nuxt-link>
         </div>
         <div class="list">
             <ul @click="detailShow(index)" v-for="(picture_data, index) in picturesData" :key="index">
@@ -54,10 +56,14 @@ export default class myList extends Vue {
             }
             
         })
+        .catch((err) => {
+            console.log(err);
+        });
     
     }
 
     detailShow(show_num: number) {
+
         let send_data: { id: number; picture: string|number|ArrayBuffer; my_comment: string; username: string;  updated_at: string; can_see: number; };
 
         const content = this.picturesData[show_num];
@@ -68,76 +74,56 @@ export default class myList extends Vue {
         const send_day = content.created_at;
         const send_see = content.can_see;
 
-        /*const base_url = process.env.SERVER_URL;
-        const url = base_url + 'storage/post/';
-        const image = url + send_picture;*/
-
         send_data = { id: send_id, picture: send_picture, my_comment: send_comment, username: this.list_username, updated_at: send_day, can_see: send_see};
 
         this.$emit('detail_data_show', [true, send_data]);
+
     }
-
-    /*removing(index: number) {//削除したいものを削除する
-        const send_id: number = this.pictureData[index].id;
-
-        this.$axios.delete("edit_del/" + send_id)
-        .then((response) => {
-            console.log(response);
-            //this.pictureData = response.data
-        })*/
-
-    //}
 }
 </script>
 <style lang="scss">
-
 #my_list {
     width: 900px;
-            background-color: bisque;
-           margin: 20px auto;
-           text-align: center;
-           padding-bottom: 50px;
+    background-color: bisque;
+    margin: 20px auto;
+    text-align: center;
+    padding-bottom: 50px;
 
-           .toeveryone {
-               position: absolute;
-               padding: 20px;
+    .toeveryone {
+        position: absolute;
+        padding: 20px;
 
-               .everyone_page {
-                   text-decoration: none;
-                   font-size: 20px;
-               }
-           }
+        .everyone_page {
+            text-decoration: none;
+            font-size: 20px;
+        }
+    }
 }
 
 .list {
-    //width: 700px;
-            //height: 400px;
-            padding-top: 60px;
-            
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            
 
+    padding-top: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+            
     ul {
-                width: 350px;
-                background-color: rgba(255, 255, 255, 0.6);
-                padding-bottom: 30px;
-                border: 1px solid red;
-                margin-left: 20px;
-                list-style: none;
+
+        width: 350px;
+        background-color: rgba(255, 255, 255, 0.6);
+        padding-bottom: 30px;
+        border: 1px solid red;
+        margin-left: 20px;
+        list-style: none;
                 
                 
         li {
-
             width: 80%;
             margin-left: 15px;
             
-
             &:first-of-type {
                 margin-top: 30px;
-                
-                
+                  
                 img {
                     width: 50%;
                     max-height: 150px;
@@ -148,8 +134,6 @@ export default class myList extends Vue {
                 }
                 
             }
-
-
 
             &:nth-of-type(2) {
                 
@@ -162,20 +146,5 @@ export default class myList extends Vue {
         }
     }
                 
-                //border-bottom: 1px solid red;
-                
-
-                /*.target_present {
-                    padding-top: 40px;
-                    p {
-                        font-size: 25px;
-                        
-
-                        span {
-                            font-size: 40px;
-                            letter-spacing: 3px;
-                        }
-                    }
-                }*/
-            }
+}
 </style>

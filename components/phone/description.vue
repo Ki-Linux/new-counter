@@ -14,7 +14,9 @@ export default class description extends Vue {
     OkClick() {
 
         if(this.$store.state.show_phone) {
+
             this.$store.dispatch("change_phone");
+
         }
         
         this.$emit('ok_click', false);
@@ -24,28 +26,32 @@ export default class description extends Vue {
 </script>
 <style lang="scss">
 #phone_desc {
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(255, 255, 255, 0.9);
-            position: fixed;
-            text-align: center;
-            padding: 40px;
-            top: 0px;
-            z-index: 5;
 
-            p {
-                font-size: 20px;
-            }
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    position: fixed;
+    text-align: center;
+    padding: 40px;
+    top: 0px;
+    z-index: 5;
 
-            img {
-                margin: 0 auto;
-            }
+    p {
 
-            button {
-                font-size: 20px;
-                padding: 0 10px;
-                background-color: azure;
-            }
-        }
+        font-size: 20px;
+    }
 
+    img {
+
+        margin: 0 auto;
+    }
+
+    button {
+        
+        font-size: 20px;
+        padding: 0 10px;
+        background-color: azure;
+    }
+
+}
 </style>

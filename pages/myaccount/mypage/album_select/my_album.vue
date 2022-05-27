@@ -12,7 +12,6 @@
             </div>
             <div class="all_box" v-for="(album_data, index) in albums_data" :key="index">
                 <div class="album_box" :class="{top_num: index  ===  0 || index  ===  1}">
-                    <!--<p>{{ album_data }}</p>-->
                     <p class="check_batu" @click="deleteData(index)">✕</p>
                     <p class="selector">{{ album_data.selector }}</p>
                     <p class="title">{{ album_data.title }}</p>
@@ -30,7 +29,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import backData from '../../../../components/back_button/back.vue';
+import backData from '@/components/back_button/back.vue';
 import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
@@ -53,11 +52,10 @@ export default class my_album extends Vue {
 
     beforeMount() {
         
-        console.log('go mount')
+        console.log('go mount');
+
         this.username = this.$store.state.username;
         confirm(this.username);
-
-        //fetchUid(document.cookie, username);
         
     }
 
@@ -71,7 +69,6 @@ export default class my_album extends Vue {
             }
         })
         .then((response) => {
-            //console.log(response);
 
             const album_content = response.data.album_content;
             console.log(album_content);
@@ -87,8 +84,6 @@ export default class my_album extends Vue {
                     album_content[i].selector = "ダウン"
 
                 }
-
-               // album_content[i].image = album_content[i].image);
                 
                 album_content[i].image = base_url + 'storage/album/' + album_content[i].image;
 
@@ -99,9 +94,10 @@ export default class my_album extends Vue {
                 this.albums_data.splice(i, 0, album_content[i]);
 
             }
-
-            //console.log(this.albums_data)
             
+        })
+        .catch((err) => {
+            console.log(err);
         })
 
     }
@@ -109,59 +105,63 @@ export default class my_album extends Vue {
     deleteData(del_num: number) {
 
         const delete_id = this.albums_data[del_num].id;
-        //console.log(delete_id)
 
         const can_delete_data = (id: number) => {
 
             this.$axios.delete('delete_album_data/' + id)
             .then((response) => {
+
                 console.log(response);
 
                 const can_delete = response.data.can_delete;
 
                 if(can_delete) {
-                    //console.log('success')
+    
                     location.reload();
 
                 }
+            })
+            .catch((err) => {
+                console.log(err);
             })
 
         }
 
         if(window.confirm('この記録を削除しますか?')) {
-            can_delete_data(delete_id);
-        }
 
-        
+            can_delete_data(delete_id);
+
+        }
 
     }
 
 }
 </script>
 <style lang="scss">
-
-
-
     #my_album {
-            width: 900px;
-            background-color: bisque;
-            margin: 20px auto;
-            text-align: center;
-            padding-bottom: 50px;
+        
+        width: 900px;
+        background-color: bisque;
+        margin: 20px auto;
+        text-align: center;
+        padding-bottom: 50px;
 
         .back_data {
+
             float: left;
             padding: 20px 0 0 20px;
+
         }
 
         .title h1 {
+
             padding: 80px 0 30px 0;
             
         }
 
         .frame {
+
             width: 700px;
-            //height: 400px;
             margin: 0 auto;
             display: flex;
             flex-wrap: wrap;
@@ -170,9 +170,11 @@ export default class my_album extends Vue {
                margin-left: 50%;
                transform: translateX(-50%);
             }
+
         }
 
         .all_box {
+
             width: 50%;
             border-left: 1px solid red;
 
@@ -180,7 +182,6 @@ export default class my_album extends Vue {
                 cursor: default;
                 float: left;
                 margin: 8px 0 0 13px;
-                //background-color: aqua;
             }
 
             .selector {
@@ -197,28 +198,30 @@ export default class my_album extends Vue {
 
                 margin:20px 0 0 50%;
                 transform: translateX(-50%);
+
                 img {
-                    width: 200px;//60%;//200px
+                    width: 200px;
                     max-height: 160px;
                     background-color: rgba(0, 0, 0, 0.1);
                 }
+
             }
 
             .album_box {
                 
-                //border-bottom: 1px solid red;
                 width: 350px;
                 background-color: rgba(255, 255, 255, 0.6);
                 height: 400px;
-                //border-left: 1px solid red;
                 border-bottom: 1px solid red;
                 border-right: 1px solid red;
 
                 .target_present {
+
                     padding-top: 40px;
+
                     p {
+
                         font-size: 25px;
-                        
 
                         span {
                             font-size: 40px;
@@ -229,15 +232,12 @@ export default class my_album extends Vue {
             }
 
             .top_num {
+
                border-top: 1px solid red;
+
             }
 
         }
         
-
-        
-
-        
     }
-
 </style>

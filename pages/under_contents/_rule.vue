@@ -39,7 +39,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import backData from '../../components/back_button/back.vue';
+import backData from '@/components/back_button/back.vue';
 
 @Component({
     components: {
@@ -140,9 +140,6 @@ export default class Rule extends Vue {
             font-size: 20px;
         }
     }
-
-    
-
     
 
 }

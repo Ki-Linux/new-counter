@@ -29,14 +29,14 @@ export default class everyone_list extends Vue {
 
         this.getContents(0);
 
-        console.log('in')
+        console.log('in');
 
     }
 
     mounted() {
         const base_url = process.env.SERVER_URL;
         this.url = base_url + 'storage/post/';
-        console.log(this.url)
+        console.log(this.url);
     }
 
     public getContents = (num: number) => {
@@ -57,7 +57,6 @@ export default class everyone_list extends Vue {
 
             const base_url = process.env.SERVER_URL;
 
-
             for(let i=0; i < all_data.length; i++) {
 
                 //日付だけ表示
@@ -70,14 +69,11 @@ export default class everyone_list extends Vue {
                 this.contents_array.push(push_item);
 
             }
-
-
-
   
         })
         .catch((error) => {
             console.log(error);
-        })
+        });
 
     }
 
@@ -91,30 +87,17 @@ export default class everyone_list extends Vue {
 
             this.contents_num -= 1;
 
-            /*if(this.contents_num === 1) {
-                this.contents_num = 0;
-            }*/
-
         } 
 
-                    
         if(which_click === "back"){
 
             this.contents_num++;
 
         }
 
+        let multiplication_num = this.contents_num * 4;
 
-
-        //if(this.contents_num !== 1) {
-            
-            let multiplication_num = this.contents_num * 4;
-
-        //}
-
-        console.log(multiplication_num)
-
-        
+        console.log(multiplication_num);
 
         this.getContents(multiplication_num);
 
@@ -128,17 +111,15 @@ export default class everyone_list extends Vue {
 </script>
 <style lang="scss">
     #everyone_list {
+
         background-color: rgb(255, 202, 132);
-        //margin-left: 70px;
         width: 450px;
         text-align: center;
+
         p {
-            //text-align: center;
             font-size: 30px;
             margin-top: 20px;
             padding: 20px 0;
-            //background-color: rgb(218, 238, 255);
-
         }
 
         button {
@@ -157,12 +138,13 @@ export default class everyone_list extends Vue {
                 background-color: rgba(212, 255, 195, 0.6);
                 font-size: 23px;
                 padding: 20px;
+
                 li {
 
                     &:first-of-type {
                         padding-top: 20px;
                         position: fixed;
-                        //float: left;
+
                         img {
                             width: 90px;
                             max-height: 80px;
@@ -188,7 +170,6 @@ export default class everyone_list extends Vue {
                         margin-left: 55%;
                     }
                 }
-
 
             }
 

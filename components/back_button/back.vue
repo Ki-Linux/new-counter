@@ -8,7 +8,7 @@ import { Vue,Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class backButton extends Vue {
-    word_button: string = "←トップ画面に戻る"
+    word_button: string = "←トップ画面に戻る";
 
     @Prop()
     public where_go!: string;
@@ -20,15 +20,12 @@ export default class backButton extends Vue {
             this.word_button = "←戻る";
 
         }
-        
 
     }
 
     goBack() {
 
-        
         let send_url = '/';
-
 
         if(this.where_go === "account") {
             
@@ -54,5 +51,4 @@ export default class backButton extends Vue {
     }
 
 }
-
 </style>

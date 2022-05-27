@@ -13,8 +13,10 @@
             </div>
             <div class="name_space">
                 <label for="password">パスワード</label>
-                 <p><input type="password" v-model="password" name="password" required></p> 
-                 <nuxt-link class="forget_password" to="/addInfo/confirmation">パスワードを忘れたとき</nuxt-link>
+                <p><input type="password" v-model="password" name="password" required></p> 
+                <nuxt-link class="forget_password" to="/addInfo/confirmation">
+                    パスワードを忘れたとき
+                </nuxt-link>
             </div>
             <p>{{ no_content }}</p>
             <input type="submit">
@@ -30,16 +32,15 @@ import $cookies from 'cookie-universal-nuxt';
 
 @Component
 export default class login extends Vue {
+
     email:string =  "";
     password:string = "";
     no_content: string = "";
-    
 
     doLogin() {
+
         console.log("doLogin!");
 
-        //fdsavd@gmail.com
-        //sdfsd
         this.$axios.post("login", {
             mail: this.email,
             password: this.password,
@@ -49,18 +50,16 @@ export default class login extends Vue {
 
             const res = response.data;
 
-            console.log(res)
+            console.log(res);
 
             const divided_data = res.divided_data;
             const username = res.username;
-            //console.log(response);
+
             if(divided_data === 'nothing') {
 
                 this.no_content="メールアドレスまたはパスワードが違います。";
 
             } else {
-
-                
 
                 let expire = new Date();
 
@@ -77,33 +76,29 @@ export default class login extends Vue {
 
                     if(this.$route.params.id === "1" && this.$store.state.back_data.length > 0) {
 
-                        //param_url = '/myaccount/mypage/edit/new_post';
                         param_url = '/myaccount/mypage/edit/new_post';
 
                     }
 
                     this.$router.push(param_url);
 
-                    
-
                 }
-                //this.$router.push('/myaccount/mypage/' + username);
 
             }
             
 
-        });
-       
-            
+        })
+        .catch((err) => {
+            console.log(err);
+        }); 
 
     }
-
 
 }
 </script>
 <style lang="scss">
-
 #login {
+
     text-align: center;
     padding-top: 30px;
     font-size: 30px;
@@ -116,48 +111,58 @@ export default class login extends Vue {
     }
 
     @keyframes name {
+
         from {
             color: black;
         }
         to {
             color: rgb(0, 51, 192);
         }
+
     }
 
     .title h1 {
         padding-top: 30px;
     }
+
     .name_space {
+
         margin: 30px 0;
+
         p input {
+
             padding: 6px;
             width: 300px;
+
         }
 
         .forget_password {
+
             font-size: 15px;
+
         }
+
     }
 
     input[type="submit"] {
+
         color: rgb(36, 36, 36);
         background-color: rgba(204, 204, 204, 0.6);
+
     }
 
     .toNew {
+
         font-size: 15px;
         padding: 20px;
         
-
         .new_add {
             
             color: blue;
+
         }
+        
     }
 
-
-
-    
 }
-
 </style>

@@ -21,23 +21,28 @@ export default class orner extends Vue {
     pass: string = "";
 
     mounted() {
+
         if(this.$route.params.orner === process.env.pass_one) {
             this.show_content = true;
         }
+
     }
 
     goReminder() {
 
         if(this.pass === process.env.pass_two && confirm('送信しますか?')) {
-            console.log(this.username)
+
+            console.log(this.username);
 
             this.$axios.post("reminder_send", {
+
                 title: this.title,
                 content: this.content,
                 username: this.username,
-                //contentPost: this.content, 
+                 
             })
             .then((response) => {
+
                 console.log(response.data.resTitle);
                 console.log(response.data.resContent);
                 console.log(response.data.resName);
@@ -48,9 +53,10 @@ export default class orner extends Vue {
             })
 
         } else {
-            console.log('not sending');
+
+            console.log('can not send');
+
         }
-        
         
     }
 }

@@ -1,7 +1,9 @@
 <template>
     <div id="all_select_img">
         <div class="to_next">
-            <nuxt-link class="not_album" @click.native="deleteGo" :to="'/myaccount/mypage/' + $store.state.username">アルバムに追加しない</nuxt-link>
+            <nuxt-link class="not_album" @click.native="deleteGo" :to="'/myaccount/mypage/' + $store.state.username">
+                アルバムに追加しない
+            </nuxt-link>
         </div>
         <div class="title_desc">
             <h1>アルバム追加</h1>
@@ -24,27 +26,22 @@
                 <input type="file" name="picture" ref="preview" @change="editImg" multiple="multiple">
             </div>
             <p>{{ attention }}</p>
-            <!--<div class="no_img">
-                <button type="button">画像なし</button>
-            </div>-->
         </div>
         <div class="submit_button">
             <button type="submit">アルバムに追加</button>
-            
         </div>
         </form>  
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import imageCompression from 'browser-image-compression';
 import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component({
     middleware: 'reject'
 })
 export default class chooseAlbum extends Vue {
-    img_data: any/*string | ArrayBuffer | null*/ = require('../../../../static/edit/hatena.png');
+    img_data: any/*string | ArrayBuffer | null*/ = require('@/static/edit/hatena.png');
     send_image: any;
     send_sql_image: string = "";
     img_num: number = 0;
@@ -58,7 +55,9 @@ export default class chooseAlbum extends Vue {
         const store = this.$store.state;
 
         if(store.select_plan === "free") {
+
             array_image.push(store.back_data[3]);
+
         } else {
 
             for(let i=0; i < store.back_select_data.length; i++) {
@@ -75,16 +74,18 @@ export default class chooseAlbum extends Vue {
         .then((response) => {
             console.log(response.data);
         })
+        .catch((err) => {
+            console.log(err);
+        });
 
     };
 
     beforeMount() {
         
-        console.log('go mount')
+        console.log('go mount');
+
         const username = this.$store.state.username;
         confirm(username);
-
-        //fetchUid(document.cookie, username);
         
     }
 
@@ -118,17 +119,12 @@ export default class chooseAlbum extends Vue {
     }
 
     deleteGo() {
-        console.log('oi');
 
         this.delete_data();
     }
 
     nextImg(num: number) {
 
-        //console.log(num)
-        /*if(num === 0) {
-            [require('../../../../static/edit/hatena.png')]
-        }*/
         const server = process.env.SERVER_URL;
 
         const url = server + 'storage/counter/';
@@ -155,7 +151,6 @@ export default class chooseAlbum extends Vue {
             if(this.img_data === url + select_data[last_data]) {//最後のデータで右を押したときに一番最初のデータを表示する
                 this.img_num = 0;
             }
-
             
         }
 
@@ -166,81 +161,41 @@ export default class chooseAlbum extends Vue {
 
     }
 
-    async editImg(e: Event) {
+    editImg(e: Event) {
 
         this.show_next_img = false;
 
-       // const file = document.querySelector('input[type=file]').files![0];
         const  file = (<HTMLInputElement>e.target).files![0];
 
         this.send_image = [file, true];
         this.send_sql_image = file.name;
-        
-       /* const options = {
-            //MAXSIZEMB: 10,
-            maxWidthOrHeight: 120
-        }
-        const compression_file = await imageCompression(file, options);*/
-
 
         const reader = new FileReader();
 
         reader.addEventListener('load', () => {
 
             const result = reader.result;
-
-            /*if(typeof(result) === "string") {
-                
-                const option_url = result.replace('data:image/', '');*/
-                //console.log(option_url)
             
-                this.img_data = result;//画像データの扱いを実行
-            //}
+            this.img_data = result;//画像データの扱いを実行
 
-            console.log(this.img_data)
+            console.log(this.img_data);
 
         })
 
-        
         reader.readAsDataURL(file);
         
-        
-        //console.log(this.img_data)
-
-        
-        //this.img_data = URL.createObjectURL(file);
     }
 
     postData() {
 
-        
-
-        if(this.written_name === "" || this.img_data  === require('../../../../static/edit/hatena.png')){
+        if(this.written_name === "" || this.img_data  === require('@/static/edit/hatena.png')){
 
             this.attention = "タイトルまたは画像がありません。";
             return;
 
         }
 
-        const store_data = this.$store.state
-
-        const str = "io";
-        /*console.log(this.send_image)
-
-            const formData = new FormData();
-
-            formData.append('file', this.send_image);
-
-            console.log(formData);
-
-            this.$axios.post('album_image', formData)
-            .then((response) => {
-                console.log(response.data);
-
-            })
-
-
-        return;*/
+        const store_data = this.$store.state;
 
         const album_image_send = () => {
 
@@ -263,16 +218,14 @@ export default class chooseAlbum extends Vue {
                     this.$router.push('/myaccount/mypage/' + store_data.username);
                 }
 
-                //this.$router.push('/myaccount/mypage/' + store_data.username);
-
+            })
+            .catch((err) => {
+                console.log(err);
             })
 
         }
 
-        
-
-        console.log(this.send_sql_image)
-
+        console.log(this.send_sql_image);
 
         this.$axios.post('album_data', {
             username: store_data.username,
@@ -298,10 +251,7 @@ export default class chooseAlbum extends Vue {
         })
         .catch((res) => {
             console.log(res);
-        })
-
-
-
+        });
 
     }
 
@@ -356,20 +306,18 @@ export default class chooseAlbum extends Vue {
         .show_img {
 
             img{
-            position: relative;
-            margin-left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            background-color: rgba(0, 0, 0, 0.3);
+                position: relative;
+                margin-left: 50%;
+                transform: translateX(-50%);
+                width: 200px;
+                background-color: rgba(0, 0, 0, 0.3);
 
-            
             }
             
         }
 
         .select_img {
-                //display: inline;
-            //float: left;
+
             background-color: bisque;
             margin: 0 30vw;
             
@@ -387,11 +335,7 @@ export default class chooseAlbum extends Vue {
             }
 
         } 
-        
 
-        
-
-        
         .img_button {
             padding: 30px 0 20px;
 
@@ -404,15 +348,12 @@ export default class chooseAlbum extends Vue {
 
     .submit_button {
         
-
         button {
             font-size: 25px;
             background-color: aliceblue;
             padding: 5px 15px;
         }
 
-        
-        
     }
 }
 </style>

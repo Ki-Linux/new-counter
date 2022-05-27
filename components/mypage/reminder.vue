@@ -1,31 +1,37 @@
 <template>
     <div class="right_position"> 
-            <div class="alerm"> 
-                <div class="alerm_button">   
-                    <p @click="showYellowList"><img src="../../static/mypage/bell2.png" alt="reminder"></p>  
-                    <p v-if="this.title_length !== 0">{{ title_length }}</p>    
-                    <button @click="toEveryonePostPage">みんなの投稿</button>     
-                </div>
-                <div class="reminder_list" v-if="show_yellow">
-                    <ul v-for="(title_list, index) in title_lists" :key="index">
-                        <li :class="{ light_word: title_list.watched === 1 }">
-                            <span @click="goDetails(index)">{{ title_list.title }}</span>  
-                            <form @submit.prevent="deleteReminder(index)">
-                                <button type="submit" v-if="show_dust_box"><img src="../../static/mypage/dust_box.png" alt=""></button>
-                            </form>    
-                        </li>    
-                    </ul>
-                </div>
-                <div class="detail_content" v-if="show_detail">
-                    <label @click="doClosed" for="">✕</label>
-                    <h1>{{ selected_title }}</h1>
-                    <ul>
-                        <li>{{ detail }}</li>
-                        <li>{{ selected_date }}</li>
-                    </ul>
-                </div>
+        <div class="alerm"> 
+            <div class="alerm_button">   
+                <p @click="showYellowList">
+                    <img src="../../static/mypage/bell2.png" alt="reminder">
+                </p>  
+                <p v-if="this.title_length !== 0">
+                    {{ title_length }}
+                </p>    
+                <button @click="toEveryonePostPage">みんなの投稿</button>     
+            </div>
+            <div class="reminder_list" v-if="show_yellow">
+                <ul v-for="(title_list, index) in title_lists" :key="index">
+                    <li :class="{ light_word: title_list.watched === 1 }">
+                        <span @click="goDetails(index)">{{ title_list.title }}</span>  
+                        <form @submit.prevent="deleteReminder(index)">
+                            <button type="submit" v-if="show_dust_box">
+                                <img src="../../static/mypage/dust_box.png" alt="">
+                            </button>
+                        </form>    
+                    </li>    
+                </ul>
+            </div>
+            <div class="detail_content" v-if="show_detail">
+                <label @click="doClosed" for="">✕</label>
+                <h1>{{ selected_title }}</h1>
+                <ul>
+                    <li>{{ detail }}</li>
+                    <li>{{ selected_date }}</li>
+                </ul>
             </div>
         </div>
+    </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
@@ -34,7 +40,8 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class reminder extends Vue {
     title_length: number = 0;
     detail: string = "";
-    title_lists: {id: number; title: string; content: string; watched: number; updated_at: string | null; }[] = [{ id: 0, title: '', content: '', watched: 0, updated_at: '' }];
+    title_lists: {id: number; title: string; content: string; watched: number; updated_at: string | null; }[]
+    = [{ id: 0, title: '', content: '', watched: 0, updated_at: '' }];
     selected_title: string = "";
     selected_date: string | null = '';
     show_yellow: boolean = false;
@@ -53,9 +60,10 @@ export default class reminder extends Vue {
         .then((response) => {
             console.log(response);
 
-            const name = response.data.name
+            const name = response.data.name;
 
             if(name.length === 0) {
+
                 this.title_lists = [{ id: 0, title: 'お知らせはありません。', content: '', watched: 0, updated_at:''}];
                 this.show_dust_box = false;
                 return;
@@ -71,16 +79,18 @@ export default class reminder extends Vue {
             }
 
             this.title_lists = name;//タイトルをリスト化する
-
-            //console.log(this.title_lists[1].watched);
              
-            
         })
+        .catch((err) => {
+            console.log(err);
+        });
 
     }
 
     toEveryonePostPage() {
+
         this.$router.push('/myaccount/everyone_page/everyone');
+
     }
 
     showYellowList() {
@@ -92,7 +102,7 @@ export default class reminder extends Vue {
 
         }
 
-         this.show_yellow = false;
+        this.show_yellow = false;
         
     }
 
@@ -106,15 +116,18 @@ export default class reminder extends Vue {
             .then((response) => {
                 console.log(response);
             })
+            .catch((err) => {
+                console.log(err);
+            });
 
             location.reload();
-
-
 
         }
 
         if(confirm('削除しますか?')) {
+
             can_delete_data();
+
         }
 
         
@@ -157,7 +170,9 @@ export default class reminder extends Vue {
             .then((response) => {
                 console.log(response);
             })
-
+            .catch((err) => {
+                console.log(err);
+            });
 
         }
 
@@ -166,112 +181,78 @@ export default class reminder extends Vue {
             can_showed();
 
         }
-
-        
-
         
     }
 
     doClosed() {
+
         this.show_detail = false;
 
-        //this.title_list.watched === 1
     }
 
 }
 </script>
 <style lang="scss">
 .right_position {
-    //float: right;
+
     padding: 20px;
-   text-align: right;
-    
+    text-align: right;
 
-       // position: relative;
-        //float: right;
-        
-        /*span {
-            position: absolute;
-            color: white;
-            background-color: red;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-           // padding: 10px;
-        }*/
-
-        .alerm_button {
-
-        
+    .alerm_button {    
             
-             //display: inline;
-             p {
+        p {
 
-                &:nth-of-type(2) {
+            &:nth-of-type(2) {
                     
-                    position: absolute;
-                    color: white;
-                    background-color: red;
-                    border-radius: 50%;
-                    width: 30px;
-                    height: 30px;
-                    line-height: 30px;
-                    text-align: center;
-                    right: 50px;
-                    margin-top: -5px;
+                position: absolute;
+                color: white;
+                background-color: red;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                right: 50px;
+                margin-top: -5px;
 
-                }
-
-                img {
-                    width: 50px;
-                }
-             } 
-
-             button {
-                font-size: 30px;
-                margin-right: 20px;
-                background-color: rgba(233, 233, 233, 0.7);
-                padding: 3px 10px;
-             }
-
-            button, p {
-                float: right;
-                
- 
             }
-            
 
+            img {
+                width: 50px;
+            }
+        } 
 
+        button {
 
-            
-            
+            font-size: 30px;
+            margin-right: 20px;
+            background-color: rgba(233, 233, 233, 0.7);
+            padding: 3px 10px;
 
+        }
 
-        
+        button, p {
 
-        
-
-        
-
+            float: right;     
+ 
+        }
         
     }
 
     .reminder_list {
-            position: absolute;
-            margin: 70px 20px;
-            right: 0;
-            font-size: 20px;
-            padding-right: 40px;
-            background-color: yellow;
-            text-align: center;
-            //border-bottom: 3px solid rgba(82, 82, 82, 0.5);
+
+        position: absolute;
+        margin: 70px 20px;
+        right: 0;
+        font-size: 20px;
+        padding-right: 40px;
+        background-color: yellow;
+        text-align: center;
 
         &::before {
+
             content: '';
             position: absolute;
-            //left: 130px; 
             right: 0;
             top: -15px;
             display: block;
@@ -280,15 +261,10 @@ export default class reminder extends Vue {
             border-right: 25px solid transparent;
             border-bottom: 25px solid yellow;
             border-left: 35px solid transparent;
+
         }
 
         ul {
-            //padding: 15px 0;
-            //padding: 30px;
-           // margin-top: 30px;
-           // border-bottom: 3px solid rgba(82, 82, 82, 0.5);
-            //width: 100%;
-                //border-bottom: 3px solid rgba(82, 82, 82, 0.5);
 
             li {
 
@@ -300,49 +276,37 @@ export default class reminder extends Vue {
                 margin-bottom: 20px;
                 background-color: rgba(255, 208, 0, 0.7);
                
-                //background-color: red;
-                
-                
-                //border-bottom: 3px solid rgba(82, 82, 82, 0.5);
-
-                //&:first-of-type {
-
-                    //padding: 15px 0;
-                    //border-bottom: 3px solid rgba(82, 82, 82, 0.5);
-                    //background-color: red;
-
-                //}
                 form {
+
                     float: right;
+
                     button{
+
                         margin:0 10px;
                         background-color: white;
 
-                    img {
-                        //background-color: white;
-                        width: 25px;
+                        img {
+
+                            width: 25px;
                     
-                    } 
+                        } 
                     }
                 }
                 
             }
             
-
-
             .light_word {
 
                 color: rgba(32, 32, 32, 0.5);
 
             }
-
             
         }
-           
             
     }
 
     .detail_content {
+
         z-index: 10;
         position: fixed;
         width: 40%;
@@ -354,7 +318,6 @@ export default class reminder extends Vue {
         padding: 20px 30px;
         overflow-wrap: normal;
         text-align: left;
-        
 
         label {
             font-size: 30px;
@@ -369,7 +332,9 @@ export default class reminder extends Vue {
         }
          
         ul li {
+
             margin-right: 3rem;
+
             &:first-of-type {
                 border-bottom: 3px solid black;
                 padding: 100px 0px;
@@ -379,21 +344,16 @@ export default class reminder extends Vue {
 
                 float: right;
             }
+
         }
         
-
     }
 
-
     button {
+
         float: right;
-        //display: inline;
+
     }
 
 }
-
-    
-
-        
-
 </style>

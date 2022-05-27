@@ -5,13 +5,15 @@
         </div>
         <div class="select_button" :class="{ styleClass: index === 0, styleClassBottom: index == 1 }" v-for="(selector, index) in selectors" :key="selector.description">
             <p>{{ selector.description }}</p>
-            <button @click="toPage(index)">{{ selector.url_button }}</button>
+            <button @click="toPage(index)">
+                {{ selector.url_button }}
+            </button>
         </div>
     </div>
 </template>
 <script lang="ts">
     import { Vue, Component } from 'vue-property-decorator';
-    import phoneDescription from '../../components/phone/description.vue';
+    import phoneDescription from '@/components/phone/description.vue';
 
     @Component({
         components: {
@@ -33,14 +35,16 @@
 
         OKClick(ok_click: boolean) {
             this.show_phone_desc = ok_click;
-            console.log(ok_click)
+            console.log(ok_click);
         }
 
 
         toPage(index: number) {
+
             const to_url = (url: string) => {
                 this.$router.push(url);
             }
+            
             switch(index) {
                 case 0:
                     to_url("/addInfo/login/thisLogin");

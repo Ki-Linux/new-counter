@@ -1,6 +1,8 @@
 <template>
     <div id="send">
-        <p v-if="this.$route.params.send === 'one'">メールを送信しました。ご確認ください。</p>
+        <p v-if="this.$route.params.send === 'one'">
+            メールを送信しました。ご確認ください。
+        </p>
         <button @click="back">戻る</button>
     </div>
 </template>
@@ -11,7 +13,7 @@ import { Vue,Component } from 'vue-property-decorator';
 export default class send extends Vue {
 
     back() {
-       // console.log('modoru');
+       
        this.$router.push('/addInfo/login');
 
     }

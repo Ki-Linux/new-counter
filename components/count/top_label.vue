@@ -7,42 +7,58 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class TopLabel extends Vue {
-  //canClick: boolean = true;
 
-    toHome(): void {
-        const conf: string = 'フリーカウントでホームに戻るとデータが保存されませんがよろしいですか？';
-        const vuexData = this.$store.state;
+  toHome(): void {
+    const conf: string = 'フリーカウントでホームに戻るとデータが保存されませんがよろしいですか？';
+    const vuexData = this.$store.state;
 
-        if(vuexData.canClick) {//clickできるか(popup)
-          if(vuexData.plan == "free" && confirm(conf)) {
-            this.$router.push('/');
-          }
+    if(vuexData.canClick) {//clickできるか(popup)
+      if(confirm(conf)) {
+
+        let url;
+
+        if(vuexData.select_plan == "free") {
+
+          url = ('/');
+          
+        } else {
+          url = ('/myaccount/mypage/' + vuexData.username);
         }
         
+        this.$router.push(url);
+        
+      } 
     }
+        
+  }
 }
 </script>
-
 <style lang="scss">
-    #top_label {
-        background-color: rgba(0, 5, 34, 0.6);
-        padding: 20px;
-        button {
-            background-color: rgba(255, 255, 255, 0.8); 
-            font-size: 25px;
-            margin-left: 10px;
-        }
-        p {
-            float: right;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 30px;
-            line-height: 40px;
-            margin-right: 40px;
-        }
+  #top_label {
+
+    background-color: rgba(0, 5, 34, 0.6);
+    padding: 20px;
+
+    button {
+      background-color: rgba(255, 255, 255, 0.8); 
+      font-size: 25px;
+      margin-left: 10px;
     }
-    /* Box sizing rules */
+
+    p {
+      float: right;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 30px;
+      line-height: 40px;
+      margin-right: 40px;
+    }
+
+  }
+  
+/* Box sizing rules */
 *,
 *::before,
 *::after {

@@ -11,26 +11,46 @@
         </div>
         <div class="up_or_down">
             <ul class="contents">
-                <li class="title">アップorダウン</li>
-                <li><label><input @click="downUp(1)" type="radio" name="up_down" value="アップ" checked>アップ</label></li>
-                <li class="to_left"><label><input @click="downUp(2)" type="radio" name="up_down" value="ダウン">ダウン</label></li>
+                <li class="title">
+                    アップorダウン
+                </li>
+                <li>
+                    <label>
+                        <input @click="downUp(1)" type="radio" name="up_down" value="アップ" checked>
+                        アップ
+                    </label>
+                </li>
+                <li class="to_left">
+                    <label>
+                        <input @click="downUp(2)" type="radio" name="up_down" value="ダウン">
+                        ダウン
+                    </label>
+                </li>
             </ul>
         </div>
         <div class="target_present">
             <ul class="to_left contents">
                 <li class="title">目標値・現在値</li>
-                <li v-for="target_present in target_presents" :key="target_present">{{ target_present }}</li>
+                <li v-for="target_present in target_presents" :key="target_present">
+                    {{ target_present }}
+                </li>
             </ul>
             <ul class="contents desc_about_meter">
-                <li class="title">※目標値<span>{{ sign }}</span>現在値</li>
+                <li class="title">
+                    ※目標値<span>{{ sign }}</span>現在値
+                </li>
                 <li>
                     <select name="select_target" @change="doTargetPresent($event, 1)">
-                        <option v-for="select_number in select_numbers" :value="select_number.target" :key="select_number.target">{{ select_number.target }}</option>
+                        <option v-for="select_number in select_numbers" :value="select_number.target" :key="select_number.target">
+                            {{ select_number.target }}
+                        </option>
                     </select>
                 </li>
                 <li>
                     <select name="select_present" class="to_left" @change="doTargetPresent($event, 2)">
-                        <option v-for="select_number in select_numbers" :value="select_number.present" :key="select_number.present">{{ select_number.present }}</option>
+                        <option v-for="select_number in select_numbers" :value="select_number.present" :key="select_number.present">
+                            {{ select_number.present }}
+                        </option>
                     </select>
                 </li>
             </ul>
@@ -38,7 +58,12 @@
         <div class="contents picture_word_no">
             <ul class="contents picture_word">
                 <li class="title">写真or文字orなし</li>
-                <li class="to_left"><label class="left_center" v-for="(image, index) in images" :key="image" @change="pictureWord(index)"><input type="radio" name="image" checked>{{ image }}</label></li>
+                <li class="to_left">
+                    <label class="left_center" v-for="(image, index) in images" :key="image" @change="pictureWord(index)">
+                        <input type="radio" name="image" checked>
+                        {{ image }}
+                    </label>
+                </li>
             </ul>
             <div class="show_word">
                 <div class="written" v-if="show_select_word">
@@ -48,7 +73,9 @@
                 </div>
                 <div class="picture_show" v-if="show_select_picture">
                     <ul v-for="img_data in imgs_data" :key="img_data">
-                        <li><img :src="img_data" alt="選択した画像"></li>
+                        <li>
+                            <img :src="img_data" alt="選択した画像">
+                        </li>
                     </ul>
                 </div>
                 <div class="text_write_in button_select" v-if="show_select_word">
@@ -67,7 +94,6 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import imageCompression from 'browser-image-compression';
 import { confirm } from '@/components/confirmation/confirm_person';
 
 @Component
@@ -78,7 +104,7 @@ export default class Option extends Vue {
     show_select_picture: boolean = false;//写真選択の表示
     show_select_word: boolean = false;//文字の記入
     written: string = "";//画面に表示する文字
-    imgs_data: (string | ArrayBuffer | null)[] = [require("../../../static/edit/hatena.png")];
+    imgs_data: (string | ArrayBuffer | null)[] = [require("@/static/edit/hatena.png")];
     post_image: any[] = [];
     words_data: string[] = [];
     word_position: number = 0;
@@ -102,7 +128,8 @@ beforeMount() {
         
     if(this.$route.params.optionNum !== "free") {
 
-        console.log('go mount')
+        console.log('go mount');
+
         const username = this.$store.state.username;
         confirm(username);
 
@@ -112,170 +139,132 @@ beforeMount() {
 }
 
 created(): void{//選択の数字
+
     this.doArray(200); 
 
     //planをvuexに入れる
     const plan = this.$route.params.optionNum
     this.$store.dispatch("planSelect_arrayDelete", plan);
 
-    console.log(this.imgs_data)
+    console.log(this.imgs_data);
+
 }
+
 downUp(which_is: number): void {
+
     if(which_is == 1) {
         this.sign = "＞";
         this.doSplice(0, 1, "＞");
     } else {
+
         this.sign = "＜";
         this.doSplice(0, 1, "＜");
+
     }
     
 }
+
 doTargetPresent(event: Event, divide: number): void {
 
     if(this.words_data !== []) {//写真や文字入力中のときの目標値・現在値の変更 写真や文字をリセット
+        
         this.written = "";
         this.words_data.splice(0, this.words_data.length);
         this.word_position = 0;
         this.imgs_data.splice(0, this.imgs_data.length);
         this.count_num = 0;
+
     }
 
-    
-    
-    /*if(!(val.target instanceof HTMLInputElement)) {
-        return;
-    }*/
-    //console.log((<HTMLInputElement>event.target).value);
     const target_present = (<HTMLInputElement>event.target).value;
     
     if(divide === 1) {
+
         this.doSplice(1, 1, Number(target_present));
+
     } else {
+
         this.doSplice(2, 1, Number(target_present));
+
     }
 
-    
 }
-async selectPicture(e: Event){//写真
-        const  file = (<HTMLInputElement>e.target).files![0];
-        //const file_url = URL.createObjectURL(file);
 
+selectPicture(e: Event){//写真
 
-    //data:image/png;base64,
+    const file = (<HTMLInputElement>e.target).files![0];
 
+    const selector_img_data = (img: (string | ArrayBuffer | null)) => {//画像データの扱いを実行(ここから)
 
-        
-        /*const options = {
-            //MAXSIZEMB: 10,
-            maxWidthOrHeight: 120
+        if(this.count_num > 9) {//10個まで
+            
+            return;
+
         }
-        const compression_file = await imageCompression(file, options);*/
 
-        const selector_img_data = (img: (string | ArrayBuffer | null)) => {//画像データの扱いを実行(ここから)
+        let change_num = 0;
 
-            if(this.count_num > 9) {//10個まで
+        if(this.$route.params.optionNum === "free") {//パラメーターがfreeのときは固定
+
+            change_num = 1;
+            this.count_num = 0;
+            this.imgs_data.splice(1, 1);//はてなを削除
+
+            this.doSplice(3, 1, file.name);
             
-                return;
-            }
+        } else {//free以外のとき
 
-            let change_num = 0;
+            if(this.save_storage[0] === "＜") {
 
-            if(this.$route.params.optionNum === "free") {//パラメーターがfreeのときは固定
+                if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {//NUMBERのとき
 
-                change_num = 1;
-                this.count_num = 0;
-                this.imgs_data.splice(1, 1);//はてなを削除
-
-
-                //console.log(this.img_picture)
-                this.doSplice(3, 1, file.name);
-            
-
-            } else {//free以外のとき
-
-                if(this.save_storage[0] === "＜") {
-
-                    if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {//NUMBERのとき
-
-                        const differential: number = this.save_storage[2] - this.save_storage[1];//＜のときの差分
+                    const differential: number = this.save_storage[2] - this.save_storage[1];//＜のときの差分
                 
 
-                        if(differential <= this.count_num) {//これ以上の画像追加はできない
+                    if(differential <= this.count_num) {//これ以上の画像追加はできない
                
-                            return;
-                        }
-
+                        return;
                     }
 
                 }
-            
-
-
-                if(this.count_num === 0) {//はじめの１回
-
-                    change_num = 1;
-
-                    //はてなを追加
-                    this.imgs_data.splice(1, 0, require("../../../static/edit/hatena.png"));
-                
-                }else if(this.count_num === 9) {
-
-                    this.imgs_data.splice(9, 1);//はてなを削除
-
-                }
 
             }
 
-            this.imgs_data.splice(this.count_num, change_num, img);//配列を変える
-            this.post_image.splice(this.count_num, change_num, file);
-            this.count_num++;//配列の順番を+1
+            if(this.count_num === 0) {//はじめの１回
+
+                change_num = 1;
+
+                //はてなを追加
+                this.imgs_data.splice(1, 0, require("@/static/edit/hatena.png"));
+                
+            } else if(this.count_num === 9) {
+
+                this.imgs_data.splice(9, 1);//はてなを削除
+
+            }
 
         }
 
+        this.imgs_data.splice(this.count_num, change_num, img);//配列を変える
+        this.post_image.splice(this.count_num, change_num, file);
+        this.count_num++;//配列の順番を+1
 
-        const reader = new FileReader();
+    }
 
-        reader.addEventListener('load', () => {
+    const reader = new FileReader();
 
-            const result = reader.result;
+    reader.addEventListener('load', () => {
 
-            //console.log(result)
-
+        const result = reader.result;
             
+        selector_img_data(result);//画像データの扱いを実行
 
-            /*if(typeof(result) === "string") {
-                
-                const option_url = result.replace('data:image/', '');
-                console.log(option_url)*/
-            
-                selector_img_data(result);//画像データの扱いを実行
-            //}
+    })
 
-            
- 
-        })
-
-        
-        reader.readAsDataURL(file);//URL作成
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
-        
+    reader.readAsDataURL(file);//URL作成
+    
 }
+
 decidedWord(): void {//文字
 
     if(this.$route.params.optionNum === "free") {
@@ -288,6 +277,7 @@ decidedWord(): void {//文字
         if(this.save_storage[0] === "＜") {
 
             if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {
+
                 const differential: number = Number(this.save_storage[2]) - Number(this.save_storage[1]);//＜のときの差分
       
                 if(differential <= this.word_position) {//これ以上の画像追加はできない
@@ -296,9 +286,6 @@ decidedWord(): void {//文字
                 }
 
             }
-
-            
-
             
         }
 
@@ -312,261 +299,215 @@ decidedWord(): void {//文字
         
 
     }
-    console.log('it')
-
-    
-    
+ 
 }
-/*sendData(): void{
-    //console.log("it");
-    this.doSplice(3, 1, this.written);
-}*/
+
 pictureWord(index: number): void {//写真、文字を選択した時に写真か文字の追加
+
     if(index == 0) {//写真
         this.show_select_picture = true;
         this.show_select_word = false;
         this.written = "";
+
     } else if(index == 1){//文字
+
         this.show_select_word = true;
         this.show_select_picture = false;
+
     } else {//なし
+
         this.show_select_word = false;
         this.show_select_picture = false;
         this.written = "";
         this.doSplice(3, 1, "なし");
+
     }
+
 }  
-    toNext(row: [string, number, number, string]): void {
-    //console.log(this.save_storage);//保存[不等号,目標値,現在値,写真]
-        
-        //console.log(this.post_image[0].name);
 
-        const send_data_go = () => {//実行
+toNext(row: [string, number, number, string]): void {
 
-            if(this.$route.params.optionNum !== "free") {//パラメータがfree以外のとき
+    const send_data_go = () => {//実行
 
+        if(this.$route.params.optionNum !== "free") {//パラメータがfree以外のとき
 
-                let send_array: (string | ArrayBuffer | null)[] = this.words_data;//文字のデータを送る
+            let send_array: (string | ArrayBuffer | null)[] = this.words_data;//文字のデータを送る
 
-                if(this.show_select_picture) {//写真のデータを送る
+            if(this.show_select_picture) {//写真のデータを送る
 
-                    for(let i=0; i < this.post_image.length; i++) {
-                        send_array.splice(i, 1, this.post_image[i].name);
-                    }
-                    
+                for(let i=0; i < this.post_image.length; i++) {
+
+                    send_array.splice(i, 1, this.post_image[i].name);
 
                 }
-
-                console.log(send_array);
-
-                if(!this.show_select_word && !this.show_select_picture) {//ナシを選択したときのデータ
-
-                    send_array.splice(0, 0, "");
-
-                }
-
-                if(send_array.length === 0) {//写真、文字を選択したにもかかわらず、空だったとき
-
-                    this.attention = "写真または文字がありません。";
-                    return;
-                }
-
-                console.log(send_array + 'ui')
-
-                this.$store.dispatch("inSelectData", send_array);
-
-                
-
-                /*let img_word_num = 3;
-
-                row.splice(3, 1);//default
-
-                if(this.show_select_picture) {
-
                     
-
-                    
-
-                    this.imgs_data.forEach((image) => {
-
-                        if(image.match('image/png')) {//デフォルトの値を除外
-
-                            return;
-                        }
-
-                        row.splice(img_word_num, 0, image);//複数の画像を追加
-
-                        img_word_num++;
-                    });
-
-                    console.log(row);
-                
-
-                } else if(this.show_select_word) {//文字を選択したとき
-
-
-                    this.words_data.forEach((word) => {
-
-                        row.splice(img_word_num, 0, word);//複数個の文字を追加
-
-                        img_word_num++;
-                    });
-
-                    console.log(row);
-
-                }*/
-
-                
             }
 
-            let send_contents = "img";//画像か写真か
+            console.log(send_array);
 
-            if(!this.show_select_picture) {//画像選択していないとき
+            if(!this.show_select_word && !this.show_select_picture) {//ナシを選択したときのデータ
 
-                if(this.show_select_word) {//文字を選択したとき
+                send_array.splice(0, 0, "");
 
-                    send_contents = "word";
+            }
 
-                } else {//なしを選択したとき
+            if(send_array.length === 0) {//写真、文字を選択したにもかかわらず、空だったとき
 
-                    send_contents = "nothing";
+                this.attention = "写真または文字がありません。";
+                return;
+            }
 
-                }
+            console.log(send_array + 'ui');
+
+            this.$store.dispatch("inSelectData", send_array);
+
+                
+        }
+
+        let send_contents = "img";//画像か写真か
+
+        if(!this.show_select_picture) {//画像選択していないとき
+
+            if(this.show_select_word) {//文字を選択したとき
+
+                send_contents = "word";
+
+            } else {//なしを選択したとき
+
+                send_contents = "nothing";
+
+            }
  
 
-            }
+        }
 
-            row.splice(4, 0, send_contents);
+        row.splice(4, 0, send_contents);
 
-            this.$store.dispatch("inData", row);//基本データ
-            console.log(row)
+        this.$store.dispatch("inData", row);//基本データ
+        console.log(row);
 
-            //データをVuexへ
-            const url_name =  this.$route.params.optionNum;
+        //データをVuexへ
+        const url_name =  this.$route.params.optionNum;
 
+        //画像データをサーバーへ
+        console.log(this.post_image);
+        const formData = new FormData();
 
+        for(let key=0; key < this.post_image.length; key++) {
 
-
-            //画像データをサーバーへ
-            ///const show_data = this.$store.state.show_data;
-            //const only_img = show_data.splice(0, 1);
-            console.log(this.post_image);
-            const formData = new FormData();
-
-            for(let key=0; key < this.post_image.length; key++) {
-                formData.append(String(key), this.post_image[key]);
-            }
-
-            formData.append('data_length', String(this.post_image.length));
-
-            console.log(formData);
-
-            this.$axios.post('counter_image', formData)
-            .then((response) => {
-                console.log(response.data);
-
-            })
-
-            //if(url_name === "free") {//freeのときにvuexに入れるデータ
-
-                
-
-            //} else {//selectのときにvuexに入れるデータ
-
-                //this.$store.dispatch("inSelectData", row);
-
-           // }
-           console.log(this.words_data);
-            
-            
-
-            
-
-            this.$router.push('/counterDo/counter_this/' + url_name);
+            formData.append(String(key), this.post_image[key]);
 
         }
 
+        formData.append('data_length', String(this.post_image.length));
 
-        if(this.save_storage[0] === "＞") {
+        console.log(formData);
 
-            if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {
+        this.$axios.post('counter_image', formData)
+        .then((response) => {
 
-                if(this.save_storage[1] > this.save_storage[2]) {
+            console.log(response.data);
 
-                    //値が正しければ次へ実行
-                    send_data_go();
-                    return;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+        console.log(this.words_data);
+
+        this.$router.push('/counterDo/counter_this/' + url_name);
+
+    }
+
+
+    if(this.save_storage[0] === "＞") {
+
+        if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {
+
+            if(this.save_storage[1] > this.save_storage[2]) {
+
+                //値が正しければ次へ実行
+                send_data_go();
+                return;
                 
-                } 
-            }
+            } 
         }
+    }
         
-        if(this.save_storage[0] === "＜") {
+    if(this.save_storage[0] === "＜") {
 
-            if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {
+        if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {
 
-                if(this.save_storage[1] < this.save_storage[2]) {
+            if(this.save_storage[1] < this.save_storage[2]) {
 
-                    //値が正しければ次へ実行
-                    send_data_go();
-                    return;
+                //値が正しければ次へ実行
+                send_data_go();
+                return;
 
-                }
             }
-
-            
         }
+    
+    }
 
-       
-        this.attention = "目標値・現在値が正しくありません";
-
-
-
-       
+    this.attention = "目標値・現在値が正しくありません";
+   
     }
 }
 </script>
 <style lang="scss">
+
     html { /*背景色*/
         background-color: #09eea999;
     }
+
     .first_option {/*白い部分*/
+
         $em_size: 2em;/*em*/
         background-color: white;
         text-align: center;
         margin-top: $em_size * 6;
         padding-top: 50px;
+
         ul {/* 文字の大きさ */
             list-style: none;
+
             li{
                 display: inline-block;
                 padding:0 10px;
                 font-size: 20px;
             }
+
         }
+
         .up_or_down ul{/*アップorダウン*/
+
             margin-right: $em_size * 6;
             li{
+
                 margin:80px 0;
+                
             }
+
         } 
+
         .title {/*横にする */
+
             float: left;
+
         }
+
         .desc_about_meter li { /*目標値と値 */
+
             select {
                 width: 80px;
                 height: 40px;
                 font-size: 20px;
             }
-            /*&:nth-of-type(3) {
-                //margin-right: $em_size * 1;
-            }*/
+
         }
         
         .to_left {
             
-            //margin-right: 270px;
             margin-right: $em_size * 6;
 
             li{
@@ -574,21 +515,19 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 margin-right: 1.5rem;
 
             }
-
-            
-
             
         }
+
         .picture_word li {
-            margin-top: 80px;
 
+            margin-top: 80px;
             
         }
+
         .show_word {/* 写真or文字orなし */
+
             font-size: 25px;
             margin-left: 1rem;
-
-            
 
             .written {
 
@@ -601,6 +540,7 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 background-color: rgba(0, 0, 0, 0.7);
 
                 ul li {
+
                     width: 220px;
                     background-color: rgba(0, 255, 255, 0.7);
                     margin-right: 2rem;
@@ -613,62 +553,48 @@ pictureWord(index: number): void {//写真、文字を選択した時に写真�
                 margin-left: 2rem;
             }
 
+            .picture_show {
 
-            
-            
-            /*input {
-                font-size: 20px;
-                &:nth-of-type(2) {
-                    margin-right: $em_size;
-                    padding: 3px 5px;
-                }
-            }*/
-
-            
+                width: 890px;
+                background-color: rgba(0, 0, 0, 0.7);
+                display: flex;
+                flex-wrap: wrap;
+                margin-left: 50%;
+                transform: translateX(-50%);
 
 
-                .picture_show {
+                img {
+                    width: 110px;
+                    display: inline;
+                    background-color: rgb(235, 235, 235);
 
-                    width: 890px;
-                    background-color: rgba(0, 0, 0, 0.7);
-                    display: flex;
-                    flex-wrap: wrap;
-                    margin-left: 50%;
-                    transform: translateX(-50%);
+                } 
 
+            }
 
-                    img {
-                        width: 110px;
-                        display: inline;
-                        background-color: rgb(235, 235, 235);
+            .button_select {
 
-                    } 
+                margin-top: 20px;
 
-                }
+            }
 
-                .button_select {
-                    margin-top: 20px;
-                }
-
-
-     
-
-            
-
-             
-    
         } 
+
         .end_button {
+
             margin-left: 1rem;
+
             p {
                 color: red;
             }
+
             button {/*ボタン*/
                 margin: 50px 0 60px;
                 font-size: 20px;
                 padding: 7px 20px;
                 color:rgb(46, 46, 46);
             }
+            
         }
         
     }   

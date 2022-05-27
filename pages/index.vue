@@ -70,11 +70,11 @@
     </div>
 </template>
 <script lang="ts">
-//import Vue from 'vue';
-//import Component from 'vue-class-component';
 import { Vue, Component } from 'vue-property-decorator';
+
 @Component
 export default class Home extends Vue{
+
   logins: { showed_data: string, to_url: string }[] = [ 
     { showed_data: "ログイン", to_url: "/addInfo/login/2" },
     { showed_data: "新規登録", to_url: "/addInfo/new_account" },
@@ -83,65 +83,59 @@ export default class Home extends Vue{
   url_change: string = require("../static/Home/selector_box.png");
   change_box: boolean = true;//urlの変更
   show_section: boolean = false; //ログイン欄の表示(true==表示,false==非表示)
-  showEveryData: { picture: string|ArrayBuffer|null, my_comment: string }[]
-                = []
+  showEveryData: { picture: string|ArrayBuffer|null, my_comment: string }[] = [];
     
-    created() {
+  created() {
 
-     
+    this.$axios.get('only_top')
+    .then((response) => {
 
-      this.$axios.get('only_top')
-      .then((response) => {
-        console.log(response.data.topData);//'data:image/'+
+      console.log(response.data.topData);
 
-        const topData = response.data.topData;
+      const topData = response.data.topData;
 
-        for(let i=0; i < topData.length; i++) {
+      for(let i=0; i < topData.length; i++) {
 
-          const image = process.env.SERVER_URL + 'storage/post/' + topData[i].picture
+        const image = process.env.SERVER_URL + 'storage/post/' + topData[i].picture;
 
-          const push_data = {picture: image, my_comment: topData[i].my_comment};
+        const push_data = {picture: image, my_comment: topData[i].my_comment};
 
-          this.showEveryData.splice(i, 1, push_data);
-        }
-
-        
-        
-
-      })
-      .catch((response) => {
-        console.log(response);
-      })
-    }
-
-    mounted() {
-      //localStorageのデータを削除
-      
-      localStorage.clear();
-    }
-    
-    changeBox() {//2つの画像の変更の繰り返し
-      if(this.change_box == true) {
-        //開くに変更
-        this.url_change = require("../static/Home/close_selection.png"); 
-        this.change_box = false;
-        this.show_section = true;
-      } else {
-        //閉じるに変更
-        this.url_change = require("../static/Home/selector_box.png"); 
-        this.change_box = true;
-        this.show_section = false;
+        this.showEveryData.splice(i, 1, push_data);
       }
+
+    })
+    .catch((response) => {
+      console.log(response);
+    })
+  }
+
+  mounted() {
+
+    //localStorageのデータを削除
+      localStorage.clear();
+
+  }
+    
+  changeBox() {//2つの画像の変更の繰り返し
+
+    if(this.change_box == true) {
+      //開くに変更
+      this.url_change = require("../static/Home/close_selection.png"); 
+      this.change_box = false;
+      this.show_section = true;
+
+    } else {
+      //閉じるに変更
+      this.url_change = require("../static/Home/selector_box.png"); 
+      this.change_box = true;
+      this.show_section = false;
     }
 
-
+  }
   
 }
 </script>    
 <style scoped lang="scss">
-  /*$breakpoint: (
-    sp: 'screen and (max-width: 480px)',
-  );*/
 
   @mixin sp {
     @media (max-width: 560px) {
@@ -168,10 +162,11 @@ export default class Home extends Vue{
   }
 
   nav {//トップ画面
-   z-index: 10;
-   width: 100%;
-   height: 100px;
-   background-color: rgba(0, 0, 0, 0.397);
+    z-index: 10;
+    width: 100%;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.397);
+
    .to_count {
       display: inline-block;
       color: white;
@@ -184,6 +179,7 @@ export default class Home extends Vue{
         background-color: rgba(17, 63, 75, 0.76);
       }
     }
+
     p {
       color: white;
       padding-right: 10px;
@@ -191,11 +187,11 @@ export default class Home extends Vue{
       line-height: 100px;
     }
   
-  .selector_img {
-    width: 90px;
-    float: right;
-    padding: 15px 25px 0 0;
-  }
+    .selector_img {
+      width: 90px;
+      float: right;
+      padding: 15px 25px 0 0;
+    }
   }
   
   //animation
@@ -210,6 +206,7 @@ export default class Home extends Vue{
   header {
       position: absolute;//fixed;
       right: 0;
+
     .show_login {
       background-color: rgba(6, 66, 77, 0.514);
       width: 200px;
@@ -234,13 +231,12 @@ export default class Home extends Vue{
 
     .top_container {
 
-      //background: url("../static/Home/background_number3.jpg") no-repeat;
-      //width: 100%;
       margin-top: 100px;
 
       h1 {
         font-size: 55px;
         color: rgba(48, 48, 48, 0.9);
+
         @include sp {
           font-size: 40px;
         }
@@ -259,8 +255,6 @@ export default class Home extends Vue{
         margin: 110px;
         border: 3px double #ddd;
         padding: 20px;
-
-        
 
         h2 {
           font-size: 30px;
@@ -290,20 +284,23 @@ export default class Home extends Vue{
           padding-right: 40px;
 
           li {
+
             padding: 10px 0;
-            //color: red;
+
+            &:first-of-type {
+              font-size: 30px;
+            }
+            
             &:nth-of-type(2) {
               text-decoration: underline;
               text-decoration-color: rgba(255, 60, 60, 0.9);
             }
-             &:nth-of-type(3) {
+
+            &:nth-of-type(3) {
               text-decoration: underline;
               text-decoration-color: rgba(0, 132, 255, 0.3);
             }
  
-            &:first-of-type {
-              font-size: 30px;
-            }
           }
 
         }
@@ -365,8 +362,8 @@ export default class Home extends Vue{
     .footer_container {
       background-color: rgba(60, 133, 94, 0.7);
       margin: 60px auto;
-       width: 40%;
-       height: 40vh;
+      width: 40%;
+      height: 40vh;
       overflow-x: hidden;
       overflow-y: scroll;
 
@@ -375,40 +372,37 @@ export default class Home extends Vue{
           
       }
 
-          @include tb {
-            width: 70%;
+      @include tb {
+        width: 70%;
           
-          }
-      //margin-bottom: 40px;
-     //table {
-       //width: 50px;
-     // height: 60px;
-     //background-color: blue;
-     table {
-       width: 100%;
-       caption {
-        font-size: 25px;
-        color: black;
       }
-     }
 
-     table, th, td {
-       border: 3px solid white;
-     }
-     th {
-       width: 40%;
-       img {
-         width: 80%;
-         margin-left: 10%;
-       }
-       
-     }
-     td {
+      table {
+        width: 100%;
+
+        caption {
+          font-size: 25px;
+          color: black;
+        }
+      }
+
+      table, th, td {
+        border: 3px solid white;
+      }
+
+      th {
+        width: 40%;
+        img {
+          width: 80%;
+          margin-left: 10%;
+        }
+      }
+
+      td {
      
-       word-break: normal;
-       width: 60%;
-       //text-overflow: ellipsis;
-     }
+        word-break: normal;
+        width: 60%;
+      }
      
     }
 
@@ -421,7 +415,6 @@ export default class Home extends Vue{
     ul {
         cursor: default;
         padding: 30px;
-        
         font-size: 20px;
 
       @include sp {
@@ -447,14 +440,10 @@ export default class Home extends Vue{
   }
 
   li {
+
     list-style: none;
     
   }
-
-
-  
-
-
 
 /* Box sizing rules */
 *,

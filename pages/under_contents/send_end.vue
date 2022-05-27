@@ -10,7 +10,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import backButton from '../../components/back_button/back.vue';
+import backButton from '@/components/back_button/back.vue';
 
 @Component({
     components: {

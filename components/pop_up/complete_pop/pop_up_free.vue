@@ -11,27 +11,28 @@
                         <li>ができます!</li>
                     </ul>
                 </div>
-            </div>
-            <ul class="merit">
-                <p>このサイトで<span>シェア</span>すると</p>
-                <li>いいね、コメントなど機能を選択したうえで投稿できる!!</li>
-                <!--<li>機能を制限しても「制限しています」のような表示がないので、Twitter、Instagramよりも制限しやすい!!</li>-->
-                <li>周りを気にしない気軽な投稿をしたい!!</li>
-                <ul>
-                    <li>Twitter、Instagramのコミュニティでは投稿しにくいな...</li>
-                    <li>Twitter、Instagramでこんな投稿しちゃっていいのかな...</li>
-                    <li>誰からもいいねされなかったら嫌だな...</li>
-                </ul>
-                <li>そんな方には、記録の共有に特化したここでのシェアがおすすめ!!</li>
+        </div>
+        <ul class="merit">
+            <p>このサイトで<span>シェア</span>すると</p>
+            <li>いいね、コメントなど機能を選択したうえで投稿できる!!</li>
+            <li>周りを気にしない気軽な投稿をしたい!!</li>
+            <ul>
+                <li>Twitter、Instagramのコミュニティでは投稿しにくいな...</li>
+                <li>Twitter、Instagramでこんな投稿しちゃっていいのかな...</li>
+                <li>誰からもいいねされなかったら嫌だな...</li>
             </ul>
-            <div class="selector">
-                <button @click="toLogin">ログインする</button>
-                <label class="twitter" @click="twitterGo">
-                    <p><img src="../../../static/twitter/twitter_logo.png" alt="twitter"></p>
-                    Twitterでシェア
-                </label>
-                <nuxt-link class="back_home" to="/">ログインしないでホームに戻る</nuxt-link>
-            </div>
+            <li>そんな方には、記録の共有に特化したここでのシェアがおすすめ!!</li>
+        </ul>
+        <div class="selector">
+            <button @click="toLogin">ログインする</button>
+            <label class="twitter" @click="twitterGo">
+                <p><img src="../../../static/twitter/twitter_logo.png" alt="twitter"></p>
+                Twitterでシェア
+            </label>
+            <nuxt-link class="back_home" to="/">
+                ログインしないでホームに戻る
+            </nuxt-link>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -44,16 +45,14 @@ export default class popUpFree extends Vue {
         this.$router.push('/addInfo/login/toNextEdit');
     }
 
-
-
     twitterGo() {
 
         let twitterURL = 'https://twitter.com/intent/tweet';
         twitterURL += '?text=' + '';
         twitterURL += '&url=' + encodeURIComponent(window.location.origin);
 
-        
         window.open(twitterURL);
+
     }
 
 }
@@ -66,14 +65,16 @@ export default class popUpFree extends Vue {
             font-size: 40px;
         }
 
-        
-
         .canDesc {
+
             margin-right: 30px;
 
             ul {
+
                 font-size: 25px;
+
                 li {
+
                     list-style: none;
                     
                     &:first-of-type {
@@ -104,9 +105,9 @@ export default class popUpFree extends Vue {
     }
 
     .merit {
-         color: rgb(49, 49, 49);
-         
 
+        color: rgb(49, 49, 49);
+         
         p {
             font-size: 30px;
             text-align: center;
@@ -128,6 +129,7 @@ export default class popUpFree extends Vue {
 
 
 .selector {
+
     text-align: center;
     cursor: default;
 
@@ -137,12 +139,14 @@ export default class popUpFree extends Vue {
     }
 
     .twitter {
+
         display: block;
         margin: 20px 17vw;
         color: rgb(0, 110, 255);
         
 
         p img {
+
             width: 35px;
             margin: 0 auto;
             background-color: rgba(0, 217, 255, 0.8);
@@ -151,6 +155,7 @@ export default class popUpFree extends Vue {
     } 
 
     button {
+
         font-size: 30px;
         color: rgb(29, 29, 29);
         background-color:rgba(106, 208, 255, 0.3);

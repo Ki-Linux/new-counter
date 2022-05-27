@@ -78,31 +78,4 @@ export default {
     },
   },
 
-  //auth: {
-    /*redirect: {
-      login: '/login',
-      logout: '/',
-      callback: false,
-      home: '/about',
-    },*/
-    //strategies: {
-      //local: {
-        /*token: {
-          property: "token",
-          global: true,
-        },
-        user: {
-          property: "user",
-        },*/
-        //endpoints: {
-          //login: { url: "/api/login", method: "post", propertyName: 'token' },
-          //logout: false, //{ url: "/api/logout", method: "post" },
-          //user: false//{ url: "/api/user", method: "get", propertyName: 'user' },
-        //},
-      //},
-    //},
-  //},
-  /*router: {
-    middleware: 'routing'
-  }*/
 }
