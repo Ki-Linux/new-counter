@@ -16,21 +16,21 @@ export default class TopLabel extends Vue {
     const vuexData = this.$store.state;
 
     if(vuexData.canClick) {//clickできるか(popup)
-      if(confirm(conf)) {
 
         let url;
 
-        if(vuexData.select_plan == "free") {
+        if(vuexData.select_plan == "free" && vuexData.username == "") {
 
           url = ('/');
-          
+
         } else {
+
           url = ('/myaccount/mypage/' + vuexData.username);
+          
         }
         
         this.$router.push(url);
-        
-      } 
+      
     }
         
   }

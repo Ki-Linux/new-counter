@@ -52,10 +52,10 @@ export default class reminder extends Vue {
 
         const decide_name = this.$store.state.username;
         
-        this.$axios.post("reminder", {
-
-            username: decide_name,
-           
+        this.$axios.get("reminder", {
+            params: {
+                username: decide_name,
+            }
         })
         .then((response) => {
             console.log(response);
