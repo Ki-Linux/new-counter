@@ -52,7 +52,7 @@
                     </li>
                     <li>{{ details_list.my_comment }}</li>
                     <li>{{ details_list.updated_at }}</li>
-                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone' && icon_point.my_icon !== url+'not'">
+                    <li @click="detailData('other')" v-if="$route.params.contents === 'everyone'">
                         <img :src="icon_point.my_icon" alt="not_img">
                     </li>
                 </ul>
@@ -380,6 +380,10 @@ export default class everyone extends Vue {
 
             this.icon_point.my_icon = this.url + icon_good_comment.icon_data[0].icon;
             console.log(this.icon_point.my_icon);
+
+            if(this.icon_point.my_icon === this.url+'not') {
+                this.icon_point.my_icon = require("@/static/profile/default_img.png");
+            }
 
             this.view_point = icon_good_comment.view_data;
 
