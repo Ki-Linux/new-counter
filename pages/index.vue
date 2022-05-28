@@ -52,7 +52,7 @@
             <caption>みんなの投稿一覧</caption>
             <tbody>
             <tr v-for="(show_every_data, index) in showEveryData" :key="index">
-              <th v-if="show_every_data.picture === 'notImg'">画像なし</th>
+              <th v-if="show_every_data.picture === url + 'notImg'">画像なし</th>
               <th v-else><img :src="show_every_data.picture" alt="picture"></th>
               <td>{{ show_every_data.my_comment }}</td>
             </tr>
@@ -84,8 +84,11 @@ export default class Home extends Vue{
   change_box: boolean = true;//urlの変更
   show_section: boolean = false; //ログイン欄の表示(true==表示,false==非表示)
   showEveryData: { picture: string|ArrayBuffer|null, my_comment: string }[] = [];
+  url: string|undefined;
     
   created() {
+
+    this.url = process.env.SERVER_URL + 'storage/post/';
 
     this.$axios.get('only_top')
     .then((response) => {
@@ -96,7 +99,7 @@ export default class Home extends Vue{
 
       for(let i=0; i < topData.length; i++) {
 
-        const image = process.env.SERVER_URL + 'storage/post/' + topData[i].picture;
+        const image = this.url + topData[i].picture;
 
         const push_data = {picture: image, my_comment: topData[i].my_comment};
 
@@ -106,13 +109,14 @@ export default class Home extends Vue{
     })
     .catch((response) => {
       console.log(response);
-    })
+    });
+
   }
 
   mounted() {
 
     //localStorageのデータを削除
-      localStorage.clear();
+    localStorage.clear();
 
   }
     

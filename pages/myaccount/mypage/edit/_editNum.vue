@@ -388,6 +388,8 @@ export default class edit extends Vue {
 
         } else {
 
+            console.log(this.url);
+
             const set_data = {
                 username: name,
                 image: this.url,
