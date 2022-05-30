@@ -88,6 +88,12 @@ export default class optionMyData extends Vue {
     now_num: number = 4;//現在の番号
     required_num: number[] = [2, 2];//リマインダーするかしないか(defaultはする)
 
+    head() {
+        return {
+            title: '設定',
+        }
+    }
+
     beforeMount() {
         
         console.log('go mount')

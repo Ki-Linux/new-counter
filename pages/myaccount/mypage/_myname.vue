@@ -72,6 +72,12 @@ export default class myname extends Vue {
   show_pop: boolean = false;
   show_phone_desc: boolean = true;
 
+  head() {
+    return {
+      title: 'マイページ'
+    }
+  }
+
   beforeMount() {
         
     console.log('go mount');

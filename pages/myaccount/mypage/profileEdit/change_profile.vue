@@ -66,6 +66,13 @@ export default class change_profile extends Vue {
             judge_number: 3
         },
     ];
+
+    head() {
+        return {
+            title: 'プロフィール編集'
+        }
+    }
+
     send_image() {
 
         const formData = new FormData();

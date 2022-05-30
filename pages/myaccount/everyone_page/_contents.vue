@@ -139,6 +139,12 @@ export default class everyone extends Vue {
     get_click_num_delete_report: number = 0;//クリックしているコメント番号を取得する
     post_report: boolean = false;//trueのとき投稿を通報する
     show_edit: boolean = true;
+
+    head() {
+        return {
+            title: "みんなの投稿",
+        }
+    }
     
     beforeMount() {
         

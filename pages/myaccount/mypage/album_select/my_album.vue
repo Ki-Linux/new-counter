@@ -50,6 +50,12 @@ export default class my_album extends Vue {
     }[] = [];
     username: string = "";
 
+    head() {
+        return {
+            title: 'マイアルバム'
+        }
+    }
+
     beforeMount() {
         
         console.log('go mount');

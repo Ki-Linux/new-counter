@@ -12,6 +12,12 @@ import { Vue,Component } from 'vue-property-decorator';
 @Component
 export default class send extends Vue {
 
+    head() {
+        return {
+            title: 'パスワード確認完了'
+        }
+    }
+
     back() {
        
        this.$router.push('/addInfo/login');

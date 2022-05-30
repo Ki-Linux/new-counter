@@ -18,6 +18,12 @@ export default class confirmation extends Vue {
     mail_confirm: string = "";
     warning: string = "";
 
+    head() {
+        return {
+            title: 'パスワードを忘れてしまったとき'
+        }
+    }
+
     Confirm() {
 
         this.$axios.post("mail", {

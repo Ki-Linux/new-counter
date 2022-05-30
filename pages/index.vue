@@ -70,7 +70,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component } from 'nuxt-property-decorator';
 
 @Component
 export default class Home extends Vue{
@@ -85,6 +85,13 @@ export default class Home extends Vue{
   show_section: boolean = false; //ログイン欄の表示(true==表示,false==非表示)
   showEveryData: { picture: string|ArrayBuffer|null, my_comment: string }[] = [];
   url: string|undefined;
+
+  head() {
+    return {
+      title: 'プラマイカウンター',
+      titleTemplate: null,
+    }
+  }
     
   created() {
 

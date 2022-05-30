@@ -86,6 +86,29 @@ export default class Rule extends Vue {
         '別途用件でも必要があった際に本サイトの範囲でメールアドレスを利用させていただく場合もあります。',
         '本サイトの運営が終了する際には、アカウント、投稿及びコメントの情報等をすべて削除いたします。'
     ];
+
+    head() {
+
+        const router_data = this.$route.params.rule;
+        let title_data;
+
+        if(router_data === "terms_of_use") {
+
+            title_data = "利用規約";
+
+        } else if(router_data === "privacy_policy") {
+
+            title_data = "プライバシーポリシー";
+
+        }
+
+        return {
+            title: title_data,
+            meta: [
+                { hid: 'description', name: 'description', content: 'プラマイカウンターの'+title_data+'となります。' }
+            ]
+        }
+    }
 }
 </script>
 <style lang="scss">

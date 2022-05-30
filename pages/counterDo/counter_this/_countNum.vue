@@ -40,6 +40,12 @@
         setting: [string, number, number, string] = ["", 0, 0, ""];
         only_number: number[] = [0, 0];
 
+        head() {
+            return {
+                title: 'カウント'
+            }
+        }
+
     }
 </script>
 <style lang="scss">

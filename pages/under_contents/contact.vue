@@ -18,6 +18,15 @@ export default class contract extends Vue {
     content_address:{content: string, address: string} = {content: "", address: ""};
     attention: string = "";
 
+    head() {
+        return {
+            title: 'お問い合わせ',
+            meta: [
+                { hid: 'description', name: 'description', content: 'プラマイカウンターお問い合わせフォーム。何かあればこちらからお問い合わせください。' }
+            ]
+        }
+    }
+
     sendContactMail() {
 
         const content = this.content_address.content;

@@ -117,12 +117,20 @@ export default class Option extends Vue {
     doSplice = (num1: number, num2: number, changed: (string | number | ArrayBuffer | null)) => {//splice function
         this.save_storage.splice(num1, num2, changed);
     };
+
     doArray = (max: number) => {//配列
         for(let i=1; i <= max; i++) {
             this.select_numbers.push({target: i, present: i});
             
         } 
     };
+
+    head() {
+        return {
+            title: 'カウンターオプション'
+        }
+    }
+
 
 beforeMount() {
         

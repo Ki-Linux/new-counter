@@ -20,6 +20,12 @@ import backButton from '@/components/back_button/back.vue';
 export default class sendEnd extends Vue {
     words: string[] = ['お問い合わせが完了しました。', 'ありがとうございました。'];
 
+    head() {
+        return {
+            title: 'お問い合わせ完了'
+        }
+    }
+
 }
 </script>
 <style lang="scss">

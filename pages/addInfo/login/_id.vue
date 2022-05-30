@@ -37,6 +37,15 @@ export default class login extends Vue {
     password:string = "";
     no_content: string = "";
 
+    head() {
+        return {
+            title: 'ログイン',
+            meta: [
+                { hid: 'description', name: 'description', content: 'プラマイカウンターのログインフォームになります。' }
+            ]
+        }
+    }
+
     doLogin() {
 
         console.log("doLogin!");

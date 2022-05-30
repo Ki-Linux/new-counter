@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/553c825d-a4d5-4db7-81d3-9f6d8e1cd2a5/microsoft.web/sites/subscriptions/553c825d-a4d5-4db7-81d3-9f6d8e1cd2a5/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/plusminuxcounter",
+    "appService.deploySubpath": "."
+}

@@ -84,6 +84,24 @@ export default class edit extends Vue {
     select_image: boolean = false;
     add_edit: boolean = false;
 
+    head() {
+
+        let title_data;
+        const router_data = this.$route.params.editNum;
+
+        if(router_data === "new_post") {
+
+            title_data = "投稿";
+        } else {
+
+            title_data = "編集";
+        }
+
+        return {
+            title: title_data
+        }
+    }
+
     beforeMount() {
         
         console.log('go mount');

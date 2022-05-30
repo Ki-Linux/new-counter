@@ -80,6 +80,12 @@ export default class chooseAlbum extends Vue {
 
     };
 
+    head() {
+        return {
+            title: 'アルバム',
+        }
+    }
+
     beforeMount() {
         
         console.log('go mount');

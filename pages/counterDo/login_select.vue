@@ -12,7 +12,7 @@
     </div>
 </template>
 <script lang="ts">
-    import { Vue, Component } from 'vue-property-decorator';
+    import { Vue, Component } from 'nuxt-property-decorator';
     import phoneDescription from '@/components/phone/description.vue';
 
     @Component({
@@ -32,6 +32,16 @@
                 url_button: "フリーカウント",
             }
         ];
+
+        head() {
+            return {
+                title: '選択',
+                meta: [
+                    { hid: 'description', name: 'description', content: 'ログインとフリーカウントのどちらかを選択できます。' }
+                ]
+            }
+            
+        }
 
         OKClick(ok_click: boolean) {
             this.show_phone_desc = ok_click;

@@ -42,6 +42,15 @@ export default class newAccount extends Vue {
     password_again: string = "";
     warning: string = "";
 
+    head() {
+        return {
+            title: '新規登録',
+            meta: [
+                { hid: 'description', name: 'description', content: 'プラマイカウンターの新規登録になります。こちらからご登録して初めてみてください。' }
+            ]
+        }
+    }
+
     toNext():void {
 
         const can_save_data = () => {
