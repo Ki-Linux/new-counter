@@ -561,7 +561,7 @@ export default class everyone extends Vue {
         
         if(this.$route.params.contents !== "everyone" && this.my_icon !== 'not') {
 
-            this.detail_profile.user_icon = process.env.SERVER_URL + 'account/' + this.my_icon;
+            this.detail_profile.user_icon = process.env.SERVER_URL + '' + this.my_icon;
 
         }
 
