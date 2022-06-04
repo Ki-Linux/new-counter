@@ -166,8 +166,10 @@ export default class edit extends Vue {
                 const res = response.data.contents[0];
                 this.url = res.picture;
 
+
                 const server_storage_url = process.env.SERVER_URL;
                 this.show_url = server_storage_url + this.url;
+                this.storage_image = [this.url, false];
 
                 this.my_comment = res.my_comment;
                 this.array_check.splice(0, 5, res.can_list , res.can_good, res.can_comment, res.can_see, res.can_top);
@@ -431,11 +433,13 @@ export default class edit extends Vue {
 
         } else {
 
-            this.$axios.put('edit_update/' + editNum, formData)
+            formData.append('id', editNum);
+
+            this.$axios.post('edit_update', formData)// + editNum, 
             .then((response) => {
                 const res = response.data;
 
-                if(res.success === "update_true" && this.add_edit && this.url !== "notImg") {
+                if(res.success === "update_true") {
 
                     this.$router.push('/myaccount/everyone_page/' + name);
 

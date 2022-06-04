@@ -117,7 +117,7 @@ import { confirm } from '@/components/confirmation/confirm_person';
     }
 })
 export default class everyone extends Vue {
-    url: string|undefined;
+    url: string = "";
     //post_url: string = "";
     detail_profile: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string }= { username: '', user_icon: '', user_comment: '' };
     details_list: { id: number, picture: string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string, can_see: number } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '', can_see: 0 };
@@ -158,7 +158,7 @@ export default class everyone extends Vue {
     mounted() {
 
         //const base_url = process.env.SERVER_URL;
-        this.url = process.env.SERVER_URL;
+        this.url = '' + process.env.SERVER_URL;
         //this.post_url = base_url + 'post/';
 
         if(this.$route.params.contents !== "everyone") {

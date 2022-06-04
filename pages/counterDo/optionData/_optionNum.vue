@@ -337,9 +337,10 @@ toNext(row: [string, number, number, string]): void {
 
     const send_data_go = () => {//実行
 
-        if(this.$route.params.optionNum !== "free") {//パラメータがfree以外のとき
+        let send_array: (string | ArrayBuffer | null)[] = this.words_data;//文字のデータを送る
 
-            let send_array: (string | ArrayBuffer | null)[] = this.words_data;//文字のデータを送る
+        if(this.$route.params.optionNum !== "free") {//パラメータがfree以外のとき
+            
 
             if(this.show_select_picture) {//写真のデータを送る
 
@@ -367,7 +368,7 @@ toNext(row: [string, number, number, string]): void {
 
             console.log(send_array + 'ui');
 
-            this.$store.dispatch("inSelectData", send_array);
+            //this.$store.dispatch("inSelectData", send_array);
 
                 
         }
@@ -419,7 +420,16 @@ toNext(row: [string, number, number, string]): void {
             row.splice(4, 0, send_contents);
 
             if(this.$store.state.select_plan === "free") {
+
                 row[3] = response.data[0];
+            } else {
+
+                for(let i=0; i < response.data.length; i++) {
+                    send_array.splice(i, 1, response.data[i]);
+                }
+
+                this.$store.dispatch("inSelectData", send_array);
+
             }
             this.$store.dispatch("inData", row);//基本データ
 
