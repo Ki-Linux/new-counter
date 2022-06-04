@@ -143,7 +143,7 @@ export default class edit extends Vue {
 
             this.url = img_data[3];
             this.storage_image = [this.url, false];
-            this.show_url = process.env.SERVER_URL+'storage/counter/'+this.url;
+            this.show_url = process.env.SERVER_URL+this.url;
 
             if(img_data[4] === "nothing" || img_data[4] === "word") {//画像以外のとき
 
@@ -166,7 +166,7 @@ export default class edit extends Vue {
                 const res = response.data.contents[0];
                 this.url = res.picture;
 
-                const server_storage_url = process.env.SERVER_URL + 'storage/post/';
+                const server_storage_url = process.env.SERVER_URL;
                 this.show_url = server_storage_url + this.url;
 
                 this.my_comment = res.my_comment;
@@ -187,7 +187,7 @@ export default class edit extends Vue {
         const last_data = select_data.length - 1;
 
         const base_url = process.env.SERVER_URL;
-        const url = base_url + 'storage/counter/';
+        const url = base_url;
 
         if(img_num === 0) {//-1
 
@@ -336,18 +336,53 @@ export default class edit extends Vue {
         const editNum = this.$route.params.editNum;
         const name = this.$store.state.username;
 
-        const post_image = (num_edit: string) => {
+        //const post_image = (num_edit: string) => {
 
             const formData = new FormData();
 
-            formData.append('file', this.storage_image[0]);
+            const first_parameter = [
+                'username',
+                'comment',
+                'can_list',
+                'show_good',
+                'others_comment',
+                'can_see',
+                'to_top',
+                'file',
+                'default_or_selected'
+            ];
+
+            const second_parameter = [
+                name,
+                this.my_comment,
+                this.array_check[0],
+                this.array_check[1],
+                this.array_check[2],
+                this.array_check[3],
+                this.array_check[4],
+                this.storage_image[0],
+                this.storage_image[1]
+            ];
+
+            for(let i=0; i < first_parameter.length; i++) {
+
+                formData.append(first_parameter[i], second_parameter[i]);
+
+            }
+
+            
+             
+
+            
+
+            /*formData.append('file', this.storage_image[0]);
             formData.append('default_or_selected', this.storage_image[1]);
-            formData.append('album_or_post', '/post/');
+            formData.append('album_or_post', 'post');
 
             console.log(formData);
-            console.log(this.storage_image[0]);
+            console.log(this.storage_image[0]);*/
 
-            this.$axios.post('album_post_image', formData)
+            /*this.$axios.post('album_post_image', formData)
             .then((response) => {
 
                 console.log(response);
@@ -368,45 +403,51 @@ export default class edit extends Vue {
             })
             .catch((err) => {
                 console.log(err);
-            });
+            });*/
 
-        }
+        //}
+
+        console.log(formData);
 
         if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
 
-            this.$axios.post('edit', {
-                username: name,
-                image: this.url,
-                comment: this.my_comment,
-                can_list: this.array_check[0],
-                show_good: this.array_check[1],
-                others_comment: this.array_check[2],
-                can_see: this.array_check[3],
-                to_top: this.array_check[4],
-            })
+            this.$axios.post('edit', formData)
             .then((response) => {
                 console.log(response);
 
                 const res = response.data;
 
-                if(res.success === "store_true" && this.url !== "notImg") {
+                if(res.success === "store_true") {
                     console.log("success");
 
-                    post_image(editNum);
-                    return;
+                    this.$router.push('/myaccount/mypage/album_select/choose_album');
                     
                 }
-
-                this.$router.push('/myaccount/mypage/album_select/choose_album');
 
             })
             .catch((err) => {
                 console.log(err);
-            })
+            });
 
         } else {
 
-            console.log(this.url);
+            this.$axios.put('edit_update/' + editNum, formData)
+            .then((response) => {
+                const res = response.data;
+
+                if(res.success === "update_true" && this.add_edit && this.url !== "notImg") {
+
+                    this.$router.push('/myaccount/everyone_page/' + name);
+
+                }
+                
+
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+            /*console.log(this.url);
 
             const set_data = {
                 username: name,
@@ -417,15 +458,15 @@ export default class edit extends Vue {
                 others_comment: this.array_check[2],
                 can_see: this.array_check[3],
                 to_top: this.array_check[4],
-            }
+            }*/
 
-            const method_url: AxiosRequestConfig = { //編集
+            /*const method_url: AxiosRequestConfig = { //編集
                 method: 'put',
                 url: 'edit_update/' + editNum,
                 params: set_data,
-            }
+            }*/
 
-            this.$axios(method_url)
+            /*this.$axios(method_url)
             .then((response) => {
                 console.log(response);
 
@@ -433,7 +474,7 @@ export default class edit extends Vue {
 
                 if(res.success === "update_true" && this.add_edit && this.url !== "notImg") {
 
-                    post_image(editNum);
+                   // post_image(editNum);
                     return;
 
                 }
@@ -442,7 +483,7 @@ export default class edit extends Vue {
             })
             .catch((err) => {
                 console.log(err);
-            });
+            });*/
 
         }
 

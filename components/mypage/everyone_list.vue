@@ -23,7 +23,7 @@ export default class everyone_list extends Vue {
 
     contents_num: number = 0;
     delete_back_button: boolean[] = [false];
-    url: string = "";
+    url: string | undefined;
 
     created() {
 
@@ -34,9 +34,10 @@ export default class everyone_list extends Vue {
     }
 
     mounted() {
-        const base_url = process.env.SERVER_URL;
-        this.url = base_url + 'storage/post/';
+
+        this.url = process.env.SERVER_URL;
         console.log(this.url);
+
     }
 
     public getContents = (num: number) => {
@@ -62,7 +63,7 @@ export default class everyone_list extends Vue {
                 //日付だけ表示
                 const new_date = all_data[i].updated_at.split('T').splice(0, 1);
 
-                const image = base_url + 'storage/post/' + all_data[i].picture;
+                const image = base_url + all_data[i].picture;
 
                 let push_item = { id: all_data[i].id, picture: image, my_comment: all_data[i].my_comment,  username: all_data[i].username, updated_at: new_date[0], can_see: 0};
 

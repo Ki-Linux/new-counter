@@ -21,15 +21,14 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class myList extends Vue {
     picturesData: { id: number; my_comment: string; picture: string|number|ArrayBuffer; can_see: number; created_at: string }[] = [];
-    post_url: string = "";
+    post_url: string | undefined;
 
     @Prop()
     public list_username!: string;
 
     mounted() {//データを表示する
 
-        const base_url = process.env.SERVER_URL;
-        this.post_url = base_url + 'storage/post/'; 
+        this.post_url = process.env.SERVER_URL; 
 
         this.$axios.get("edit_show", {
             params: {
@@ -47,8 +46,7 @@ export default class myList extends Vue {
                 const new_date = data[i].created_at.split('T').splice(0, 1);//日にちだけの表示
                 data[i].created_at = new_date[0];
 
-                const base_url = process.env.SERVER_URL;
-                const url = base_url + 'storage/post/';
+                const url = process.env.SERVER_URL;
 
                 data[i].picture = url + data[i].picture;
 

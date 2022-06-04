@@ -95,7 +95,7 @@ export default class Home extends Vue{
     
   created() {
 
-    this.url = process.env.SERVER_URL + 'storage/post/';
+    this.url = process.env.SERVER_URL;
 
     this.$axios.get('only_top')
     .then((response) => {

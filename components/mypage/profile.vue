@@ -43,7 +43,7 @@ export default class profile extends Vue {
 
                 const base_url = process.env.SERVER_URL;
 
-                this.img_data = base_url + 'storage/account/' + pull_img[0].icon;
+                this.img_data = base_url + pull_img[0].icon;
 
             }
 

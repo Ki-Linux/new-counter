@@ -105,7 +105,7 @@ export default class chooseAlbum extends Vue {
 
             const server = process.env.SERVER_URL;
 
-            const url = server + 'storage/counter/';
+            const url = server;
 
             if(store.select_plan === "free"){
 
@@ -133,7 +133,7 @@ export default class chooseAlbum extends Vue {
 
         const server = process.env.SERVER_URL;
 
-        const url = server + 'storage/counter/';
+        const url = server;
 
         const select_data = this.$store.state.back_select_data;
         const last_data = select_data.length - 1;
@@ -203,17 +203,51 @@ export default class chooseAlbum extends Vue {
 
         const store_data = this.$store.state;
 
-        const album_image_send = () => {
+        //const album_image_send = () => {
 
             const formData = new FormData();
 
-            formData.append('file', this.send_image[0]);
+            const first_parameter = [
+                'username', 
+                'selector', 
+                'target', 
+                'present', 
+                'title', 
+                'file', 
+                'default_or_selected', 
+                //'album_or_post'
+            ];
+
+            const second_parameter = [
+                store_data.username, 
+                store_data.back_data[0], 
+                store_data.back_data[1], 
+                store_data.back_data[2], 
+                this.written_name, 
+                this.send_image[0], 
+                this.send_image[1], 
+                //'album'
+            ];
+
+            for(let i=0; i < first_parameter.length; i++) {
+                formData.append(first_parameter[i], second_parameter[i]);
+            }
+
+           /* username: ,
+            image: this.send_sql_image,
+            selector: store_data.back_data[0],
+            target: store_data.back_data[1],
+            present: store_data.back_data[2],
+            title: this.written_name,
+
+            formData.append('file', );
             formData.append('default_or_selected', this.send_image[1]);
-            formData.append('album_or_post', '/album/');
+            formData.append('album_or_post', 'album');
+            formData.append(, store_data.username);*/
 
             console.log(formData);
 
-            this.$axios.post('album_post_image', formData)
+            this.$axios.post('album_data', formData)
             .then((response) => {
 
                 const data = response.data;
@@ -227,19 +261,14 @@ export default class chooseAlbum extends Vue {
             })
             .catch((err) => {
                 console.log(err);
-            })
+            });
 
-        }
+        //}
 
-        console.log(this.send_sql_image);
+       /* console.log(this.send_sql_image);
 
         this.$axios.post('album_data', {
-            username: store_data.username,
-            image: this.send_sql_image,
-            selector: store_data.back_data[0],
-            target: store_data.back_data[1],
-            present: store_data.back_data[2],
-            title: this.written_name,
+            
         })
         .then((response)=> {
             console.log(response.data)
@@ -257,7 +286,7 @@ export default class chooseAlbum extends Vue {
         })
         .catch((res) => {
             console.log(res);
-        });
+        });*/
 
     }
 

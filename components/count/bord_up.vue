@@ -14,7 +14,7 @@
             <div class="select_bord" v-if="$store.state.select_plan !== 'free' && showSelect">
                 <ul v-for="(select_data, index) in back_select_data" :key="select_data">
                     <li v-if="$store.state.back_data[4] === 'img'" @click="chooseData(index)">
-                        <img :src="base_url+'storage/counter/'+select_data" alt="select_data">
+                        <img :src="base_url+select_data" alt="select_data">
                     </li>
                     <li v-else @click="chooseData(index)">
                         {{ select_data }}
@@ -76,7 +76,7 @@
                 let image = into_data;
 
                 if(this.$store.state.back_data[4] === "img") {
-                    image = process.env.SERVER_URL + 'storage/counter/' + into_data;
+                    image = process.env.SERVER_URL + into_data;
                 }
                 
                 arrayWordImg.splice(i, 0, image);

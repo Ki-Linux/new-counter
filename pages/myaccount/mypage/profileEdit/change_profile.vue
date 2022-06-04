@@ -83,10 +83,11 @@ export default class change_profile extends Vue {
         this.$axios.post('img_account_post', formData)
         .then((response) => {
             console.log(response.data);
-
+            console.log(response.data.ui);
             const judge_data = response.data.judge_success;
 
             if(judge_data) {
+                console.log('success')
                 location.reload();
             }
         })
@@ -138,7 +139,7 @@ export default class change_profile extends Vue {
 
             const base_url = process.env.SERVER_URL;
 
-            this.change_data[0].img_name_comment = base_url + 'storage/account/' + value.icon;
+            this.change_data[0].img_name_comment = base_url + value.icon;
 
         }
         

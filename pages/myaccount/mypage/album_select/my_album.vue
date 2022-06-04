@@ -91,7 +91,7 @@ export default class my_album extends Vue {
 
                 }
                 
-                album_content[i].image = base_url + 'storage/album/' + album_content[i].image;
+                album_content[i].image = base_url + album_content[i].image;
 
                 //日付だけ表示
                 const create_array = album_content[i].created_at.split('T').splice(0, 1);

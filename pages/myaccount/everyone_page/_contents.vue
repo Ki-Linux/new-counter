@@ -44,7 +44,7 @@
             <div class="list_detail detail" v-else>
                 <p @click="deleteOrTell('post_report')" v-if="$route.params.contents === 'everyone'">…</p>
                 <ul class="post_contents">
-                    <li v-if="details_list.picture === post_url+'notImg'">
+                    <li v-if="details_list.picture === url+'notImg'">
                         写真はありません
                     </li>
                     <li v-else>
@@ -117,8 +117,8 @@ import { confirm } from '@/components/confirmation/confirm_person';
     }
 })
 export default class everyone extends Vue {
-    url: string = "";
-    post_url: string = "";
+    url: string|undefined;
+    //post_url: string = "";
     detail_profile: { username: string, user_icon: string|ArrayBuffer|null, user_comment: string }= { username: '', user_icon: '', user_comment: '' };
     details_list: { id: number, picture: string|ArrayBuffer|null, my_comment: string, username: string, updated_at: string, can_see: number } = { id: 0, picture: '', my_comment: '', username: '', updated_at: '', can_see: 0 };
     my_icon: string|ArrayBuffer|null = "";//自分のアイコン画像
@@ -157,9 +157,9 @@ export default class everyone extends Vue {
 
     mounted() {
 
-        const base_url = process.env.SERVER_URL;
-        this.url = base_url + 'storage/account/';
-        this.post_url = base_url + 'storage/post/';
+        //const base_url = process.env.SERVER_URL;
+        this.url = process.env.SERVER_URL;
+        //this.post_url = base_url + 'post/';
 
         if(this.$route.params.contents !== "everyone") {
 
@@ -561,7 +561,7 @@ export default class everyone extends Vue {
         
         if(this.$route.params.contents !== "everyone" && this.my_icon !== 'not') {
 
-            this.detail_profile.user_icon = process.env.SERVER_URL + 'storage/account/' + this.my_icon;
+            this.detail_profile.user_icon = process.env.SERVER_URL + 'account/' + this.my_icon;
 
         }
 

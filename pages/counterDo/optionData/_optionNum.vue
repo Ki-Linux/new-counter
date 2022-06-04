@@ -389,9 +389,9 @@ toNext(row: [string, number, number, string]): void {
 
         }
 
-        row.splice(4, 0, send_contents);
+        //row.splice(4, 0, send_contents);
 
-        this.$store.dispatch("inData", row);//基本データ
+        //this.$store.dispatch("inData", row);//基本データ
         console.log(row);
 
         //データをVuexへ
@@ -414,7 +414,14 @@ toNext(row: [string, number, number, string]): void {
         this.$axios.post('counter_image', formData)
         .then((response) => {
 
-            console.log(response.data);
+            console.log(response.data[0]);
+
+            row.splice(4, 0, send_contents);
+
+            if(this.$store.state.select_plan === "free") {
+                row[3] = response.data[0];
+            }
+            this.$store.dispatch("inData", row);//基本データ
 
         })
         .catch((err) => {
