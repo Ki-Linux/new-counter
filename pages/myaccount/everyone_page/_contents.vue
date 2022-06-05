@@ -156,10 +156,8 @@ export default class everyone extends Vue {
     }
 
     mounted() {
-
-        //const base_url = process.env.SERVER_URL;
+        
         this.url = '' + process.env.SERVER_URL;
-        //this.post_url = base_url + 'post/';
 
         if(this.$route.params.contents !== "everyone") {
 
@@ -332,7 +330,7 @@ export default class everyone extends Vue {
             this.detail_profile.username = name;
             this.detail_profile.user_icon = this.comment_lists[icon_num].user_icon;
 
-        }else if(who_icon === "me") {
+        } else if(who_icon === "me") {
 
             this.show_edit = false;
 
@@ -374,7 +372,7 @@ export default class everyone extends Vue {
 
         this.$axios.get('get_img_good_comment', {
             params: {
-                id_data: this.details_list.id,//this.details_list.id,
+                id_data: this.details_list.id,
                 name_data: this.details_list.username,
                 my_name: this.username,
             }

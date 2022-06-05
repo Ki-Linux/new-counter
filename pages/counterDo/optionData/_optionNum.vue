@@ -126,6 +126,7 @@ export default class Option extends Vue {
     };
 
     head() {
+        
         return {
             title: 'カウンターオプション'
         }
@@ -138,7 +139,7 @@ beforeMount() {
 
         console.log('go mount');
 
-        const username = this.$store.state.username;
+        const username = this.$route.params.optionNum;
         confirm(username);
 
     }

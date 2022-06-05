@@ -327,11 +327,13 @@ export default class optionMyData extends Vue {
 
             if(red_data) {
 
+                this.$store.dispatch("delete_contents", "only_name");
+
                 const all = ["key", "laravel_session", "XSRF-TOKEN", "auth.strategy"];
 
                 all.forEach(function(data) {
-                    document.cookie = data + "=; expires=0";
-                })
+                    document.cookie = data+"=;max-age=0;";
+                });
 
                 console.log('success');
                 this.$router.push('/');

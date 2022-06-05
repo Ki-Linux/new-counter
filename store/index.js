@@ -201,8 +201,25 @@ export const mutations = {
     changePhone(state) {//携帯横向きの表示
 
         state.show_phone = false;
-    }
+    },
 
+    deleteContents(state, content) {
+
+        if(content === "many") {
+
+            state.back_data = [];
+            state.back_select_data = [];
+            state.select_plan = "";
+            state.show_data = [];
+            state.show_phone = false;
+
+        } else if(content === "only_name") {
+
+            state.username = "";
+
+        }
+        
+    },
 
 };
 
@@ -284,7 +301,14 @@ export const actions = {
     change_phone(context) {
 
         context.commit("changePhone");
-    }
+
+    },
+
+    delete_contents(context, delete_data) {
+
+        context.commit("deleteContents", delete_data);
+
+    },
 
 
 }

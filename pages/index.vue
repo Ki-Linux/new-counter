@@ -7,8 +7,8 @@
       </nav>
       <header>
         <transition-group name="slide-fade">
-            <div v-show="show_section" class="show_login" v-for="login in logins" :key="login.showed_data">
-              <nuxt-link class="link" :to="login.to_url">{{ login.showed_data }}</nuxt-link>
+            <div v-show="show_section" class="show_login" v-for="(login, index) in logins" :key="index">
+              <nuxt-link class="link" @click.native="tryLogin(index)" :to="login.to_url">{{ login.showed_data }}</nuxt-link>
             </div> 
         </transition-group>
       </header>
@@ -123,7 +123,53 @@ export default class Home extends Vue{
   mounted() {
 
     //localStorageのデータを削除
-    localStorage.clear();
+    this.$store.dispatch("delete_contents", "many");
+
+  }
+
+  tryLogin(login_num: number) {
+
+    const name = this.$store.state.username;
+
+    if(login_num === 0 && name !== "") {
+
+      const cookie = document.cookie;
+
+      const only_first = cookie.split('%');
+
+      console.log(only_first);
+
+      const send_data = only_first[0].slice(25);
+
+      this.$axios.get('confirm_token', {
+        params: {
+          username: name,
+          divided_back: send_data,
+        }
+      })
+      .then((response) => {
+
+        console.log(response.data);
+        const which_num = response.data;
+
+        console.log('yes');
+        console.log(which_num.true_or_false);
+
+        if(which_num.true_or_false === true) {
+
+          this.$router.push('/myaccount/mypage/' + name);
+
+        } else {
+
+          return;
+
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      
+    }
 
   }
     
