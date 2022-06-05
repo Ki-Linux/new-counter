@@ -57,7 +57,7 @@
         </div>
         <div class="contents picture_word_no">
             <ul class="contents picture_word">
-                <li class="title">写真or文字orなし</li>
+                <li class="title">写真or文字orなし<br><span v-if="$route.params.optionNum !== 'free'">10個まで選択できます。</span></li>
                 <li class="to_left">
                     <label class="left_center" v-for="(image, index) in images" :key="image" @change="pictureWord(index)">
                         <input type="radio" name="image" checked>
@@ -86,7 +86,7 @@
                 </div> 
             </div>
         </div>
-        <div class="end_button">
+        <div class="end_button" :class="{ button_set: $route.params.optionNum !== 'free' }">
             <p>{{ attention }}</p>
             <button @click="toNext(save_storage)">決定</button>
         </div>
@@ -637,6 +637,11 @@ toNext(row: [string, number, number, string]): void {
                 color:rgb(46, 46, 46);
             }
             
+        }
+
+        .button_set {
+            margin-top: 30px;
+            margin-right: 10px;
         }
         
     }   

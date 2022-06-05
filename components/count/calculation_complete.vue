@@ -3,7 +3,7 @@
         <div class="count">
             <button @click="up_down('up')">▲</button>
             <button @click="up_down('down')">▼</button>
-            <button v-if="$store.state.first_data != $store.state.back_data[2]" @click="addCount('back_first')">
+            <button v-show="$store.state.first_data != $store.state.back_data[2]" @click="addCount('back_first')">
                 数字を初期値にする
             </button>
         </div>

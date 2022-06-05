@@ -1,7 +1,9 @@
 <template>
     <div id="bord_up">
-        <div class="contents_item" v-for="(show_word_img, img_Index) in showWordImg" :key="img_Index">
-            <img v-if="$store.state.back_data[4] === 'img'" :src="show_word_img" alt="select_img">
+        <div class="contents_item" v-for="(show_word_img, indexImg) in showWordImg" :key="indexImg">
+            <p v-if="$store.state.back_data[4] === 'img'">
+                <img :src="show_word_img" alt="select_img">
+            </p>
             <p v-else>{{ show_word_img }}</p>
         </div>
         <div class="leftover">
