@@ -64,7 +64,7 @@
                     </li>
                     <li v-show="show_comment" @click="toCommentList">
                         <span>↓</span>
-                        コメント
+                        クリックしてコメントを表示
                     </li>
                 </ul>
                 <div class="comment" v-if="show_comment_list">
@@ -705,7 +705,7 @@ export default class everyone extends Vue {
             transform: translateX(-50%);
             background-color: rgb(193, 255, 234);
             width: 700px;
-            height: 750px;
+            height: 850px;
 
             p {
 
@@ -827,8 +827,8 @@ export default class everyone extends Vue {
                             
                             img {
 
-                                max-width: 100px;
-                                max-height: 100px;
+                                max-width: 170px;
+                                max-height: 170px;
 
                             }
                         }
@@ -891,8 +891,9 @@ export default class everyone extends Vue {
 
                         &:last-of-type {
                             display: inline-block;
+                            width: 100%;
                             font-size: 25px;
-                            margin: 80px 50px 0 0;
+                            margin: 80px 0 0 50%;
                             transform: translateX(-50%);
                         }
 
