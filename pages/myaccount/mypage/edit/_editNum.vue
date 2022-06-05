@@ -375,43 +375,6 @@ export default class edit extends Vue {
 
             }
 
-            
-             
-
-            
-
-            /*formData.append('file', this.storage_image[0]);
-            formData.append('default_or_selected', this.storage_image[1]);
-            formData.append('album_or_post', 'post');
-
-            console.log(formData);
-            console.log(this.storage_image[0]);*/
-
-            /*this.$axios.post('album_post_image', formData)
-            .then((response) => {
-
-                console.log(response);
-
-                let url;
-                if(num_edit === 'new_post') {
-
-                    url = ('/myaccount/mypage/album_select/choose_album');
-
-                } else {
-
-                    url = ('/myaccount/everyone_page/' + name);
-
-                }
-
-                this.$router.push(url);
-                    
-            })
-            .catch((err) => {
-                console.log(err);
-            });*/
-
-        //}
-
         console.log(formData);
 
         if(editNum === 'new_post') {//paramsがこの文字のときは編集ではなく投稿
@@ -453,44 +416,6 @@ export default class edit extends Vue {
             .catch((err) => {
                 console.log(err);
             });
-
-            /*console.log(this.url);
-
-            const set_data = {
-                username: name,
-                image: this.url,
-                comment: this.my_comment,
-                can_list: this.array_check[0],
-                show_good: this.array_check[1],
-                others_comment: this.array_check[2],
-                can_see: this.array_check[3],
-                to_top: this.array_check[4],
-            }*/
-
-            /*const method_url: AxiosRequestConfig = { //編集
-                method: 'put',
-                url: 'edit_update/' + editNum,
-                params: set_data,
-            }*/
-
-            /*this.$axios(method_url)
-            .then((response) => {
-                console.log(response);
-
-                const res = response.data;
-
-                if(res.success === "update_true" && this.add_edit && this.url !== "notImg") {
-
-                   // post_image(editNum);
-                    return;
-
-                }
-
-                this.$router.push('/myaccount/everyone_page/' + name);
-            })
-            .catch((err) => {
-                console.log(err);
-            });*/
 
         }
 

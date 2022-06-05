@@ -203,8 +203,6 @@ export default class chooseAlbum extends Vue {
 
         const store_data = this.$store.state;
 
-        //const album_image_send = () => {
-
             const formData = new FormData();
 
             const first_parameter = [
@@ -215,7 +213,6 @@ export default class chooseAlbum extends Vue {
                 'title', 
                 'file', 
                 'default_or_selected', 
-                //'album_or_post'
             ];
 
             const second_parameter = [
@@ -226,24 +223,11 @@ export default class chooseAlbum extends Vue {
                 this.written_name, 
                 this.send_image[0], 
                 this.send_image[1], 
-                //'album'
             ];
 
             for(let i=0; i < first_parameter.length; i++) {
                 formData.append(first_parameter[i], second_parameter[i]);
             }
-
-           /* username: ,
-            image: this.send_sql_image,
-            selector: store_data.back_data[0],
-            target: store_data.back_data[1],
-            present: store_data.back_data[2],
-            title: this.written_name,
-
-            formData.append('file', );
-            formData.append('default_or_selected', this.send_image[1]);
-            formData.append('album_or_post', 'album');
-            formData.append(, store_data.username);*/
 
             console.log(formData);
 
@@ -262,31 +246,6 @@ export default class chooseAlbum extends Vue {
             .catch((err) => {
                 console.log(err);
             });
-
-        //}
-
-       /* console.log(this.send_sql_image);
-
-        this.$axios.post('album_data', {
-            
-        })
-        .then((response)=> {
-            console.log(response.data)
-
-            const album = response.data;
-            
-            if(album === 1) {
-
-                album_image_send();
-                
-            } else {
-                console.log("no");
-            }
-
-        })
-        .catch((res) => {
-            console.log(res);
-        });*/
 
     }
 
