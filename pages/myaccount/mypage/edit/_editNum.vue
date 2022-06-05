@@ -329,9 +329,11 @@ export default class edit extends Vue {
 
         }
 
-        if(!this.select_img_chosen) {//画像でないときのみ代入
+        if(!this.select_img_chosen || this.storage_image[0] === "s") {//画像でないときのみ代入
 
             this.url = "notImg";
+            this.storage_image[0] = this.url;
+            
 
         } 
 
@@ -339,6 +341,7 @@ export default class edit extends Vue {
         const name = this.$store.state.username;
 
         //const post_image = (num_edit: string) => {
+            console.log(this.storage_image[0]);
 
             const formData = new FormData();
 

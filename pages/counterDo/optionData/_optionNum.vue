@@ -375,6 +375,9 @@ toNext(row: [string, number, number, string]): void {
 
         let send_contents = "img";//画像か写真か
 
+        //データをVuexへ
+        const url_name =  this.$route.params.optionNum;
+
         if(!this.show_select_picture) {//画像選択していないとき
 
             if(this.show_select_word) {//文字を選択したとき
@@ -386,6 +389,17 @@ toNext(row: [string, number, number, string]): void {
                 send_contents = "nothing";
 
             }
+
+            row.splice(4, 0, send_contents);
+            console.log(row);
+            console.log(send_array);
+            //this.$router.push('/counterDo/counter_this/' + url_name);
+            this.$store.dispatch("inSelectData", send_array);
+            this.$store.dispatch("inData", row);//基本データ
+            
+
+            this.$router.push('/counterDo/counter_this/' + url_name);
+            return;
  
 
         }
@@ -395,8 +409,7 @@ toNext(row: [string, number, number, string]): void {
         //this.$store.dispatch("inData", row);//基本データ
         console.log(row);
 
-        //データをVuexへ
-        const url_name =  this.$route.params.optionNum;
+        
 
         //画像データをサーバーへ
         console.log(this.post_image);
@@ -418,6 +431,8 @@ toNext(row: [string, number, number, string]): void {
             console.log(response.data[0]);
 
             row.splice(4, 0, send_contents);
+            console.log(row);
+            console.log(send_array);
 
             if(this.$store.state.select_plan === "free") {
 
@@ -464,6 +479,8 @@ toNext(row: [string, number, number, string]): void {
         if(typeof(this.save_storage[1]) === "number" && typeof(this.save_storage[2]) === "number") {
 
             if(this.save_storage[1] < this.save_storage[2]) {
+
+                console.log('ui');
 
                 //値が正しければ次へ実行
                 send_data_go();
