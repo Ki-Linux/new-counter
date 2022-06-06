@@ -334,6 +334,7 @@ export default class chooseAlbum extends Vue {
             padding: 30px 0 20px;
 
             input[type="file"] {
+                -webkit-appearance: none;
                 padding: 40px;
                 font-size: 20px;
             }

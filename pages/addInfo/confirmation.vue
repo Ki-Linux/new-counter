@@ -71,6 +71,10 @@ export default class confirmation extends Vue {
             font-size: 20px;
         }
 
+        input[type="submit"] {
+            -webkit-appearance: none;
+        }
+
     }
 
 }

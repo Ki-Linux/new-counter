@@ -466,6 +466,7 @@ html {
 
                 input[type="file"] {
 
+                    -webkit-appearance: none;
                     padding: 20px 0 40px;
 
                 }

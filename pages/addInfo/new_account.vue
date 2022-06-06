@@ -126,6 +126,7 @@ export default class newAccount extends Vue {
 
         input[type="submit"] {
 
+            -webkit-appearance: none;
             color: rgb(36, 36, 36);
             background-color: rgba(204, 204, 204, 0.6);
             margin-bottom: 20px;

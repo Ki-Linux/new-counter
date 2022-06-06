@@ -269,6 +269,10 @@ export default class change_profile extends Vue {
 
     .edit_profile {
 
+        input {
+            -webkit-appearance: none;
+        }
+
         position: fixed;
         top: 50%;
         left: 50%;

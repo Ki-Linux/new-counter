@@ -4,7 +4,14 @@ export function confirm (name: string) {
 
     const cookie = document.cookie;
 
+    console.log(cookie);
+
     const only_first = cookie.split('%');
+
+    if(only_first.length  < 2) {
+        location.replace('/addInfo/login');
+        return;
+    }
 
     console.log(only_first);
 

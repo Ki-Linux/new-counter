@@ -978,6 +978,8 @@ export default class everyone extends Vue {
                         }
 
                         input[type="submit"]{
+
+                            -webkit-appearance: none;
                             position: absolute;
                             margin-top: 15px;
                             margin-left: 5px;

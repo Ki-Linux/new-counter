@@ -375,6 +375,7 @@ export default class optionMyData extends Vue {
                 margin: 10px 0 30px 50px;
 
                 &[type="submit"] {
+                    -webkit-appearance: none;
                     margin-left: 140px;
                 }
 
