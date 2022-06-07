@@ -1,5 +1,6 @@
 <template>
   <div id="home"> 
+      <p>{{ url }}</p>
       <nav>
         <nuxt-link class="to_count" to="/counterDo/login_select">プラマイカウントを使う</nuxt-link>
         <img class="selector_img" @click="changeBox" :src="url_change" alt="open">
@@ -95,7 +96,7 @@ export default class Home extends Vue{
     
   created() {
 
-    this.url = process.env.SERVER_URL;
+    this.url = this.$config.baseURL;//process.env.SERVER_URL;
 
     this.$axios.get('only_top')
     .then((response) => {
