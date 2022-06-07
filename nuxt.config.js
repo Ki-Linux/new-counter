@@ -88,7 +88,6 @@ export default {
   },
 
   publicRuntimeConfig: {
-    baseURL: process.env.BASE_URL,
     axios: {
       baseURL: process.env.BASE_URL,
     },
