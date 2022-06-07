@@ -168,10 +168,10 @@ export const mutations = {
         state.select_plan = res;
     },
 
-    cookieToken(state, content) {//cookieからstoreへ
+    /*cookieToken(state, content) {//cookieからstoreへ
         state.token = content;
         console.log(state.token);
-    },
+    },*/
 
     changeClick(state, content) {
         state.canClick = content;
@@ -277,11 +277,11 @@ export const actions = {
         context.commit("loginName", res);
     }, 
 
-    nuxtServerInit({ commit }, { req }) {//reload
+    /*nuxtServerInit({ commit }, {req}) {//reload
 
         commit("cookieToken", req.headers.cookie);
         
-    },
+    },*/
 
     changeClick(context, judge) {
 
